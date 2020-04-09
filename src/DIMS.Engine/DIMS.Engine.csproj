@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ductus.FluentDocker" Version="2.7.59-beta0123" />
+    <PackageReference Include="Octostache" Version="2.7.0" />
+  </ItemGroup>
+
+</Project>
