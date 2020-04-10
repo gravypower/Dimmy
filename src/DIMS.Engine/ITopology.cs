@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Octostache;
 
 namespace DIMS.Engine
 {
     public interface ITopology
     {
-        IList<string> Images { get; }
+        string DockerComposeTemplate { get; }
+
+        VariableDictionary VariableDictionary { get; }
     }
 }

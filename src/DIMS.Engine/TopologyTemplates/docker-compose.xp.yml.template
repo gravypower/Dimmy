@@ -1,3 +1,4 @@
+#XP topology
 version: "2.4"
 
 services:
@@ -5,27 +6,31 @@ services:
   sql:
     image: #{SqlDockerImage}
     volumes:
-      - #{ClientDataFolder}\sql:C:\Data
+      - #{ProjectDataFolder}\sql:C:\Data
     mem_limit: 2GB
     ports:
       - "44010:1433"
     environment:
       SA_PASSWORD: #{SqlSaPassword}
       ACCEPT_EULA: "Y"
+    labels:
+      dev.dims.project: "#{Project}"
 
   solr:
     image: #{SolrDockerImage}
     volumes:
-      - #{ClientDataFolder}\solr:C:\Data
+      - #{ProjectDataFolder}\solr:C:\Data
     mem_limit: 1GB
     ports:
       - "44011:8983"
+    labels:
+      dev.dims.project: "#{Project}"
 
   xconnect:
     image: #{XConnectDockerImage} 
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\xconnect\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\xconnect:C:\inetpub\wwwroot\App_Data\logs
+      - #{ProjectDataFolder}\xconnect:C:\inetpub\wwwroot\App_Data\logs
     mem_limit: 1GB
     environment:
       ENTRYPOINT_STDOUT_XCONNECT_LOG_ENABLED: 'true'
@@ -47,12 +52,14 @@ services:
         condition: service_healthy
       solr:
         condition: service_started
+    labels:
+      dev.dims.index: "xconnect"
 
   xconnect-automationengine:
     image: #{XConnectAutomationEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\xconnect-automationengine:C:\worker\App_Data\logs
+      - #{ProjectDataFolder}\xconnect-automationengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
       SITECORE_LICENSE: #{SitecoreLicense}
@@ -65,12 +72,14 @@ services:
         condition: service_healthy
       xconnect:
         condition: service_started
+    labels:
+      dev.dims.project: "#{Project}"
 
   xconnect-indexworker:
     image: #{XConnectIndexWorkerImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\xconnect-indexworker:C:\worker\App_Data\logs
+      - #{ProjectDataFolder}\xconnect-indexworker:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
       SITECORE_LICENSE: #{SitecoreLicense}
@@ -83,12 +92,14 @@ services:
         condition: service_healthy
       solr:
         condition: service_started
+    labels:
+      dev.dims.project: "#{Project}"
 
   xconnect-processingengine:
     image: #{XConnectProcessingEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\xconnect-processingengine:C:\worker\App_Data\logs
+      - #{ProjectDataFolder}\xconnect-processingengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     restart: unless-stopped
     environment:
@@ -108,13 +119,15 @@ services:
         condition: service_healthy
       xconnect:
         condition: service_started
+    labels:
+      dev.dims.project: "#{Project}"
 
   cd:
     image: #{CDImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\cd:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{ClientFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{ProjectDataFolder}\cd:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{ProjectFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44002:80"
     environment:
@@ -138,13 +151,15 @@ services:
         condition: service_started
       xconnect:
         condition: service_started
+    labels:
+      dev.dims.project: "#{Project}"
 
   cm:
     image: #{CMImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{ClientDataFolder}\cm:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{ClientFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{ProjectDataFolder}\cm:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{ProjectFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44001:80"
     environment:
@@ -179,3 +194,5 @@ services:
         condition: service_started
       xconnect:
         condition: service_started
+    labels:
+      dev.dims.project: "#{Project}"
