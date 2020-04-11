@@ -53,7 +53,7 @@ services:
       solr:
         condition: service_started
     labels:
-      dev.dims.index: "xconnect"
+      dev.dims.project: "#{Project}"
 
   xconnect-automationengine:
     image: #{XConnectAutomationEngineImage}
@@ -93,7 +93,7 @@ services:
       solr:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
+      dev.dims.project: "#{Project}"   
 
   xconnect-processingengine:
     image: #{XConnectProcessingEngineImage}
@@ -153,6 +153,7 @@ services:
         condition: service_started
     labels:
       dev.dims.project: "#{Project}"
+      dev.dims.sitecore: true
 
   cm:
     image: #{CMImage}
@@ -196,3 +197,4 @@ services:
         condition: service_started
     labels:
       dev.dims.project: "#{Project}"
+      dev.dims.sitecore: true

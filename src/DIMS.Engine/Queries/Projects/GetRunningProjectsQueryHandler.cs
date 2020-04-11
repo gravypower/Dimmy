@@ -1,8 +1,9 @@
-﻿using Ductus.FluentDocker.Services;
+﻿using System.Collections.Generic;
+using Ductus.FluentDocker.Services;
 
 namespace DIMS.Engine.Queries.Projects
 {
-    public class GetRunningProjectsQueryHandler:IQueryHandler<GetRunningProjects, string>
+    public class GetRunningProjectsQueryHandler:IQueryHandler<GetRunningProjects, IEnumerable<string>>
     {
         private readonly IHostService _hostService;
 
@@ -11,12 +12,25 @@ namespace DIMS.Engine.Queries.Projects
             _hostService = hostService;
         }
 
-        public string Handle(GetRunningProjects query)
+        public IEnumerable<string> Handle(GetRunningProjects query)
         {
-            var ac = _hostService.GetRunningContainers();
+            var containers = _hostService.GetRunningContainers();
 
+            var projects = new List<string>();
+            foreach (var container in containers)
+            {
+                var labels = container.GetConfiguration().Config.Labels;
 
-            return "";
+                if (!labels.ContainsKey("dev.dims.project")) 
+                    continue;
+
+                var project = labels["dev.dims.project"];
+                if(projects.Contains(project))
+                    continue;
+
+                projects.Add(project);
+                yield return project;
+            }
         }
     }
 }

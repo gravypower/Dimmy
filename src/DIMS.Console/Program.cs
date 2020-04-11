@@ -15,7 +15,9 @@ namespace DIMS.Console
             {
                 Topology = new XpTopology(),
                 ProjectFolder = @"C:\clients\SomeClient",
-                LicenseStream = File.OpenRead(@"C:\license.xml")
+                LicenseStream = File.OpenRead(@"C:\license.xml"),
+                Project = "SomeClient"
+
             };
 
             var generateComposeYamlCommandHandler = new GenerateComposeYamlCommandHandler();
@@ -37,7 +39,7 @@ namespace DIMS.Console
             var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
             var getRunningProjectsQueryHandler = new GetRunningProjectsQueryHandler(host);
 
-            getRunningProjectsQueryHandler.Handle(getRunningProjects);
+            var r = getRunningProjectsQueryHandler.Handle(getRunningProjects);
 
         }
     }

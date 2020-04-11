@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DIMS.Engine.Queries.Projects
 {
-    public class GetRunningProjects:IQuery<string>
+    public class GetRunningProjects:IQuery<IEnumerable<string>>
     {
     }
 }

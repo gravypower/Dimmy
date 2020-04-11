@@ -17,6 +17,7 @@ namespace DIMS.Engine.Commands.DockerCompose
             command.Topology.VariableDictionary.Set("SqlSaPassword", command.SqlSaPassword);
             command.Topology.VariableDictionary.Set("SitecoreLicense", sitecoreLicense);
             command.Topology.VariableDictionary.Set("TelerikEncryptionKey", command.TelerikEncryptionKey);
+            command.Topology.VariableDictionary.Set("Project", command.Project);
             command.Topology.VariableDictionary.Set("ProjectFolder", command.ProjectFolder);
             command.Topology.VariableDictionary.Set("ProjectDataFolder", $@"{command.ProjectFolder}\data");
 
