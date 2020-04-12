@@ -1,36 +1,21 @@
 ﻿using System.Collections.Generic;
-using Ductus.FluentDocker.Services;
+using DIMS.Engine.Models;
+using DIMS.Engine.Services;
 
 namespace DIMS.Engine.Queries.Projects
 {
-    public class GetRunningProjectsQueryHandler:IQueryHandler<GetRunningProjects, IEnumerable<string>>
+    public class GetRunningProjectsQueryHandler:IQueryHandler<GetRunningProjects, IEnumerable<Project>>
     {
-        private readonly IHostService _hostService;
+        private readonly IProjectService _projectService;
 
-        public GetRunningProjectsQueryHandler(IHostService hostService)
+        public GetRunningProjectsQueryHandler(IProjectService projectService)
         {
-            _hostService = hostService;
+            _projectService = projectService;
         }
 
-        public IEnumerable<string> Handle(GetRunningProjects query)
+        public IEnumerable<Project> Handle(GetRunningProjects query)
         {
-            var containers = _hostService.GetRunningContainers();
-
-            var projects = new List<string>();
-            foreach (var container in containers)
-            {
-                var labels = container.GetConfiguration().Config.Labels;
-
-                if (!labels.ContainsKey("dev.dims.project")) 
-                    continue;
-
-                var project = labels["dev.dims.project"];
-                if(projects.Contains(project))
-                    continue;
-
-                projects.Add(project);
-                yield return project;
-            }
+            return _projectService.RunningProjects();
         }
     }
 }

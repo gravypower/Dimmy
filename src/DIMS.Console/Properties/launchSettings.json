@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DIMS.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "project StopProject --project-folder \"C:\\clients\\SomeClient\""
+    }
+  }
+}

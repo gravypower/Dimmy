@@ -2,18 +2,18 @@
 
 namespace DIMS.Engine.Commands.DockerCompose
 {
-    public class StartSitecoreInstanceCommandHandler:ICommandHandler<StartSitecoreInstance>
+    public class StartProjectCommandHandler:ICommandHandler<StartProject>
     {
-        public void Handle(StartSitecoreInstance command)
+        public void Handle(StartProject command)
         {
-            var xp = new Builder()
+            var builder = new Builder()
                 .UseContainer()
                 .UseCompose()
                 .FromFile($"{command.ProjectFolder}\\docker-compose.yml")
                 .RemoveOrphans();
 
-            var xpCompositeService = xp.Build();
-            xpCompositeService.Start();
+            var compositeService = builder.Build();
+            compositeService.Start();
         }
     }
 }

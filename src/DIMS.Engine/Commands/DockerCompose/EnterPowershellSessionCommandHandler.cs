@@ -6,7 +6,7 @@ namespace DIMS.Engine.Commands.DockerCompose
     {
         public void Handle(EnterPowershellSession command)
         {
-            var process = new Process()
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {

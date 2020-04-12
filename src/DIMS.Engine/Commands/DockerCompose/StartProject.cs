@@ -1,6 +1,6 @@
 ﻿namespace DIMS.Engine.Commands.DockerCompose
 {
-    public class StartSitecoreInstance:ICommand
+    public class StartProject:ICommand
     {
         public string ProjectFolder { get; set; }
     }

@@ -6,7 +6,7 @@ services:
   sql:
     image: #{SqlDockerImage}
     volumes:
-      - #{ProjectDataFolder}\sql:C:\Data
+      - #{Project.Folder}\Data\sql:C:\Data
     mem_limit: 2GB
     ports:
       - "44010:1433"
@@ -14,29 +14,35 @@ services:
       SA_PASSWORD: #{SqlSaPassword}
       ACCEPT_EULA: "Y"
     labels:
-      dev.dims.project: "#{Project}"
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "MSSQL"
 
   solr:
     image: #{SolrDockerImage}
     volumes:
-      - #{ProjectDataFolder}\solr:C:\Data
+      - #{Project.Folder}\Data\solr:C:\Data
     mem_limit: 1GB
     ports:
       - "44011:8983"
     labels:
-      dev.dims.project: "#{Project}"
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "solr"
 
   xconnect:
     image: #{XConnectDockerImage} 
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\xconnect\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\xconnect:C:\inetpub\wwwroot\App_Data\logs
+      - #{Project.Folder}\Data\xconnect:C:\inetpub\wwwroot\App_Data\logs
     mem_limit: 1GB
     environment:
       ENTRYPOINT_STDOUT_XCONNECT_LOG_ENABLED: 'true'
       ENTRYPOINT_STDOUT_IIS_ACCESS_LOG_ENABLED: 'true'
       ENTRYPOINT_STDOUT_IIS_ERROR_LOG_ENABLED: 'true'
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_SITECORE:XCONNECT:COLLECTIONSEARCH:SERVICES:SOLR.SOLRREADERSETTINGS:OPTIONS:REQUIREHTTPS: 'false'
       SITECORE_SITECORE:XCONNECT:SEARCHINDEXER:SERVICES:SOLR.SOLRWRITERSETTINGS:OPTIONS:REQUIREHTTPS: 'false'
       SITECORE_CONNECTIONSTRINGS_MESSAGING: Data Source=sql;Database=Sitecore.Messaging;User ID=sa;Password=#{SqlSaPassword}
@@ -53,16 +59,19 @@ services:
       solr:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "xconnect"
 
   xconnect-automationengine:
     image: #{XConnectAutomationEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\xconnect-automationengine:C:\worker\App_Data\logs
+      - #{Project.Folder}\Data\xconnect-automationengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_CONNECTIONSTRINGS_XCONNECT.COLLECTION: http://xconnect
       SITECORE_CONNECTIONSTRINGS_XDB.MARKETINGAUTOMATION: Data Source=sql;Database=Sitecore.MarketingAutomation;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_XDB.REFERENCEDATA: Data Source=sql;Database=Sitecore.ReferenceData;User ID=sa;Password=#{SqlSaPassword}
@@ -73,16 +82,19 @@ services:
       xconnect:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "xconnect-automationengine"
 
   xconnect-indexworker:
     image: #{XConnectIndexWorkerImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\xconnect-indexworker:C:\worker\App_Data\logs
+      - #{Project.Folder}\Data\xconnect-indexworker:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_CONNECTIONSTRINGS_COLLECTION: Data Source=sql;Initial Catalog=Sitecore.Xdb.Collection.ShardMapManager;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_SOLRCORE: http://solr:8983/solr/sitecore_xdb
       SITECORE_SITECORE:XCONNECT:SEARCHINDEXER:SERVICES:SOLR.SOLRREADERSETTINGS:OPTIONS:REQUIREHTTPS: 'false'
@@ -93,17 +105,20 @@ services:
       solr:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"   
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "xconnect-indexworker"
 
   xconnect-processingengine:
     image: #{XConnectProcessingEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\xconnect-processingengine:C:\worker\App_Data\logs
+      - #{Project.Folder}\Data\xconnect-processingengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     restart: unless-stopped
     environment:
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_CONNECTIONSTRINGS_PROCESSING.ENGINE.STORAGE: Data Source=sql;Database=Sitecore.Processing.Engine.Storage;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_PROCESSING.ENGINE.TASKS: Data Source=sql;Database=Sitecore.Processing.Engine.Tasks;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_PROCESSING.WEBAPI.BLOB: http://xconnect
@@ -120,18 +135,21 @@ services:
       xconnect:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "xconnect-processingengine"
 
   cd:
     image: #{CDImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\cd:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{ProjectFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{Project.Folder}\Data\cd:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{Project.Folder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44002:80"
     environment:
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_APPSETTINGS_ROLE:DEFINE: ContentDelivery
       SITECORE_CONNECTIONSTRINGS_SECURITY: Data Source=sql;Initial Catalog=Sitecore.Core;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_WEB: Data Source=sql;Initial Catalog=Sitecore.Web;User ID=sa;Password=#{SqlSaPassword}
@@ -152,19 +170,21 @@ services:
       xconnect:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
-      dev.dims.sitecore: true
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "cd"
 
   cm:
     image: #{CMImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{ProjectDataFolder}\cm:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{ProjectFolder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{Project.Folder}\Data\cm:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{Project.Folder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44001:80"
     environment:
-      SITECORE_LICENSE: #{SitecoreLicense}
+      SITECORE_LICENSE: #{Sitecore.License}
       SITECORE_APPSETTINGS_ROLE:DEFINE: Standalone
       SITECORE_CONNECTIONSTRINGS_CORE: Data Source=sql;Initial Catalog=Sitecore.Core;User ID=sa;Password=#{SqlSaPassword}
       SITECORE_CONNECTIONSTRINGS_SECURITY: Data Source=sql;Initial Catalog=Sitecore.Core;User ID=sa;Password=#{SqlSaPassword}
@@ -196,5 +216,7 @@ services:
       xconnect:
         condition: service_started
     labels:
-      dev.dims.project: "#{Project}"
-      dev.dims.sitecore: true
+      net.gravypower.dims.project: true
+      net.gravypower.dims.project.name: "#{Project.Name}"
+      net.gravypower.dims.project.id: "#{Project.Id}"
+      net.gravypower.dims.project.role: "cm"
