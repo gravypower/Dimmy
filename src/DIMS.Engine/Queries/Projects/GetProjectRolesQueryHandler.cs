@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DIMS.Engine.Models;
 using DIMS.Engine.Services;
 
@@ -14,11 +15,11 @@ namespace DIMS.Engine.Queries.Projects
             _projectService = projectService;
         }
 
-        public IEnumerable<Role> Handle(GetProjectRoles query)
+        public async Task<IEnumerable<Role>> Handle(GetProjectRoles query)
         {
             var project = _projectService.RunningProjects().Single(p => p.Id == query.ProjectId);
 
-            return project.Roles;
+            return await Task.FromResult(project.Roles);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace DIMS.CLI.RootCommands.Project
             };
 
             projectListCommand.Handler = CommandHandler
-                .Create<string, string, string>((licensePath, projectFolder, projectName) =>
+                .Create<string, string, string>(async (licensePath, projectFolder, projectName) =>
                 {
                     var generateComposeYaml = new GenerateComposeYaml
                     {
@@ -36,7 +36,7 @@ namespace DIMS.CLI.RootCommands.Project
                         ProjectName = projectName
                     };
 
-                    _generateComposeYamlCommandHandler.Handle(generateComposeYaml);
+                    await _generateComposeYamlCommandHandler.Handle(generateComposeYaml);
                 });
 
             return projectListCommand;

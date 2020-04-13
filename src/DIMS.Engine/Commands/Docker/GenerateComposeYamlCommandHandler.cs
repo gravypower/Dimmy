@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using DIMS.Engine.Services;
 
 namespace DIMS.Engine.Commands.Docker
@@ -14,7 +15,12 @@ namespace DIMS.Engine.Commands.Docker
             _projectService = projectService;
         }
 
-        public void Handle(GenerateComposeYaml command)
+        public Task Handle(GenerateComposeYaml command)
+        {
+           return Task.Run(() => Run(command));
+        }
+
+        private void Run(GenerateComposeYaml command)
         {
             var licenseMemoryStream = new MemoryStream();
             var licenseGZipStream = new GZipStream(licenseMemoryStream, CompressionLevel.Optimal, false);

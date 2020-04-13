@@ -2,7 +2,7 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Linq;
-using DIMS.CLI.Services;
+using DIMS.CLI.Extensions;
 using DIMS.Engine.Commands;
 using DIMS.Engine.Commands.Docker;
 using DIMS.Engine.Services;

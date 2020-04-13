@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DIMS.Engine.Models;
 using DIMS.Engine.Services;
 
@@ -13,9 +14,9 @@ namespace DIMS.Engine.Queries.Projects
             _projectService = projectService;
         }
 
-        public IEnumerable<Project> Handle(GetRunningProjects query)
+        public async Task<IEnumerable<Project>> Handle(GetRunningProjects query)
         {
-            return _projectService.RunningProjects();
+            return await Task.FromResult(_projectService.RunningProjects());
         }
     }
 }

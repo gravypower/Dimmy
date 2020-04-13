@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DIMS.Engine.Services;
 using Ductus.FluentDocker.Services;
 
@@ -17,20 +18,25 @@ namespace DIMS.Engine.Commands.Docker
             _projectService = projectService;
         }
 
-        public void Handle(StopProject command)
+        public Task Handle(StopProject command)
+        {
+            return Task.Run(()=>Run(command));
+        }
+
+        private void Run(StopProject command)
         {
             var project = _projectService.GetProjectById(command.ProjectId);
 
             foreach (var c in _hostService.GetContainers())
             {
-                if (project.Roles.All(r => r.ContainerId != c.Id)) 
+                if (project.Roles.All(r => r.ContainerId != c.Id))
                     continue;
 
-                if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting && c.State != ServiceRunningState.Paused)
+                if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&
+                    c.State != ServiceRunningState.Paused)
                     continue;
 
                 c.Stop();
-
             }
         }
     }

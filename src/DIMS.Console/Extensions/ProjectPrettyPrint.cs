@@ -1,7 +1,7 @@
 ﻿using System;
 using DIMS.Engine.Models;
 
-namespace DIMS.CLI.Services
+namespace DIMS.CLI.Extensions
 {
     public static class ProjectPrettyPrint
     {

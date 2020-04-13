@@ -22,9 +22,8 @@ namespace DIMS.CLI.RootCommands.Project
             };
 
             startProjectCommand.Handler = CommandHandler
-                .Create<string>(projectFolder =>
+                .Create<string>(async projectFolder =>
                 {
-
                     if (string.IsNullOrEmpty(projectFolder))
                     {
                         projectFolder = ".";
@@ -35,7 +34,7 @@ namespace DIMS.CLI.RootCommands.Project
                         ProjectFolder = projectFolder
                     };
 
-                    _startProjectCommandHandler.Handle(startProject);
+                    await _startProjectCommandHandler.Handle(startProject);
                 });
 
             return startProjectCommand;

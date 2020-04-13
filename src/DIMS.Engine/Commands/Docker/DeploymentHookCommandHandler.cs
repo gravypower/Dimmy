@@ -1,4 +1,5 @@
-﻿using Ductus.FluentDocker.Services;
+﻿using System.Threading.Tasks;
+using Ductus.FluentDocker.Services;
 
 namespace DIMS.Engine.Commands.Docker
 {
@@ -11,7 +12,13 @@ namespace DIMS.Engine.Commands.Docker
             _hostService = hostService;
         }
 
-        public void Handle(DeploymentHook command)
+        public Task Handle(DeploymentHook command)
+        {
+            return Task.Run(() => Run(command));
+            
+        }
+
+        private static void Run(DeploymentHook command)
         {
             //container.CopyTo(
             //        @"C:\inetpub\wwwroot\bin",

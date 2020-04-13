@@ -23,14 +23,14 @@ namespace DIMS.CLI.RootCommands.Project
             };
 
             stopProjectCommand.Handler = CommandHandler
-                .Create<Guid>(projectId =>
+                .Create<Guid>(async projectId =>
                 {
                     var stopProject = new StopProject
                     {
                         ProjectId = projectId
                     };
 
-                    _stopProjectCommandHandler.Handle(stopProject);
+                    await _stopProjectCommandHandler.Handle(stopProject);
                 });
             return stopProjectCommand;
         }
