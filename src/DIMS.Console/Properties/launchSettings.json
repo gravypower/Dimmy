@@ -2,7 +2,7 @@
   "profiles": {
     "DIMS.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "project StopProject --project-folder \"C:\\clients\\SomeClient\""
+      "commandLineArgs": "project attach --project-id b45ac963fab045d7ac4ce4ce431b4dc7 --role cm"
     }
   }
 }

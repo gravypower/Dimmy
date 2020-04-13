@@ -6,15 +6,16 @@ namespace DIMS.Engine.Commands.DockerCompose
     {
         public void Handle(EnterPowershellSession command)
         {
+            var setTitleCommand = $"{{$host.ui.RawUI.WindowTitle = '{command.ShellTitle}'}}";
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "C:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe",
-                    Arguments = $"-NoLogo -NoExit -Command docker exec -it {command.ContainerId} powershell",
+                    Arguments = $"-NoLogo -Command docker exec -it {command.ContainerId} powershell -NoExit -Command {setTitleCommand};",
                     RedirectStandardOutput = false,
                     UseShellExecute = true,
-                    CreateNoWindow = false,
+                    CreateNoWindow = false
                 }
             };
             process.Start();
