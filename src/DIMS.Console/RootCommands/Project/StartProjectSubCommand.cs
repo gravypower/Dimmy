@@ -30,7 +30,7 @@ namespace DIMS.CLI.RootCommands.Project
                         projectFolder = ".";
                     }
 
-                    var startProject = new Engine.Commands.Docker.StartProject
+                    var startProject = new StartProject
                     {
                         ProjectFolder = projectFolder
                     };

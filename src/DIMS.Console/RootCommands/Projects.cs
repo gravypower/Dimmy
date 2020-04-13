@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using DIMS.CLI.Services;
 using DIMS.Engine.Queries;
 using DIMS.Engine.Queries.Projects;
 
@@ -18,7 +19,7 @@ namespace DIMS.CLI.RootCommands
 
         private Command AddListSubCommand()
         {
-            var projectListCommand = new Command("ls")
+            var projectListCommand = new Command("ls", "Lists running projects")
             {
                 Handler = CommandHandler.Create(() =>
                 {
@@ -26,12 +27,7 @@ namespace DIMS.CLI.RootCommands
                     var runningProjects = _getRunningProjectsQueryHandler.Handle(getRunningProjects);
                     foreach (var runningProject in runningProjects)
                     {
-                        Console.WriteLine($"\\-{runningProject.Name}");
-
-                        foreach (var role in runningProject.Roles)
-                        {
-                            Console.WriteLine($"  |-{role.Name}");
-                        }
+                        runningProject.PrettyPrint();
                     }
                 })
             };

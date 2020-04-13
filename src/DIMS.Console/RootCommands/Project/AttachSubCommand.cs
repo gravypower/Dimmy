@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Linq;
-using System.Text;
+using DIMS.CLI.Services;
 using DIMS.Engine.Commands;
 using DIMS.Engine.Commands.Docker;
 using DIMS.Engine.Services;
@@ -39,8 +38,15 @@ namespace DIMS.CLI.RootCommands.Project
                         projectId = _projectService.GetContextProjectId();
                     }
 
-
                     var project = _projectService.RunningProjects().Single(p => p.Id == projectId);
+
+                    if (string.IsNullOrEmpty(role))
+                    {
+                        project.PrettyPrint();
+                        Console.Write("Enter name of role:");
+
+                        role = Console.ReadLine();
+                    }
 
                     var projectRole = project.Roles.Single(r => r.Name == role);
 

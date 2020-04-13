@@ -62,10 +62,20 @@ namespace DIMS.Engine.Services
 
         public Guid GetContextProjectId()
         {
-            var configFile = File.ReadAllText(".dims");
+            var projectContextFile = ".dims";
+            if (!File.Exists(projectContextFile))
+            {
+                throw new ProjectContextFileNotFound();
+            }
 
-            return Guid.Parse(configFile);
+            var projectContextFileText = File.ReadAllText(".dims");
+
+            return Guid.Parse(projectContextFileText);
         }
+    }
+
+    public class ProjectContextFileNotFound : Exception
+    {
     }
 
     public class ServiceDoesNotHaveDIMSProjectIdLabel : Exception
