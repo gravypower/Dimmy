@@ -1,4 +1,4 @@
-﻿namespace DIMS.Engine.Commands.DockerCompose
+﻿namespace DIMS.Engine.Commands.Docker
 {
     public class EnterPowershellSession:ICommand
     {

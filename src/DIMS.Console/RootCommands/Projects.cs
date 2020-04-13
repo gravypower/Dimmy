@@ -7,20 +7,16 @@ using DIMS.Engine.Queries.Projects;
 
 namespace DIMS.CLI.RootCommands
 {
-    internal class Projects:Command
+    internal class Projects:ICommandLineCommand
     {
         private readonly IQueryHandler<GetRunningProjects, IEnumerable<Engine.Models.Project>> _getRunningProjectsQueryHandler;
         
-        public Projects(IQueryHandler<GetRunningProjects, IEnumerable<Engine.Models.Project>> getRunningProjectsQueryHandler) 
-            : base("projects", "Projects")
+        public Projects(IQueryHandler<GetRunningProjects, IEnumerable<Engine.Models.Project>> getRunningProjectsQueryHandler)
         {
             _getRunningProjectsQueryHandler = getRunningProjectsQueryHandler;
-         
-            AddAlias("projects");
-            AddListSubCommand();
         }
 
-        private void AddListSubCommand()
+        private Command AddListSubCommand()
         {
             var projectListCommand = new Command("ls")
             {
@@ -40,7 +36,17 @@ namespace DIMS.CLI.RootCommands
                 })
             };
 
-            Add(projectListCommand);
+            return projectListCommand;
+        }
+
+        public Command GetCommand()
+        {
+            var projectsCommand = new Command("projects");
+
+            projectsCommand.AddCommand(AddListSubCommand());
+            projectsCommand.AddAlias("projects");
+
+            return projectsCommand;
         }
     }
 }

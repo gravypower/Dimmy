@@ -3,6 +3,7 @@ using System.CommandLine;
 using System.Linq;
 using System.Threading.Tasks;
 using DIMS.CLI.RootCommands;
+using DIMS.CLI.RootCommands.Project;
 using DIMS.Engine.Commands;
 using DIMS.Engine.Queries;
 using DIMS.Engine.Services;
@@ -13,62 +14,37 @@ namespace DIMS.CLI
 {
     class Program
     {
-        private static readonly Container container;
+        private static readonly Container Container;
         static Program()
         {
-            container = new Container();
+            Container = new Container();
 
             var hosts = new Hosts().Discover();
             var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
-            container.Register(()=>host, Lifestyle.Singleton);
+            Container.Register(()=>host, Lifestyle.Singleton);
 
-            container.Register(
-                typeof(ICommandHandler<>),
-                AppDomain.CurrentDomain.GetAssemblies());
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            container.Register(
-                typeof(IQueryHandler<,>),
-                AppDomain.CurrentDomain.GetAssemblies());
+            Container.Register(typeof(ICommandHandler<>), assemblies);
+            Container.Register(typeof(IQueryHandler<,>), assemblies);
+            Container.Register<IProjectService, ProjectService>();
 
-            container.Register<IProjectService, ProjectService>();
+            Container.Collection.Register<IProjectSubCommand>(assemblies);
+            Container.Collection.Register<ICommandLineCommand>(assemblies);
 
-            container.Verify();
+            Container.Verify();
         }
 
         public static async Task<int> Main(string[] args)
         {
-            var rootCommand = new RootCommand
+            var rootCommand = new RootCommand();
+
+            foreach (var commandLineCommand in Container.GetAllInstances<ICommandLineCommand>())
             {
-                container.GetInstance<Projects>(),
-                container.GetInstance<Project>()
-            };
-
+                rootCommand.AddCommand(commandLineCommand.GetCommand());
+            }
+            
             return await rootCommand.InvokeAsync(args);
-
-
-           
-            //var generateComposeYaml = new GenerateComposeYaml
-            //{
-            //    Topology = new XpTopology(),
-            //    ProjectFolder = @"C:\clients\SomeClient",
-            //    LicenseStream = File.OpenRead(@"C:\license.xml"),
-            //    ProjectName = "SomeClient"
-            //};
-
-            //var generateComposeYamlCommandHandler = new GenerateComposeYamlCommandHandler();
-
-            //generateComposeYamlCommandHandler.Handle(generateComposeYaml);
-
-            //var startSitecoreInstance = new StartProject
-            //{
-            //    ProjectFolder = @"C:\clients\SomeClient"
-            //};
-
-            //var startSitecoreInstanceCommandHandler = new StartProjectCommandHandler();
-            //startSitecoreInstanceCommandHandler.Handle(startSitecoreInstance);
-
-           
-
         }
     }
 }

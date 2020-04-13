@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using Ductus.FluentDocker.Services;
+﻿using Ductus.FluentDocker.Services;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class DeploymentHookCommandHandler:ICommandHandler<DeploymentHook>
     {

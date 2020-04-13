@@ -1,6 +1,6 @@
 ﻿using Ductus.FluentDocker.Builders;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class StartProjectCommandHandler:ICommandHandler<StartProject>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class GenerateComposeYaml :ICommand
     {

@@ -2,7 +2,7 @@
 using DIMS.Engine.Services;
 using Ductus.FluentDocker.Services;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class StopProjectCommandHandler:ICommandHandler<StopProject>
     {

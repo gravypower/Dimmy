@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class StopProject:ICommand
     {

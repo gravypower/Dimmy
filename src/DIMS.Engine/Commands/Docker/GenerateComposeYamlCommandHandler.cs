@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using DIMS.Engine.Services;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class GenerateComposeYamlCommandHandler:ICommandHandler<GenerateComposeYaml>
     {

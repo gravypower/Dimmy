@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DIMS.Engine.Commands.DockerCompose
+namespace DIMS.Engine.Commands.Docker
 {
     public class EnterPowershellSessionCommandHandler :ICommandHandler<EnterPowershellSession>
     {
