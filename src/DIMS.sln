@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIMS.Ui", "DIMS.Ui\DIMS.Ui.csproj", "{3D210E8B-3681-4CE8-89A8-59DE1C7B3E61}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIMS.Engine", "DIMS.Engine\DIMS.Engine.csproj", "{2FD52EEB-34E2-4BF1-9384-7BE6268B52FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIMS.CLI", "DIMS.Console\DIMS.CLI.csproj", "{1068E4BB-8F94-43CD-9F09-A890E734150D}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3D210E8B-3681-4CE8-89A8-59DE1C7B3E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D210E8B-3681-4CE8-89A8-59DE1C7B3E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D210E8B-3681-4CE8-89A8-59DE1C7B3E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D210E8B-3681-4CE8-89A8-59DE1C7B3E61}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FD52EEB-34E2-4BF1-9384-7BE6268B52FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FD52EEB-34E2-4BF1-9384-7BE6268B52FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD52EEB-34E2-4BF1-9384-7BE6268B52FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
