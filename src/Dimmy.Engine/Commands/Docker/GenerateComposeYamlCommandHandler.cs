@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
+using Dimmy.Engine.Models;
 using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Commands.Docker
@@ -28,15 +31,38 @@ namespace Dimmy.Engine.Commands.Docker
             licenseGZipStream.Close();
             var sitecoreLicense = Convert.ToBase64String(licenseMemoryStream.ToArray());
 
-            var projectId = _projectService.GetContextProjectId();
+            ProjectYamlInstanceYaml contextProject;
 
-            command.Topology.VariableDictionary.Set("SqlSaPassword", command.SqlSaPassword);
-            command.Topology.VariableDictionary.Set("Sitecore.License", sitecoreLicense);
-            command.Topology.VariableDictionary.Set("TelerikEncryptionKey", command.TelerikEncryptionKey);
+            try
+            {
+                contextProject = _projectService.GetContextProject();
+            }
+            catch (ProjectContextFileNotFound e)
+            {
+                var variableDictionary = new Dictionary<string, string>();
+                variableDictionary.Add("Sitecore.SqlSaPassword", NonceService.Generate());
+                variableDictionary.Add("Sitecore.TelerikEncryptionKey", NonceService.Generate());
+                variableDictionary.Add("Sitecore.License", sitecoreLicense);
+
+                contextProject = _projectService.NewContextProject(
+                    command.ProjectName,
+                    command.ProjectFolder,
+                    command.SourcePath,
+                    command.Topology.DockerComposeTemplate,
+                    variableDictionary);
+            }
+            
             command.Topology.VariableDictionary.Set("Project.Name", command.ProjectName);
-            command.Topology.VariableDictionary.Set("Project.Id", $"{projectId:N}");
+            command.Topology.VariableDictionary.Set("Project.Id", $"{contextProject.Id:N}");
             command.Topology.VariableDictionary.Set("Project.Folder", command.ProjectFolder);
 
+
+            foreach (var varable in contextProject.VariableDictionary)
+            {
+                command.Topology.VariableDictionary.Set(varable.Key, varable.Value);
+            }
+
+            
             var dockerCompose = command.Topology.VariableDictionary.Evaluate(command.Topology.DockerComposeTemplate);
 
             var dockerComposeFile = $"{command.ProjectFolder}\\docker-compose.yml";

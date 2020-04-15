@@ -60,7 +60,7 @@ namespace Dimmy.Engine.Services
             return RunningProjects().Single(p => p.Id == projectId);
         }
 
-        public Guid GetContextProjectId()
+        public ProjectYamlInstanceYaml GetContextProject()
         {
             var projectContextFile = ".dimmy";
             if (!File.Exists(projectContextFile))
@@ -68,9 +68,37 @@ namespace Dimmy.Engine.Services
                 throw new ProjectContextFileNotFound();
             }
 
-            var projectContextFileText = File.ReadAllText(".dimmy");
+            var projectContext = File.ReadAllText(".dimmy");
 
-            return Guid.Parse(projectContextFileText);
+            var deserializer = new YamlDotNet.Serialization.Deserializer();
+
+            return deserializer.Deserialize<ProjectYamlInstanceYaml>(projectContext);
+        }
+
+        public ProjectYamlInstanceYaml NewContextProject(
+            string projectName,
+            string projectPath,
+            string sourcePath,
+            string composerTemplatePath,
+            IDictionary<string, string> variableDictionary)
+        {
+            var instanceYaml = new ProjectYamlInstanceYaml
+            {
+                VariableDictionary = variableDictionary,
+                Id = Guid.NewGuid(),
+                Name = projectName,
+                ProjectPath = projectPath,
+                SourcePath = sourcePath,
+                ComposeTemplate = composerTemplatePath
+            };
+
+            var serializer = new YamlDotNet.Serialization.Serializer();
+
+            var projectContext = serializer.Serialize(instanceYaml);
+
+            File.WriteAllText(".dimmy", projectContext);
+
+            return instanceYaml;
         }
     }
 

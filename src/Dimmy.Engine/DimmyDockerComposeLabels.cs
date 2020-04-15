@@ -2,9 +2,9 @@
 {
     public class DimmyDockerComposeLabels
     {
-        public const string Project = "net.gravypower.dimmy.project";
-        public const string ProjectName = "net.gravypower.dimmy.project.name";
-        public const string ProjectId = "net.gravypower.dimmy.project.id";
-        public const string ProjectRole = "net.gravypower.dimmy.project.role";
+        public const string Project = "dimmy.dev.project";
+        public const string ProjectName = "dimmy.dev.project.name";
+        public const string ProjectId = "dimmy.dev.project.id";
+        public const string ProjectRole = "dimmy.dev.project.role";
     }
 }

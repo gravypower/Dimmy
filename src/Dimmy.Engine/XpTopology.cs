@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Octostache;
 
 namespace Dimmy.Engine
 {
     public class XpTopology:ITopology
     {
-        public string DockerComposeTemplate => File.ReadAllText("./TopologyTemplates/docker-compose.xp.yml.template");
+        public string DockerComposeTemplate => File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/TopologyTemplates/docker-compose.xp.yml.template");
         public VariableDictionary VariableDictionary { get; } = new VariableDictionary();
 
 

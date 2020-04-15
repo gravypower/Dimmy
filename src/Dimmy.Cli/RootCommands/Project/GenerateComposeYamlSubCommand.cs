@@ -22,18 +22,20 @@ namespace Dimmy.Cli.RootCommands.Project
             {
                 new Option<string>("--license-path", "Path to Sitecore license file"),
                 new Option<string>("--project-folder", "Project Folder"),
+                new Option<string>("--source-folder", "Source Folder"),
                 new Option<string>("--project-name", "Project Name")
             };
 
             projectListCommand.Handler = CommandHandler
-                .Create<string, string, string>(async (licensePath, projectFolder, projectName) =>
+                .Create<string, string, string, string>(async (licensePath, projectFolder, sourceFolder, projectName) =>
                 {
                     var generateComposeYaml = new GenerateComposeYaml
                     {
                         Topology = new XpTopology(),
                         ProjectFolder = projectFolder,
                         LicenseStream = File.OpenRead(licensePath),
-                        ProjectName = projectName
+                        ProjectName = projectName,
+                        SourcePath = sourceFolder
                     };
 
                     await _generateComposeYamlCommandHandler.Handle(generateComposeYaml);
