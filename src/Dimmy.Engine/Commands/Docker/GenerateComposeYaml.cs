@@ -7,9 +7,7 @@ namespace Dimmy.Engine.Commands.Docker
         public Stream LicenseStream { get; set; }
         public string ProjectFolder { get; set; }
         public string ProjectName { get; set; }
-        public ITopology Topology { get; set; }
-        public string SqlSaPassword { get; set; }
-        public string TelerikEncryptionKey { get; set; }
+        string DockerComposeTemplate { get; }
         public string SourcePath { get; set; }
     }
 }

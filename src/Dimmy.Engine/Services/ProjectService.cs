@@ -88,7 +88,7 @@ namespace Dimmy.Engine.Services
                 Id = Guid.NewGuid(),
                 Name = projectName,
                 ProjectPath = projectPath,
-                SourcePath = sourcePath,
+                SourceCodeLocation = sourcePath,
                 ComposeTemplate = composerTemplatePath
             };
 

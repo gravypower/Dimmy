@@ -2,7 +2,7 @@
 {
     public class ProjectYamlInstanceYaml: ProjectYaml
     {
-        public string SourcePath { get; set; }
+        public string SourceCodeLocation { get; set; }
         public string ProjectPath { get; set; }
     }
 }

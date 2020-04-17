@@ -3,13 +3,13 @@ using System.CommandLine.Invocation;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
-    public class StartProjectSubCommand : IProjectSubCommand
+    public class Start : IProjectSubCommand
     {
         private readonly ICommandHandler<StartProject> _startProjectCommandHandler;
 
-        public StartProjectSubCommand(ICommandHandler<StartProject> startProjectCommandHandler)
+        public Start(ICommandHandler<StartProject> startProjectCommandHandler)
         {
             _startProjectCommandHandler = startProjectCommandHandler;
         }

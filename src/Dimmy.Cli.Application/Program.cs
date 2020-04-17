@@ -2,15 +2,15 @@
 using System.CommandLine;
 using System.Linq;
 using System.Threading.Tasks;
-using Dimmy.Cli.RootCommands;
-using Dimmy.Cli.RootCommands.Project;
+using Dimmy.Cli.Commands;
+using Dimmy.Cli.Commands.Project;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Services;
 using SimpleInjector;
 
-namespace Dimmy.Cli
+namespace Dimmy.Cli.Application
 {
     class Program
     {
@@ -20,7 +20,11 @@ namespace Dimmy.Cli
             Container = new Container();
 
             var hosts = new Hosts().Discover();
-            var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
+            var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default"); 
+
+            if(host == null)
+                Console.WriteLine("Could not find docker!");
+
             Container.Register(()=>host, Lifestyle.Singleton);
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -31,6 +35,7 @@ namespace Dimmy.Cli
 
             Container.Collection.Register<IProjectSubCommand>(assemblies);
             Container.Collection.Register<ICommandLineCommand>(assemblies);
+            Container.Collection.Register<InitialiseSubCommand>(assemblies);
 
             Container.Verify();
         }

@@ -1,11 +1,11 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
-using Dimmy.Engine;
+using System.Threading.Tasks;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
     public class GenerateComposeYamlSubCommand:IProjectSubCommand
     {
@@ -20,7 +20,6 @@ namespace Dimmy.Cli.RootCommands.Project
         {
             var projectListCommand = new Command("generate-yaml")
             {
-                new Option<string>("--license-path", "Path to Sitecore license file"),
                 new Option<string>("--project-folder", "Project Folder"),
                 new Option<string>("--source-folder", "Source Folder"),
                 new Option<string>("--project-name", "Project Name")
@@ -29,19 +28,23 @@ namespace Dimmy.Cli.RootCommands.Project
             projectListCommand.Handler = CommandHandler
                 .Create<string, string, string, string>(async (licensePath, projectFolder, sourceFolder, projectName) =>
                 {
-                    var generateComposeYaml = new GenerateComposeYaml
-                    {
-                        Topology = new XpTopology(),
-                        ProjectFolder = projectFolder,
-                        LicenseStream = File.OpenRead(licensePath),
-                        ProjectName = projectName,
-                        SourcePath = sourceFolder
-                    };
-
-                    await _generateComposeYamlCommandHandler.Handle(generateComposeYaml);
+                    await NewMethod(projectFolder, licensePath, projectName, sourceFolder);
                 });
 
             return projectListCommand;
+        }
+
+        private async Task NewMethod(string projectFolder, string licensePath, string projectName, string sourceFolder)
+        {
+            var generateComposeYaml = new GenerateComposeYaml
+            {
+                ProjectFolder = projectFolder,
+                LicenseStream = File.OpenRead(licensePath),
+                ProjectName = projectName,
+                SourcePath = sourceFolder
+            };
+
+            await _generateComposeYamlCommandHandler.Handle(generateComposeYaml);
         }
     }
 }

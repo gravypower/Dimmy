@@ -7,14 +7,15 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
-    public class AttachSubCommand:IProjectSubCommand
+    public class Attach : IProjectSubCommand
     {
         private readonly IProjectService _projectService;
         private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
 
-        public AttachSubCommand(
+
+        public Attach(
             IProjectService projectService,
             ICommandHandler<EnterPowershellSession> enterPowerShellSessionCommandHandler)
         {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
     internal class ProjectCommand : ICommandLineCommand
     {

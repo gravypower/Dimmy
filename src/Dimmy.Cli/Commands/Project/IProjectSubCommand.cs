@@ -1,8 +1,8 @@
 ﻿using System.CommandLine;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
-    interface IProjectSubCommand
+    public interface IProjectSubCommand
     {
         Command GetCommand();
     }

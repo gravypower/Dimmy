@@ -4,13 +4,13 @@ using System.CommandLine.Invocation;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 
-namespace Dimmy.Cli.RootCommands.Project
+namespace Dimmy.Cli.Commands.Project
 {
-    public class StopProjectSubCommand:IProjectSubCommand
+    public class Stop:IProjectSubCommand
     {
         private readonly ICommandHandler<StopProject> _stopProjectCommandHandler;
 
-        public StopProjectSubCommand(ICommandHandler<StopProject> stopProjectCommandHandler)
+        public Stop(ICommandHandler<StopProject> stopProjectCommandHandler)
         {
             _stopProjectCommandHandler = stopProjectCommandHandler;
         }

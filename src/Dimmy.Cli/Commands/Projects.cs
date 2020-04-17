@@ -5,7 +5,7 @@ using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Queries.Projects;
 
-namespace Dimmy.Cli.RootCommands
+namespace Dimmy.Cli.Commands
 {
     internal class Projects:ICommandLineCommand
     {

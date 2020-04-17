@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace Dimmy.Cli.RootCommands
+namespace Dimmy.Cli.Commands
 {
     public interface ICommandLineCommand
     {

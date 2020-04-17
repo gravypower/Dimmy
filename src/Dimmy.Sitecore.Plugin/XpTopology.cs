@@ -2,11 +2,16 @@
 using System.IO;
 using Octostache;
 
-namespace Dimmy.Engine
+namespace Dimmy.Sitecore.Plugin
 {
     public class XpTopology:ITopology
     {
-        public string DockerComposeTemplate => File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/TopologyTemplates/docker-compose.xp.yml.template");
+
+        public string Name => "XP";
+
+        public string DockerComposeTemplateName => "docker-compose.xp.yml.template";
+        public string DockerComposeTemplate => File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/TopologyTemplates/{DockerComposeTemplateName}");
+        
         public VariableDictionary VariableDictionary { get; } = new VariableDictionary();
 
 
