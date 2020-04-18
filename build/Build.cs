@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -35,6 +36,8 @@ namespace _build
         AbsolutePath SourceDirectory => RootDirectory / "src";
         AbsolutePath TestsDirectory => RootDirectory / "tests";
         AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+        AbsolutePath CliDirectory => RootDirectory / "src" / "Dimmy.Cli.Application";
+
 
         Target Clean => _ => _
             .Before(Restore)
@@ -57,7 +60,7 @@ namespace _build
             .Executes(() =>
             {
                 DotNetBuild(s => s
-                    .SetProjectFile(Solution)
+                    .SetProjectFile(CliDirectory / "Dimmy.Cli.Application.csproj")
                     .SetConfiguration(Configuration)
                     .SetAssemblyVersion(GitVersion.AssemblySemVer)
                     .SetFileVersion(GitVersion.AssemblySemFileVer)
@@ -73,20 +76,29 @@ namespace _build
 
                 DotNetPack(settings => settings
                     .SetOutputDirectory(ArtifactsDirectory)
-                    .SetProject(RootDirectory / "src" / "Dimmy.Cli.Application")
+                    .SetProject(CliDirectory)
                     .EnableIncludeSymbols()
                     .SetVersionSuffix(GitVersion.Sha));
             });
 
-        Target InstallPlugins => _ => _
-            .DependsOn(Restore)
+        Target PublishPlugins => _ => _
             .Executes(() =>
             {
-                var t = new DirectoryInfo(SourceDirectory);
+                var di = new DirectoryInfo(SourceDirectory);
 
-                foreach (var absolutePath in t.GetDirectories("*plugin"))
+                foreach (var pluginDirectory in di.GetDirectories("*plugin"))
                 {
-                    
+                    var projectFiles = pluginDirectory.GetFiles("*.csproj");
+
+                    DotNetPublish(s => s
+                        .SetNoDependencies(true)
+                        .SetProject(projectFiles.Single().FullName)
+                        .SetConfiguration(Configuration)
+                        .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                        .SetFileVersion(GitVersion.AssemblySemFileVer)
+                        .SetInformationalVersion(GitVersion.InformationalVersion)
+                        .EnableNoRestore()
+                        .SetOutput(CliDirectory / "bin" / "Debug" / "netcoreapp3.1" / "plugins" / pluginDirectory.Name));
                 }
             });
     }

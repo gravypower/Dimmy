@@ -1,2 +1,3 @@
 project generate-yaml --license-path c:\license.xml --project-folder C:\clients\SomeClient --project-name SomeClient
 project attach
+projects ls
