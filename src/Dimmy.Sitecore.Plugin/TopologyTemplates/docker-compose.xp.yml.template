@@ -6,7 +6,7 @@ services:
   sql:
     image: #{SqlDockerImage}
     volumes:
-      - #{Project.Folder}\Data\sql:C:\Data
+      - #{Project.Path}\Data\sql:C:\Data
     mem_limit: 2GB
     ports:
       - "44010:1433"
@@ -22,7 +22,7 @@ services:
   solr:
     image: #{SolrDockerImage}
     volumes:
-      - #{Project.Folder}\Data\solr:C:\Data
+      - #{Project.Path}\Data\solr:C:\Data
     mem_limit: 1GB
     ports:
       - "44011:8983"
@@ -36,7 +36,7 @@ services:
     image: #{XConnectDockerImage} 
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\xconnect\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\xconnect:C:\inetpub\wwwroot\App_Data\logs
+      - #{Project.Path}\Data\xconnect:C:\inetpub\wwwroot\App_Data\logs
     mem_limit: 1GB
     environment:
       ENTRYPOINT_STDOUT_XCONNECT_LOG_ENABLED: 'true'
@@ -68,7 +68,7 @@ services:
     image: #{XConnectAutomationEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\xconnect-automationengine:C:\worker\App_Data\logs
+      - #{Project.Path}\Data\xconnect-automationengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
       SITECORE_LICENSE: #{Sitecore.License}
@@ -91,7 +91,7 @@ services:
     image: #{XConnectIndexWorkerImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\xconnect-indexworker:C:\worker\App_Data\logs
+      - #{Project.Path}\Data\xconnect-indexworker:C:\worker\App_Data\logs
     mem_limit: 500MB
     environment:
       SITECORE_LICENSE: #{Sitecore.License}
@@ -114,7 +114,7 @@ services:
     image: #{XConnectProcessingEngineImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\worker\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\xconnect-processingengine:C:\worker\App_Data\logs
+      - #{Project.Path}\Data\xconnect-processingengine:C:\worker\App_Data\logs
     mem_limit: 500MB
     restart: unless-stopped
     environment:
@@ -144,8 +144,8 @@ services:
     image: #{CDImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\cd:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{Project.Folder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{Project.Path}\Data\cd:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{Project.Path}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44002:80"
     environment:
@@ -179,8 +179,8 @@ services:
     image: #{CMImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
-      - #{Project.Folder}\Data\cm:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{Project.Folder}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      - #{Project.Path}\Data\cm:C:\inetpub\wwwroot\App_Data\logs
+      #{if HookName}- #{Project.Path}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
     ports:
       - "44001:80"
     environment:

@@ -60,49 +60,37 @@ namespace Dimmy.Engine.Services
             return RunningProjects().Single(p => p.Id == projectId);
         }
 
-        public ProjectYamlInstanceYaml GetContextProject()
+        public (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) GetProject(string projectInstancePath = "")
         {
-            var projectContextFile = ".dimmy";
-            if (!File.Exists(projectContextFile))
+            var projectInstanceFile = Path.Combine(projectInstancePath, ".dimmy");
+            if (!File.Exists(projectInstanceFile))
             {
-                throw new ProjectContextFileNotFound();
+                throw new ProjectInstanceFileFileNotFound();
             }
-
-            var projectContext = File.ReadAllText(".dimmy");
 
             var deserializer = new YamlDotNet.Serialization.Deserializer();
 
-            return deserializer.Deserialize<ProjectYamlInstanceYaml>(projectContext);
-        }
+            var projectInstanceYaml = File.ReadAllText(projectInstanceFile);
+            var projectInstance = deserializer.Deserialize<ProjectInstanceYaml>(projectInstanceYaml);
 
-        public ProjectYamlInstanceYaml NewContextProject(
-            string projectName,
-            string projectPath,
-            string sourcePath,
-            string composerTemplatePath,
-            IDictionary<string, string> variableDictionary)
-        {
-            var instanceYaml = new ProjectYamlInstanceYaml
+            var projectFile = Path.Combine(projectInstance.SourceCodeLocation, ".dimmy.yaml");
+            if (!File.Exists(projectFile))
             {
-                VariableDictionary = variableDictionary,
-                Id = Guid.NewGuid(),
-                Name = projectName,
-                ProjectPath = projectPath,
-                SourceCodeLocation = sourcePath,
-                ComposeTemplate = composerTemplatePath
-            };
+                throw new ProjectFileFileNotFound();
+            }
 
-            var serializer = new YamlDotNet.Serialization.Serializer();
+            var  projectYaml = File.ReadAllText(projectFile);
+            var project = deserializer.Deserialize<ProjectYaml>(projectYaml);
 
-            var projectContext = serializer.Serialize(instanceYaml);
-
-            File.WriteAllText(".dimmy", projectContext);
-
-            return instanceYaml;
+            return (projectInstance, project);
         }
     }
 
-    public class ProjectContextFileNotFound : Exception
+    public class ProjectFileFileNotFound : Exception
+    {
+    }
+
+    public class ProjectInstanceFileFileNotFound : Exception
     {
     }
 

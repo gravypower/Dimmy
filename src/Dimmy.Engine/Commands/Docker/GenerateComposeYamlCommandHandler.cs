@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
+﻿using System.IO;
 using System.Threading.Tasks;
-using Dimmy.Engine.Models;
 using Dimmy.Engine.Services;
+using Octostache;
 
 namespace Dimmy.Engine.Commands.Docker
 {
@@ -24,50 +21,28 @@ namespace Dimmy.Engine.Commands.Docker
 
         private void Run(GenerateComposeYaml command)
         {
-            var licenseMemoryStream = new MemoryStream();
-            var licenseGZipStream = new GZipStream(licenseMemoryStream, CompressionLevel.Optimal, false);
-            command.LicenseStream.CopyTo(licenseGZipStream);
-            licenseGZipStream.Close();
-            var sitecoreLicense = Convert.ToBase64String(licenseMemoryStream.ToArray());
+            var (projectInstance, project) = _projectService.GetProject(command.ProjectFolder);
 
-            ProjectYamlInstanceYaml contextProject;
+            var variableDictionary = new VariableDictionary();
+            variableDictionary.Set("Project.Name", projectInstance.Name);
+            variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
+            variableDictionary.Set("Project.Path", projectInstance.ProjectPath);
 
-            try
+            foreach (var keyValuePair in projectInstance.VariableDictionary)
             {
-                contextProject = _projectService.GetContextProject();
+                variableDictionary.Set(keyValuePair.Key, keyValuePair.Value);
             }
-            catch (ProjectContextFileNotFound e)
+
+            foreach (var keyValuePair in project.VariableDictionary)
             {
-                var variableDictionary = new Dictionary<string, string>();
-                variableDictionary.Add("Sitecore.SqlSaPassword", NonceService.Generate());
-                variableDictionary.Add("Sitecore.TelerikEncryptionKey", NonceService.Generate());
-                variableDictionary.Add("Sitecore.License", sitecoreLicense);
-
-                contextProject = _projectService.NewContextProject(
-                    command.ProjectName,
-                    command.ProjectFolder,
-                    command.SourcePath,
-                    "",
-                    //command.Topology.DockerComposeTemplate,
-                    variableDictionary);
+                variableDictionary.Set(keyValuePair.Key, keyValuePair.Value);
             }
-            
-            //command.Topology.VariableDictionary.Set("Project.Name", command.ProjectName);
-            //command.Topology.VariableDictionary.Set("Project.Id", $"{contextProject.Id:N}");
-            //command.Topology.VariableDictionary.Set("Project.Folder", command.ProjectFolder);
 
+            var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate);
 
-            //foreach (var keyValuePair in contextProject.VariableDictionary)
-            //{
-            //    command.Topology.VariableDictionary.Set(keyValuePair.Key, keyValuePair.Value);
-            //}
+            var dockerComposeFile = Path.Combine(command.ProjectFolder, "docker-compose.yml");
 
-            
-            //var dockerCompose = command.Topology.VariableDictionary.Evaluate(command.Topology.DockerComposeTemplate);
-
-            //var dockerComposeFile = $"{command.ProjectFolder}\\docker-compose.yml";
-
-            //File.WriteAllText(dockerComposeFile, dockerCompose);
+            File.WriteAllText(dockerComposeFile, dockerCompose);
         }
     }
 }

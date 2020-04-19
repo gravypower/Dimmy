@@ -15,35 +15,38 @@ namespace Dimmy.Engine.Commands.Project
         private static void Run(InitialiseProject command)
         {
             File.WriteAllText(
-                $"{command.SourceCodeLocation}\\{command.DockerComposeTemplate.FileName}",
+                $"{command.SourceCodePath}\\{command.DockerComposeTemplate.FileName}",
                 command.DockerComposeTemplate.Contents);
 
             var dimmyProject = new ProjectYaml
             {
                 Id = Guid.NewGuid(),
-                ComposeTemplate = command.DockerComposeTemplate.FileName
+                ComposeTemplate = command.DockerComposeTemplate.FileName,
+                Name = command.Name,
+                VariableDictionary = command.PublicVariables
             };
 
             var serializer = new YamlDotNet.Serialization.Serializer();
             var dimmyProjectYaml = serializer.Serialize(dimmyProject);
 
             File.WriteAllText(
-                $"{command.SourceCodeLocation}\\.dimmy.yaml",
+                $"{command.SourceCodePath}\\.dimmy.yaml",
                 dimmyProjectYaml);
 
-            var dimmyProjectInstance = new ProjectYamlInstanceYaml
+            var dimmyProjectInstance = new ProjectInstanceYaml
             {
                 ComposeTemplate = command.DockerComposeTemplate.Contents,
                 Id = dimmyProject.Id,
                 Name = dimmyProject.Name,
-                ProjectPath = command.ProjectLocation,
-                SourceCodeLocation = command.SourceCodeLocation
+                ProjectPath = command.ProjectPath,
+                SourceCodeLocation = command.SourceCodePath,
+                VariableDictionary = command.PrivateVariables
             };
 
             var dimmyProjectInstanceYaml = serializer.Serialize(dimmyProjectInstance);
 
             File.WriteAllText(
-                $"{command.ProjectLocation}\\.dimmy",
+                $"{command.ProjectPath}\\.dimmy",
                 dimmyProjectInstanceYaml);
         }
     }

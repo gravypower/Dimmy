@@ -14,7 +14,7 @@ namespace Dimmy.Engine.Commands.Docker
 
         private static void Run(StartProject command)
         {
-            var dockerComposeFile = $"{command.ProjectFolder}\\docker-compose.yml";
+            var dockerComposeFile = Path.Combine(command.ProjectFolder, "docker-compose.yml");
 
             if (!File.Exists(dockerComposeFile))
             {

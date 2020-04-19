@@ -38,7 +38,7 @@ namespace Dimmy.Cli.Commands.Project
                     
                     if (projectId == Guid.Empty)
                     {
-                        projectId = _projectService.GetContextProject().Id;
+                        projectId = _projectService.GetProject().Project.Id;
                     }
 
                     var project = _projectService.RunningProjects().Single(p => p.Id == projectId);

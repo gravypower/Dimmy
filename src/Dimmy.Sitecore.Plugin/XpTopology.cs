@@ -17,7 +17,7 @@ namespace Dimmy.Sitecore.Plugin
 
         public XpTopology()
         {
-            using var stream = GetType().Assembly.GetManifestResourceStream(DockerComposeTemplateName);
+            using var stream = new MemoryStream(Properties.Resources.docker_compose_xp_yml);
             
             if (stream == null)
             {
@@ -26,17 +26,6 @@ namespace Dimmy.Sitecore.Plugin
             using var reader = new StreamReader(stream);
 
             DockerComposeTemplate = reader.ReadToEnd();
-
-
-            VariableDictionary.Set("SqlDockerImage", "ddcontainers.azurecr.io/sitecore-xp-sqldev:latest");
-            VariableDictionary.Set("SolrDockerImage", "ddcontainers.azurecr.io/sitecore-xp-solr:latest");
-            VariableDictionary.Set("XConnectDockerImage", "ddcontainers.azurecr.io/sitecore-xp-xconnect:latest");
-            VariableDictionary.Set("XConnectAutomationEngineImage", "ddcontainers.azurecr.io/sitecore-xp-xconnect-automationengine:latest");
-            VariableDictionary.Set("XConnectIndexWorkerImage", "ddcontainers.azurecr.io/sitecore-xp-xconnect-indexworker:latest");
-            VariableDictionary.Set("XConnectProcessingEngineImage", "ddcontainers.azurecr.io/sitecore-xp-xconnect-processingengine:latest");
-            VariableDictionary.Set("CDImage", "ddcontainers.azurecr.io/sitecore-xp-cd:latest");
-            VariableDictionary.Set("CMImage", "ddcontainers.azurecr.io/sitecore-xp-standalone:latest");
-            VariableDictionary.Set("HookName", "Hook");
         }
     }
 }

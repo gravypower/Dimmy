@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Dimmy.Cli": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "project init sitecore --name test --source-code-path C:\\projects\\Test --project-path C:\\clients\\Test --license-path C:\\license.xml --topology-name XP"
     }
   }
 }

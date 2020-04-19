@@ -8,13 +8,6 @@ namespace Dimmy.Engine.Services
     {
         IEnumerable<Project> RunningProjects();
         Project GetProjectById(Guid projectId);
-        ProjectYamlInstanceYaml GetContextProject();
-
-        ProjectYamlInstanceYaml NewContextProject(
-            string projectName,
-            string projectPath,
-            string sourcePath,
-            string composerTemplatePath,
-            IDictionary<string, string> variableDictionary);
+        (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) GetProject(string projectInstancePath = "");
     }
 } 
