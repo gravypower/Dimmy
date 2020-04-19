@@ -38,11 +38,11 @@ namespace Dimmy.Sitecore.Plugin
             command.Handler = CommandHandler.Create<string, string, string, string, string, string>(DoInitialise);
         }
 
-        public async Task DoInitialise(string name, string sourceCodePath, string projectPath, string dockerComposeTemplate,  string licensePath, string topologyName)
+        public async Task DoInitialise(string name, string sourceCodePath, string workingPath, string dockerComposeTemplate,  string licensePath, string topologyName)
         {
             name = name.GetUserInput("Project Name:");
             sourceCodePath = sourceCodePath.GetUserInput("Source code path:");
-            projectPath = projectPath.GetUserInput("Project path:");
+            workingPath = workingPath.GetUserInput("Working path:");
 
             if (string.IsNullOrEmpty(topologyName))
             {
@@ -109,7 +109,7 @@ namespace Dimmy.Sitecore.Plugin
             var initialiseProject = new InitialiseProject
             {
                 Name = name,
-                ProjectPath = projectPath,
+                WorkingPath = workingPath,
                 SourceCodePath = sourceCodePath,
                 DockerComposeTemplate = composeTemplate,
                 PublicVariables = publicVariables,

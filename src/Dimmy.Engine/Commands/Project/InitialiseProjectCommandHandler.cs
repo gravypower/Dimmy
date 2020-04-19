@@ -38,7 +38,7 @@ namespace Dimmy.Engine.Commands.Project
                 ComposeTemplate = command.DockerComposeTemplate.Contents,
                 Id = dimmyProject.Id,
                 Name = dimmyProject.Name,
-                ProjectPath = command.ProjectPath,
+                WorkingPath = command.WorkingPath,
                 SourceCodeLocation = command.SourceCodePath,
                 VariableDictionary = command.PrivateVariables
             };
@@ -46,7 +46,7 @@ namespace Dimmy.Engine.Commands.Project
             var dimmyProjectInstanceYaml = serializer.Serialize(dimmyProjectInstance);
 
             File.WriteAllText(
-                $"{command.ProjectPath}\\.dimmy",
+                $"{command.WorkingPath}\\.dimmy",
                 dimmyProjectInstanceYaml);
         }
     }

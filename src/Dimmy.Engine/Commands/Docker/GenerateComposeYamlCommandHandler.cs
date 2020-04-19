@@ -21,12 +21,12 @@ namespace Dimmy.Engine.Commands.Docker
 
         private void Run(GenerateComposeYaml command)
         {
-            var (projectInstance, project) = _projectService.GetProject(command.ProjectFolder);
+            var (projectInstance, project) = _projectService.GetProject(command.WorkingPath);
 
             var variableDictionary = new VariableDictionary();
             variableDictionary.Set("Project.Name", projectInstance.Name);
             variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
-            variableDictionary.Set("Project.Path", projectInstance.ProjectPath);
+            variableDictionary.Set("Project.WorkingPath", projectInstance.WorkingPath);
 
             foreach (var keyValuePair in projectInstance.VariableDictionary)
             {
@@ -40,7 +40,7 @@ namespace Dimmy.Engine.Commands.Docker
 
             var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate);
 
-            var dockerComposeFile = Path.Combine(command.ProjectFolder, "docker-compose.yml");
+            var dockerComposeFile = Path.Combine(command.WorkingPath, "docker-compose.yml");
 
             File.WriteAllText(dockerComposeFile, dockerCompose);
         }

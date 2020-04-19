@@ -2,6 +2,6 @@
 {
     public class GenerateComposeYaml :ICommand
     {
-        public string ProjectFolder { get; set; }
+        public string WorkingPath { get; set; }
     }
 }

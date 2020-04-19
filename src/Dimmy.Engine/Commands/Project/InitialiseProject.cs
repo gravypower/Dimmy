@@ -7,7 +7,7 @@ namespace Dimmy.Engine.Commands.Project
     {
         public string Name { get; set; }
         public string SourceCodePath { get; set; }
-        public string ProjectPath { get; set; }
+        public string WorkingPath { get; set; }
         public DockerComposeTemplate DockerComposeTemplate { get; set; }
 
         public IDictionary<string, string> PublicVariables { get; set; } = new Dictionary<string, string>();

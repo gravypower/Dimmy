@@ -23,23 +23,29 @@ namespace Dimmy.Cli.Commands.Project
         {
             var startProjectCommand = new Command("start")
             {
-                new Option<string>("--project-folder", "Project Folder")
+                new Option<string>("--working-folder", "Working Folder")
             };
 
             startProjectCommand.Handler = CommandHandler
-                .Create<string>(async projectFolder =>
+                .Create<string>(async workingFolder =>
                 {
-                    if (!File.Exists(Path.Combine(projectFolder, "docker-compose.yml")))
+
+                    if (string.IsNullOrEmpty(workingFolder))
+                    {
+                        workingFolder = ".";
+                    }
+
+                    if (!File.Exists(Path.Combine(workingFolder, "docker-compose.yml")))
                     {
                         await _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
                         {
-                            ProjectFolder = projectFolder
+                            WorkingPath = workingFolder
                         });
                     }
 
                     var startProject = new StartProject
                     {
-                        ProjectFolder = projectFolder
+                        ProjectFolder = workingFolder
                     };
 
                     await _startProjectCommandHandler.Handle(startProject);

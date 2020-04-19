@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Octostache;
 
 namespace Dimmy.Sitecore.Plugin
 {
     public class XpTopology:ITopology
     {
+        private const string DockerComposeTemplateManifestResourceName = "Dimmy.Sitecore.Plugin.TopologyTemplates.docker-compose.xp.yml.template";
 
         public string Name => "XP";
 
@@ -14,11 +16,10 @@ namespace Dimmy.Sitecore.Plugin
         
         public VariableDictionary VariableDictionary { get; } = new VariableDictionary();
 
-
         public XpTopology()
         {
-            using var stream = new MemoryStream(Properties.Resources.docker_compose_xp_yml);
-            
+            using var stream = GetType().Assembly.GetManifestResourceStream(DockerComposeTemplateManifestResourceName);
+
             if (stream == null)
             {
                 throw new InvalidOperationException("Could not load manifest resource stream.");

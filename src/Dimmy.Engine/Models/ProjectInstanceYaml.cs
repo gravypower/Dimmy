@@ -3,6 +3,6 @@
     public class ProjectInstanceYaml: ProjectYaml
     {
         public string SourceCodeLocation { get; set; }
-        public string ProjectPath { get; set; }
+        public string WorkingPath { get; set; }
     }
 }

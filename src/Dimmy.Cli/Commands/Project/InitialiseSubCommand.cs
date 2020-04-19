@@ -22,7 +22,7 @@ namespace Dimmy.Cli.Commands.Project
             {
                 new Option<string>("--name"),
                 new Option<string>("--source-code-path"),
-                new Option<string>("--project-path"),
+                new Option<string>("--working-path"),
                 new Option<string>("--docker-compose-template"),
             };
 
