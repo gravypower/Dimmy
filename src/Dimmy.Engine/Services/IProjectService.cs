@@ -10,4 +10,4 @@ namespace Dimmy.Engine.Services
         Project GetProjectById(Guid projectId);
         (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) GetProject(string projectInstancePath = "");
     }
-} 
+}

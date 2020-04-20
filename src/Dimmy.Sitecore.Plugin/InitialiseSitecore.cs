@@ -90,7 +90,11 @@ namespace Dimmy.Sitecore.Plugin
             {
                 {"Sitecore.SqlSaPassword", NonceService.Generate()},
                 {"Sitecore.TelerikEncryptionKey", NonceService.Generate()},
-                {"Sitecore.License", sitecoreLicense}
+                {"Sitecore.License", sitecoreLicense},
+                {"Sitecore.CMPort", "44001"},
+                {"Sitecore.CDPort", "44002"},
+                {"Sitecore.SqlPort", "44010"},
+                {"Sitecore.SolrPort", "44011"}
             };
 
             var publicVariables = new Dictionary<string, string>

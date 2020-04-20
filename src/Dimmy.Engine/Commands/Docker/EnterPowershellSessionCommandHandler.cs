@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Commands.Docker
@@ -28,6 +29,7 @@ namespace Dimmy.Engine.Commands.Docker
                     CreateNoWindow = false
                 }
             };
+
             process.Start();
         }
     }

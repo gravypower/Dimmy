@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Dimmy.Engine.Models.Docker;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Builders;
-using Ductus.FluentDocker.Services.Impl;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -40,10 +39,6 @@ namespace Dimmy.Engine.Commands.Docker
                 .RemoveOrphans();
 
             var compositeService = builder.Build();
-
-
-            var project = _projectService.GetProject(command.ProjectFolder);
-
 
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)

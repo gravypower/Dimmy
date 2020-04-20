@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "project start --working-folder C:\\clients\\Test"
+      "commandLineArgs": "project attach --project-id 858f7a53e31343e3aa722d3d953fb158 --role cm"
     }
   }
 }
