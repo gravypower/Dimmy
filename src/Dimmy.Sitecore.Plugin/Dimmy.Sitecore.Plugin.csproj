@@ -21,6 +21,7 @@
 		<ProjectReference Include="..\Dimmy.Engine\Dimmy.Engine.csproj">
 			<Private>false</Private>
 		</ProjectReference>
+		<ProjectReference Include="..\Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

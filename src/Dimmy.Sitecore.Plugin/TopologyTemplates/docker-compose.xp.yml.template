@@ -145,7 +145,7 @@ services:
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
       - #{Project.WorkingPath}\Data\cd:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{Project.WorkingPath}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      #{if Development.HookName}- #{Project.WorkingPath}\#{Development.HookName}:C:\inetpub\wwwroot\#{Development.HookName}#{/if}
     ports:
       - "#{Sitecore.CDPort}:80"
     environment:
@@ -161,7 +161,7 @@ services:
       SITECORE_CONNECTIONSTRINGS_XDB.MARKETINGAUTOMATION.OPERATIONS.CLIENT: http://xconnect
       SITECORE_CONNECTIONSTRINGS_SITECORE.REPORTING.CLIENT: http://xconnect
       SITECORE_CONNECTIONSTRINGS_XDB.REFERENCEDATA.CLIENT: http://xconnect
-      #{if HookName}DIMSIM_HOOK_NAME: #{HookName}#{/if}
+      #{if Development.HookName}DEVELOPMENT_HOOK_NAME: #{Development.HookName}#{/if}
     depends_on:
       sql:
         condition: service_healthy
@@ -180,7 +180,7 @@ services:
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
       - #{Project.WorkingPath}\Data\cm:C:\inetpub\wwwroot\App_Data\logs
-      #{if HookName}- #{Project.WorkingPath}\#{HookName}:C:\inetpub\wwwroot\#{HookName}#{/if}
+      #{if Development.HookName}- #{Project.WorkingPath}\#{Development.HookName}:C:\inetpub\wwwroot\#{Development.HookName}#{/if}
     ports:
       - "#{Sitecore.CMPort}:80"
     environment:
@@ -207,7 +207,7 @@ services:
       SITECORE_APPSETTINGS_TELERIK.ASYNCUPLOAD.CONFIGURATIONENCRYPTIONKEY: #{Sitecore.TelerikEncryptionKey}
       SITECORE_APPSETTINGS_TELERIK.UPLOAD.CONFIGURATIONHASHKEY: #{Sitecore.TelerikEncryptionKey}
       SITECORE_APPSETTINGS_TELERIK.WEB.UI.DIALOGPARAMETERSENCRYPTIONKEY: #{Sitecore.TelerikEncryptionKey}
-      #{if HookName}DIMSIM_HOOK_NAME: #{HookName}#{/if}
+      #{if Development.HookName}DEVELOPMENT_HOOK_NAME: #{Development.HookName}#{/if}
     depends_on:
       sql:
         condition: service_healthy

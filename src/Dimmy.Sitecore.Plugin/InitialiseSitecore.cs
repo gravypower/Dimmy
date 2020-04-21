@@ -12,18 +12,22 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Project;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Services;
+using Dimmy.VisualStudio.Plugin.Commands.Development;
 
 namespace Dimmy.Sitecore.Plugin
 {
     public class InitialiseSitecore: InitialiseSubCommand
     {
         private readonly IEnumerable<ITopology> _topologies;
+        private readonly ICommandHandler<InstallVisualStudioRemoteTools> _installVisualStudio2019RemoteToolsCommandHandler;
 
         public InitialiseSitecore(
             IEnumerable<ITopology> topologies,
-            ICommandHandler<InitialiseProject> initialiseProjectCommandHandler) : base(initialiseProjectCommandHandler)
+            ICommandHandler<InitialiseProject> initialiseProjectCommandHandler,
+            ICommandHandler<InstallVisualStudioRemoteTools> installVisualStudio2019RemoteToolsCommandHandler) : base(initialiseProjectCommandHandler)
         {
             _topologies = topologies;
+            _installVisualStudio2019RemoteToolsCommandHandler = installVisualStudio2019RemoteToolsCommandHandler;
         }
 
         protected override string Name => "sitecore";
@@ -40,20 +44,7 @@ namespace Dimmy.Sitecore.Plugin
 
         public async Task DoInitialise(string name, string sourceCodePath, string workingPath, string dockerComposeTemplate,  string licensePath, string topologyName)
         {
-            name = name.GetUserInput("Project Name:");
-            sourceCodePath = sourceCodePath.GetUserInput("Source code path:");
-            workingPath = workingPath.GetUserInput("Working path:");
-
-            if (string.IsNullOrEmpty(topologyName))
-            {
-                foreach (var topology in _topologies)
-                {
-                    Console.WriteLine(topology.Name);
-                }
-            }
-            topologyName = topologyName.GetUserInput("Choose topology:");
-
-            licensePath = licensePath.GetUserInput("license path:");
+            GetUserInput(ref name, ref sourceCodePath, ref workingPath, ref licensePath, ref topologyName);
 
             var composeTemplate = new DockerComposeTemplate();
 
@@ -107,7 +98,7 @@ namespace Dimmy.Sitecore.Plugin
                 {"XConnectProcessingEngineImage", "ddcontainers.azurecr.io/sitecore-xp-xconnect-processingengine:latest"},
                 {"CDImage", "ddcontainers.azurecr.io/sitecore-xp-cd:latest"},
                 {"CMImage", "ddcontainers.azurecr.io/sitecore-xp-standalone:latest"},
-                {"HookName", "Hook"},
+                {"VisualStudio.RemoteDebugger", @"C:\Program Files\Microsoft Visual Studio 16.0\Common7\IDE\Remote Debugger"},
             };
 
             var initialiseProject = new InitialiseProject
@@ -122,6 +113,37 @@ namespace Dimmy.Sitecore.Plugin
 
             await InitialiseProjectCommandHandler.Handle(initialiseProject);
 
+            //await _installVisualStudio2019RemoteToolsCommandHandler.Handle(new InstallVisualStudioRemoteTools
+            //{
+            //    Architecture = "x64",
+            //    InstallPath = Path.Combine(workingPath, "remote_debugger", "x64"),
+            //    VisualStudioVersion = "2019"
+            //});
+
+        }
+
+        private void GetUserInput(
+            ref string name, 
+            ref string sourceCodePath, 
+            ref string workingPath, 
+            ref string licensePath,
+            ref string topologyName)
+        {
+            name = name.GetUserInput("Project Name:");
+            sourceCodePath = sourceCodePath.GetUserInput("Source code path:");
+            workingPath = workingPath.GetUserInput("Working path:");
+
+            if (string.IsNullOrEmpty(topologyName))
+            {
+                foreach (var topology in _topologies)
+                {
+                    Console.WriteLine(topology.Name);
+                }
+            }
+
+            topologyName = topologyName.GetUserInput("Choose topology:");
+
+            licensePath = licensePath.GetUserInput("license path:");
         }
     }
 

@@ -53,7 +53,6 @@ namespace Dimmy.Engine.Commands.Docker
                 {
                     var volumeParts = volume.Split(':');
 
-
                     var hostPath = $"{volumeParts[0]}:{ volumeParts[1]}";
                     var exists = Directory.Exists(hostPath);
 

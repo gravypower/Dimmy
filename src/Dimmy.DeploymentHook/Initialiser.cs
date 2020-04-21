@@ -21,7 +21,7 @@ namespace Dimmy.DeploymentHook
 
         static Initialiser()
         {
-            HookName = Environment.GetEnvironmentVariable("DIMSIM_HOOK_NAME");
+            HookName = Environment.GetEnvironmentVariable("DEVELOPMENT_HOOK_NAME");
             
             if(HookName == null)
                 return;

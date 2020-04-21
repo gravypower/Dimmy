@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "project attach --project-id 858f7a53e31343e3aa722d3d953fb158 --role cm"
+      "commandLineArgs": "project init sitecore --name test --source-code-path C:\\projects\\Test --working-path C:\\clients\\Test --license-path C:\\license.xml --topology-name XP"
     }
   }
 }

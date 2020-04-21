@@ -7,7 +7,6 @@ using Dimmy.Cli.Commands.Project;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
-using Dimmy.Sitecore.Plugin;
 using Ductus.FluentDocker.Services;
 using SimpleInjector;
 
@@ -24,7 +23,8 @@ namespace Dimmy.Cli.Application
             Container = new Container();
 
             // Will be move to use plugin install with nuget 
-            new Plugin().Bootstrap(Container);
+            new Sitecore.Plugin.Plugin().Bootstrap(Container);
+            new VisualStudio.Plugin.Plugin().Bootstrap(Container);
 
             var hosts = new Hosts().Discover();
             var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default"); 

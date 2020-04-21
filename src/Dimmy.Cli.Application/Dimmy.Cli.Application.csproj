@@ -8,11 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Dimmy.Cli\Dimmy.Cli.csproj" />
     <ProjectReference Include="..\Dimmy.Sitecore.Plugin\Dimmy.Sitecore.Plugin.csproj" />
+    <ProjectReference Include="..\Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj" />
   </ItemGroup>
 
 </Project>
