@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Configuration;
 using Dimmy.DeploymentHook;
 using Sitecore.Configuration;
 using Sitecore.UpdateCenter.Services.UpdateMode;
@@ -34,6 +36,16 @@ namespace Dimmy.DeploymentHook
                 .ToDictionary(x => x.GetName(), x => x);
 
             AssemblyDictionary = new ReadOnlyDictionary<AssemblyName, Assembly>(assemblyDictionary);
+
+            var config = WebConfigurationManager.OpenWebConfiguration("~");
+            var section = config.GetSectionGroup("system.web")?.Sections["compilation"];
+
+            if (section is CompilationSection compilationSection && compilationSection.OptimizeCompilations == false)
+            {
+                compilationSection.OptimizeCompilations = true;
+
+                config.Save();
+            }
 
         }
 
