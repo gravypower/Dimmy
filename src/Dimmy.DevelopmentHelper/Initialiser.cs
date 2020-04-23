@@ -16,11 +16,13 @@ namespace Dimmy.DevelopmentHelper
 {
     public static class Initialiser
     {
+        private const string DevelopmentPerformanceConfigResourceName = "Dimmy.DevelopmentHelper.DevelopmentPerformance.config";
+        private const string WorkCompleteResourceName = "Dimmy.DevelopmentHelper.workcomplete";
+
         private static readonly string HookBindMountBinPath;
         private static readonly IReadOnlyDictionary<AssemblyName, Assembly> AssemblyDictionary;
         private static readonly string HookName;
-        private const string DevelopmentPerformanceConfigResourceName = "Dimmy.DevelopmentHelper.DevelopmentPerformance.config";
-        private static string _workCompletePath;
+        private static readonly string WorkCompletePath;
 
         static Initialiser()
         {
@@ -29,7 +31,7 @@ namespace Dimmy.DevelopmentHelper
             if(HookName == null)
                 return;
 
-            _workCompletePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".workcomplete");
+            WorkCompletePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".workcomplete");
 
             HookBindMountBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, HookName, "bin");
 
@@ -46,7 +48,7 @@ namespace Dimmy.DevelopmentHelper
             if (WorkComplete()) 
                 return;
 
-            AppyWebConfigChanges();
+            ApplyWebConfigChanges();
             AddDevelopmentPerformanceConfigToSitecoreIncludes();
             AddHookLayer();
             LoadDeploymentHookAssemblies();
@@ -55,8 +57,8 @@ namespace Dimmy.DevelopmentHelper
 
         private static void SetWorkComplete()
         {
-            var workcomplete = GetManifestResourceString("Dimmy.DevelopmentHelper.workcomplete");
-            File.WriteAllText(_workCompletePath, workcomplete);
+            var workComplete = GetManifestResourceString(WorkCompleteResourceName);
+            File.WriteAllText(WorkCompletePath, workComplete);
         }
 
         private static void AddDevelopmentPerformanceConfigToSitecoreIncludes()
@@ -75,18 +77,21 @@ namespace Dimmy.DevelopmentHelper
 
         private static string GetManifestResourceString(string manifestResourceStreamName)
         {
-            var stream = typeof(Initialiser).Assembly.GetManifestResourceStream(manifestResourceStreamName);
-            if (stream == null)
+            using (var stream = typeof(Initialiser).Assembly.GetManifestResourceStream(manifestResourceStreamName))
             {
-                throw new InvalidOperationException("Could not load manifest resource stream.");
+                if (stream == null)
+                {
+                    throw new InvalidOperationException("Could not load manifest resource stream.");
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
-
-            var reader = new StreamReader(stream);
-
-            return reader.ReadToEnd();
         }
 
-        private static void AppyWebConfigChanges()
+        private static void ApplyWebConfigChanges()
         {
             var config = WebConfigurationManager.OpenWebConfiguration("~");
             var section = config.GetSectionGroup("system.web")?.Sections["compilation"];
@@ -94,14 +99,13 @@ namespace Dimmy.DevelopmentHelper
             if (section is CompilationSection compilationSection && compilationSection.OptimizeCompilations == false)
             {
                 compilationSection.OptimizeCompilations = true;
-
                 config.Save();
             }
         }
 
         private static bool WorkComplete()
         {
-            return File.Exists(_workCompletePath);
+            return File.Exists(WorkCompletePath);
         }
 
         private static void AddHookLayer()
@@ -137,7 +141,6 @@ namespace Dimmy.DevelopmentHelper
             };
             ddApplicationLayer.LoadOrder.Add(configEntryInfo);
         }
-
 
         private static void LoadDeploymentHookAssemblies()
         {
