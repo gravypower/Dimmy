@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
 using Octostache;
@@ -38,11 +39,21 @@ namespace Dimmy.Engine.Commands.Docker
                 variableDictionary.Set(key, value);
             }
 
-            var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate);
+            var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate, out var error);
+
+            if(!string.IsNullOrEmpty(error))
+                throw new DockerComposeGenerationFailed(error);
 
             var dockerComposeFile = Path.Combine(command.WorkingPath, "docker-compose.yml");
 
             File.WriteAllText(dockerComposeFile, dockerCompose);
+        }
+    }
+
+    public class DockerComposeGenerationFailed : Exception
+    {
+        public DockerComposeGenerationFailed(string error):base(error)
+        {
         }
     }
 }

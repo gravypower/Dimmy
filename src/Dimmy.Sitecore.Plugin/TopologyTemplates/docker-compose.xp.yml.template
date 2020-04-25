@@ -18,6 +18,7 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "MSSQL"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   solr:
     image: #{SolrDockerImage}
@@ -31,6 +32,7 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "solr"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   xconnect:
     image: #{XConnectDockerImage} 
@@ -63,6 +65,7 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "xconnect"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   xconnect-automationengine:
     image: #{XConnectAutomationEngineImage}
@@ -86,6 +89,7 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "xconnect-automationengine"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   xconnect-indexworker:
     image: #{XConnectIndexWorkerImage}
@@ -109,6 +113,7 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "xconnect-indexworker"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   xconnect-processingengine:
     image: #{XConnectProcessingEngineImage}
@@ -139,13 +144,14 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "xconnect-processingengine"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   cd:
     image: #{CDImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
       - #{Project.WorkingPath}\Data\cd:C:\inetpub\wwwroot\App_Data\logs
-      #{if DevelopmentHelper.HookName- #{Project.WorkingPath}\#{DevelopmentHelper.HookName}:C:\inetpub\wwwroot\#{DevelopmentHelper.HookName}#{/if}
+      #{if DevelopmentHelper.HookName}- #{Project.WorkingPath}\#{DevelopmentHelper.HookName}:C:\inetpub\wwwroot\#{DevelopmentHelper.HookName}#{/if}
     ports:
       - "#{Sitecore.CDPort}:80"
     environment:
@@ -174,13 +180,14 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "cd"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"
 
   cm:
     image: #{CMImage}
     entrypoint: powershell.exe -Command "& C:\\tools\\entrypoints\\iis\\Development.ps1"
     volumes:
       - #{Project.WorkingPath}\Data\cm:C:\inetpub\wwwroot\App_Data\logs
-      #{if DevelopmentHelper.HookName- #{Project.WorkingPath}\#{DevelopmentHelper.HookName}:C:\inetpub\wwwroot\#{DevelopmentHelper.HookName}#{/if}
+      #{if DevelopmentHelper.HookName}- #{Project.WorkingPath}\#{DevelopmentHelper.HookName}:C:\inetpub\wwwroot\#{DevelopmentHelper.HookName}#{/if}
     ports:
       - "#{Sitecore.CMPort}:80"
     environment:
@@ -220,3 +227,4 @@ services:
       dimmy.dev.project.name: "#{Project.Name}"
       dimmy.dev.project.id: "#{Project.Id}"
       dimmy.dev.project.role: "cm"
+      dimmy.dev.project.workingpath: "#{Project.WorkingPath}"

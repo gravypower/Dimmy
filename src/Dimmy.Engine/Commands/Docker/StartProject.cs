@@ -2,6 +2,6 @@
 {
     public class StartProject:ICommand
     {
-        public string ProjectFolder { get; set; }
+        public string DockerComposeFilePath { get; set; }
     }
 }

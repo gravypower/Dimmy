@@ -36,7 +36,7 @@ namespace Dimmy.Engine.Commands.Docker
                     c.State != ServiceRunningState.Paused)
                     continue;
 
-                c.Stop();
+                c.Remove(true);
             }
         }
     }

@@ -25,9 +25,7 @@ namespace Dimmy.Engine.Commands.Docker
 
         private void Run(StartProject command)
         {
-            var dockerComposeFile = Path.Combine(command.ProjectFolder, "docker-compose.yml");
-
-            if (!File.Exists(dockerComposeFile))
+            if (!File.Exists(command.DockerComposeFilePath))
             {
                 throw new DockerComposeFileNotFound();
             }
@@ -35,7 +33,7 @@ namespace Dimmy.Engine.Commands.Docker
             var builder = new Builder()
                 .UseContainer()
                 .UseCompose()
-                .FromFile(dockerComposeFile)
+                .FromFile(command.DockerComposeFilePath)
                 .RemoveOrphans();
 
             var compositeService = builder.Build();
@@ -45,7 +43,7 @@ namespace Dimmy.Engine.Commands.Docker
                 .IgnoreUnmatchedProperties()
                 .Build();
 
-            var dockerCompose = deserializer.Deserialize<DockerCompose>(File.ReadAllText(dockerComposeFile));
+            var dockerCompose = deserializer.Deserialize<DockerCompose>(File.ReadAllText(command.DockerComposeFilePath));
 
             foreach (var dockerComposeService in dockerCompose.Services)
             {
