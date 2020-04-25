@@ -3,3 +3,4 @@ project attach
 projects ls
 project init sitecore --name test --source-code-path C:\projects\Test --working-path C:\clients\Test --license-path C:\license.xml --topology-name XP
 project start --working-folder C:\clients\Test
+plugins install --package-id Dimmy.Sitecore.Plugin --package-version 0.0.1
