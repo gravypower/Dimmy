@@ -12,22 +12,18 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Project;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Services;
-using Dimmy.VisualStudio.Plugin.Commands.Development;
 
 namespace Dimmy.Sitecore.Plugin
 {
     public class InitialiseSitecore: InitialiseSubCommand
     {
         private readonly IEnumerable<ITopology> _topologies;
-        private readonly ICommandHandler<InstallVisualStudioRemoteTools> _installVisualStudio2019RemoteToolsCommandHandler;
 
         public InitialiseSitecore(
             IEnumerable<ITopology> topologies,
-            ICommandHandler<InitialiseProject> initialiseProjectCommandHandler,
-            ICommandHandler<InstallVisualStudioRemoteTools> installVisualStudio2019RemoteToolsCommandHandler) : base(initialiseProjectCommandHandler)
+            ICommandHandler<InitialiseProject> initialiseProjectCommandHandler) : base(initialiseProjectCommandHandler)
         {
             _topologies = topologies;
-            _installVisualStudio2019RemoteToolsCommandHandler = installVisualStudio2019RemoteToolsCommandHandler;
         }
 
         protected override string Name => "sitecore";

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Dimmy.Cli.Application;
@@ -12,7 +11,6 @@ using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Packaging.Signing;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using NuGet.Versioning;
@@ -22,17 +20,28 @@ namespace Dimmy.Cli.Plugins
     public class Loader
     {
         private static readonly string PluginsDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
-        private static readonly DirectoryInfo PluginsDirectory = new DirectoryInfo(PluginsDirectoryPath);
-        public async Task Load()
+
+        private static readonly string[] DimmyProjects = { "Dimmy.Cli", "Dimmy.Engine"};
+        public async Task<List<string>> Load()
         {
+            var list = await InstallPlugin("Dimmy.Sitecore.Plugin");
+
+            return list;
+        }
+
+        private async Task<List<string>> InstallPlugin(string packageId)
+        {
+            var assemblies = new List<string>();
+            var pluginInstallFolder = Path.Combine(PluginsDirectoryPath, packageId);
+
+            Directory.CreateDirectory(pluginInstallFolder);
+
             var logger = new TextWriterLogger(Console.Out);
-            var packageId = "Dimmy.Sitecore.Plugin";
             var packageVersion = NuGetVersion.Parse("1.0.0");
             var nuGetFramework = NuGetFramework.ParseFolder("netstandard2.1");
-            var settings =  Settings.LoadDefaultSettings(root: null);
+            var settings = Settings.LoadDefaultSettings(root: null);
 
-            var packageSourceProvider = new PackageSourceProvider(
-                settings, new PackageSource[] { new PackageSource("http://localhost:8624/nuget/localfeed") });
+            var packageSourceProvider = new PackageSourceProvider(settings);
 
             var sourceRepositoryProvider = new SourceRepositoryProvider(packageSourceProvider, Repository.Provider.GetCoreV3());
 
@@ -46,7 +55,7 @@ namespace Dimmy.Cli.Plugins
 
             var resolverContext = new PackageResolverContext(
                 DependencyBehavior.Lowest,
-                new[] { packageId },
+                new[] {packageId},
                 Enumerable.Empty<string>(),
                 Enumerable.Empty<PackageReference>(),
                 Enumerable.Empty<PackageIdentity>(),
@@ -73,12 +82,13 @@ namespace Dimmy.Cli.Plugins
                 var installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
                 if (installedPath == null)
                 {
-                    var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
+                    var downloadResource =
+                        await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
                     var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                         packageToInstall,
                         new PackageDownloadContext(cacheContext),
-                        PluginsDirectoryPath,
-                        logger, 
+                        SettingsUtility.GetGlobalPackagesFolder(settings),
+                        logger,
                         CancellationToken.None);
 
                     await PackageExtractor.ExtractPackageAsync(
@@ -95,92 +105,25 @@ namespace Dimmy.Cli.Plugins
                     packageReader = new PackageFolderReader(installedPath);
                 }
 
-                var libItems = packageReader.GetLibItems();
-                var nearest = frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
-                Console.WriteLine(string.Join("\n", libItems
-                    .Where(x => x.TargetFramework.Equals(nearest))
-                    .SelectMany(x => x.Items)));
 
-                var frameworkItems = packageReader.GetFrameworkItems();
-                nearest = frameworkReducer.GetNearest(nuGetFramework, frameworkItems.Select(x => x.TargetFramework));
-                Console.WriteLine(string.Join("\n", frameworkItems
+                var libItems = packageReader.GetLibItems().ToList();
+                var nearest = frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
+                assemblies.AddRange(libItems
                     .Where(x => x.TargetFramework.Equals(nearest))
-                    .SelectMany(x => x.Items)));
+                    .SelectMany(x => x.Items));
+
+                foreach (var assembly in assemblies)
+                {
+                    var destFileName = Path.Combine(pluginInstallFolder, Path.GetFileName(assembly));
+                    
+                    if (File.Exists(destFileName)) continue;
+
+                    var sourceFileName = Path.Combine(installedPath, assembly);
+                    File.Copy(sourceFileName, destFileName);
+                }
             }
 
-
-            //var logger = new TextWriterLogger(Console.Out);
-            //var repository = Repository.Factory.GetCoreV3(@"https://api.nuget.org/v3/index.json");
-            //var packageMetadataResource = repository.GetResourceAsync<PackageMetadataResource>().Result;
-            //var sourceCacheContext = new SourceCacheContext();
-
-            //foreach (var nupkgFile in PluginsDirectory.GetFiles())
-            //{
-            //    var pluginDirectoryPath = Path.Combine(PluginsDirectoryPath, Path.GetFileNameWithoutExtension(nupkgFile.Name));
-            //    //if (Directory.Exists(path)) continue;
-
-            //    var nupkgFileStream = File.Open(nupkgFile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            //    var pluginPackageArchiveReader = new PackageArchiveReader(nupkgFileStream);
-
-            //    Directory.CreateDirectory(pluginDirectoryPath);
-
-            //    var settings = Settings.LoadDefaultSettings(root: null);
-
-            //    var packageExtractionContext =
-            //        new PackageExtractionContext(
-            //            PackageSaveMode.Defaultv3,
-            //            XmlDocFileSaveMode.None,
-            //            ClientPolicyContext.GetClientPolicy(settings, logger),
-            //            logger);
-
-            //    await PackageExtractor.ExtractPackageAsync(nupkgFile.FullName, pluginPackageArchiveReader,
-            //        nupkgFileStream, new PackagePathResolver(PluginsDirectoryPath), packageExtractionContext,
-            //        CancellationToken.None);
-            //    //var packageAssemblies = pluginPackageArchiveReader
-            //    //    .GetFiles()
-            //    //    .Where(p => Path.GetExtension(p) == ".dll");
-
-            //    //foreach (var packageAssembly in packageAssemblies)
-            //    //{
-            //    //    var savePath = Path.Combine(pluginDirectoryPath, Path.GetFileName(packageAssembly));
-            //    //    using var assemblyStream = pluginPackageArchiveReader.GetStream(packageAssembly);
-            //    //    using var file = new FileStream(savePath, FileMode.Create, FileAccess.Write);
-            //    //    assemblyStream.CopyTo(file);
-            //    //}
-
-
-
-            //    //var dependencies = pluginPackageArchiveReader.GetPackageDependencies()
-            //    //    .SelectMany(item => item.Packages)
-            //    //    .ToList();
-
-
-            //    //foreach (var dependency in dependencies)
-            //    //{
-
-            //    //    if(dependency.Id.StartsWith("Dimmy"))
-            //    //        continue;
-
-            //    //    var dependencyPackageIdentity = new PackageIdentity(dependency.Id, NuGetVersion.Parse(dependency.VersionRange.OriginalString));
-
-            //    //    var dependencyMetadata = packageMetadataResource
-            //    //        .GetMetadataAsync(dependencyPackageIdentity, sourceCacheContext, logger, CancellationToken.None).Result;
-
-            //    //    var finder = repository.GetResourceAsync<FindPackageByIdResource>().Result;
-
-            //    //    await using var dependencyMemoryStream = new MemoryStream();
-            //    //    if (await finder.CopyNupkgToStreamAsync(dependencyMetadata.Identity.Id,
-            //    //        dependencyMetadata.Identity.Version, dependencyMemoryStream, sourceCacheContext, logger,
-            //    //        CancellationToken.None))
-            //    //    {
-            //    //        var dependencyPackageArchiveReader = new PackageArchiveReader(dependencyMemoryStream);
-
-            //    //        dependencyPackageArchiveReader.
-
-            //    //    }
-
-            //    //}
-            //}
+            return assemblies;
         }
 
         async Task GetPackageDependencies(PackageIdentity package,
@@ -200,7 +143,23 @@ namespace Dimmy.Cli.Plugins
 
                 if (dependencyInfo == null) continue;
 
+                if (dependencyInfo.Dependencies.Any(d=> DimmyProjects.Contains(d.Id)))
+                {
+                    var packageDependencies =
+                        dependencyInfo.Dependencies
+                            .Where(d => !DimmyProjects.Contains(d.Id))
+                            .Select(d => d);
+
+                    dependencyInfo = new SourcePackageDependencyInfo(
+                        dependencyInfo.Id,
+                        dependencyInfo.Version, 
+                        packageDependencies,
+                        dependencyInfo.Listed,
+                        dependencyInfo.Source);
+                }
+
                 availablePackages.Add(dependencyInfo);
+
                 foreach (var dependency in dependencyInfo.Dependencies)
                 {
                     await GetPackageDependencies(

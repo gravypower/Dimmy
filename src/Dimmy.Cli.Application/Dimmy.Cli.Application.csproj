@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dimmy.Cli\Dimmy.Cli.csproj" />
     <ProjectReference Include="..\Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj" />
   </ItemGroup>

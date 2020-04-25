@@ -21,15 +21,14 @@
 		<ProjectReference Include="..\Dimmy.Engine\Dimmy.Engine.csproj">
 			<Private>false</Private>
 		</ProjectReference>
-		<ProjectReference Include="..\Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Serilog" Version="2.9.1-dev-01154" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="ClassLibrary1" Version="1.0.0" />
 	</ItemGroup>
 
 </Project>
