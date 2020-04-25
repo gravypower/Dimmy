@@ -5,12 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Cli.Commands;
 using Dimmy.Cli.Commands.Project;
-using Dimmy.Cli.Plugins;
 using Dimmy.Engine.Commands;
+using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Services;
 using McMaster.NETCore.Plugins;
+using NuGet.Common;
 using SimpleInjector;
 
 namespace Dimmy.Cli.Application
@@ -25,11 +26,7 @@ namespace Dimmy.Cli.Application
 
             // Will be move to use plugin install with nuget 
             new VisualStudio.Plugin.Plugin().Bootstrap(Container);
-            //new Sitecore.Plugin.Plugin().Bootstrap(Container);
-
-            var loader = new Loader();
-            var list = await loader.Load();
-
+            
             // create plugin loaders
             var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
             foreach (var dir in Directory.GetDirectories(pluginsDir))
@@ -51,16 +48,15 @@ namespace Dimmy.Cli.Application
                 plugin.Bootstrap(Container);
             }
 
-
             var hosts = new Hosts().Discover();
             var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
-
-
 
             if (host == null)
                 Console.WriteLine("Could not find docker!");
 
             Container.Register(() => host, Lifestyle.Singleton);
+
+            Container.Register<ILogger>(() => new TextWriterLogger(Console.Out) );
 
             Container.Register<IProjectService, ProjectService>();
             Container.Register(typeof(ICommandHandler<>), assemblies);

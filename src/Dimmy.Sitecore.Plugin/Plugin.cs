@@ -1,5 +1,5 @@
 ﻿using ClassLibrary1;
-using Dimmy.Cli.Plugins;
+using Dimmy.Cli;
 using SimpleInjector;
 
 namespace Dimmy.Sitecore.Plugin

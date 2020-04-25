@@ -28,14 +28,14 @@ namespace Dimmy.Engine.Commands.Docker
             variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
             variableDictionary.Set("Project.WorkingPath", projectInstance.WorkingPath);
 
-            foreach (var keyValuePair in projectInstance.VariableDictionary)
+            foreach (var (key, value) in projectInstance.VariableDictionary)
             {
-                variableDictionary.Set(keyValuePair.Key, keyValuePair.Value);
+                variableDictionary.Set(key, value);
             }
 
-            foreach (var keyValuePair in project.VariableDictionary)
+            foreach (var (key, value) in project.VariableDictionary)
             {
-                variableDictionary.Set(keyValuePair.Key, keyValuePair.Value);
+                variableDictionary.Set(key, value);
             }
 
             var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate);

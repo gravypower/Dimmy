@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Ductus.FluentDocker" Version="2.7.59-beta0123" />
+    <PackageReference Include="NuGet.Protocol" Version="5.6.0-preview.2.6489" />
+    <PackageReference Include="NuGet.Resolver" Version="5.6.0-preview.2.6489" />
     <PackageReference Include="Octostache" Version="2.7.0" />
     <PackageReference Include="YamlDotNet" Version="8.1.1" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Dimmy.Cli.Plugins;
+﻿using Dimmy.Cli;
 using Dimmy.VisualStudio.Plugin.Services.VisualStudioRemoteTools;
 using SimpleInjector;
 
