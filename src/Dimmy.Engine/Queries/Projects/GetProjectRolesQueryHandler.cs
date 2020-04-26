@@ -6,7 +6,7 @@ using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Queries.Projects
 {
-    public class GetProjectRolesQueryHandler:IQueryHandler<GetProjectRoles, IEnumerable<Role>>
+    public class GetProjectRolesQueryHandler:IQueryHandler<GetProjectRoles, IEnumerable<Service>>
     {
         private readonly IProjectService _projectService;
 
@@ -15,11 +15,11 @@ namespace Dimmy.Engine.Queries.Projects
             _projectService = projectService;
         }
 
-        public async Task<IEnumerable<Role>> Handle(GetProjectRoles query)
+        public async Task<IEnumerable<Service>> Handle(GetProjectRoles query)
         {
             var project = _projectService.RunningProjects().Single(p => p.Id == query.ProjectId);
 
-            return await Task.FromResult(project.Roles);
+            return await Task.FromResult(project.Services);
         }
     }
 }

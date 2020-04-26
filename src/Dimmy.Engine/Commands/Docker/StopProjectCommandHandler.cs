@@ -29,7 +29,7 @@ namespace Dimmy.Engine.Commands.Docker
 
             foreach (var c in _hostService.GetContainers())
             {
-                if (project.Roles.All(r => r.ContainerId != c.Id))
+                if (project.Services.All(r => r.ContainerId != c.Id))
                     continue;
 
                 if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&

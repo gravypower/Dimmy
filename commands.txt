@@ -5,3 +5,4 @@ project init sitecore --name test --source-code-path C:\projects\Test --working-
 project start --working-path C:\clients\Test
 plugins install --package-id Dimmy.Sitecore.Plugin --package-version 0.0.1
 project stop --working-path C:\clients\Test
+project stop --project-id 2bbbf116-2ee0-47eb-82bd-4eb3b7ab9f2a

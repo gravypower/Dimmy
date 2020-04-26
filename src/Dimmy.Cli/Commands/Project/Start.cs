@@ -1,4 +1,5 @@
-﻿using System.CommandLine;
+﻿using System;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
 using Dimmy.Engine.Commands;
@@ -23,16 +24,17 @@ namespace Dimmy.Cli.Commands.Project
         {
             var startProjectCommand = new Command("start")
             {
-                new Option<string>("--working-path", "Working Path")
+                new Option<string>("--working-path", "Working Path"),
+                new Option<bool>("--generate-only", "Don't start the project only generate the docker compose file")
             };
 
             startProjectCommand.Handler = CommandHandler
-                .Create<string>(async workingPath =>
+                .Create<string, bool>(async (workingPath, generateOnly) =>
                 {
 
                     if (string.IsNullOrEmpty(workingPath))
                     {
-                        workingPath = ".";
+                        workingPath = Path.GetFullPath(Environment.CurrentDirectory);
                     }
 
                     var workingDockerCompose = Path.Combine(workingPath, "docker-compose.yml");
@@ -45,6 +47,10 @@ namespace Dimmy.Cli.Commands.Project
                     {
                         WorkingPath = workingPath
                     });
+
+
+                    if(generateOnly)
+                        return;
 
                     var startProject = new StartProject
                     {

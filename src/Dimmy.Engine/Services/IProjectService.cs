@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dimmy.Engine.Models;
+using Dimmy.Engine.Models.Yaml;
 
 namespace Dimmy.Engine.Services
 {

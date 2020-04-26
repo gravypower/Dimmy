@@ -27,7 +27,7 @@ namespace Dimmy.Engine.Commands.Docker
             var variableDictionary = new VariableDictionary();
             variableDictionary.Set("Project.Name", projectInstance.Name);
             variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
-            variableDictionary.Set("Project.WorkingPath", projectInstance.WorkingPath);
+            variableDictionary.Set("Project.WorkingPath", command.WorkingPath);
 
             foreach (var (key, value) in projectInstance.VariableDictionary)
             {
@@ -39,7 +39,11 @@ namespace Dimmy.Engine.Commands.Docker
                 variableDictionary.Set(key, value);
             }
 
-            var dockerCompose = variableDictionary.Evaluate(projectInstance.ComposeTemplate, out var error);
+
+            var templateFilePath = Path.Combine(projectInstance.SourceCodeLocation, project.ComposeTemplateFileName);
+            var template = File.ReadAllText(templateFilePath);
+
+            var dockerCompose = variableDictionary.Evaluate(template, out var error);
 
             if(!string.IsNullOrEmpty(error))
                 throw new DockerComposeGenerationFailed(error);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Dimmy.Engine.Models;
+using Dimmy.Engine.Models.Yaml;
 
 namespace Dimmy.Engine.Commands.Project
 {
@@ -15,13 +15,13 @@ namespace Dimmy.Engine.Commands.Project
         private static void Run(InitialiseProject command)
         {
             File.WriteAllText(
-                $"{command.SourceCodePath}\\{command.DockerComposeTemplate.FileName}",
+                Path.Combine(command.SourceCodePath, command.DockerComposeTemplate.FileName),
                 command.DockerComposeTemplate.Contents);
 
             var dimmyProject = new ProjectYaml
             {
                 Id = Guid.NewGuid(),
-                ComposeTemplate = command.DockerComposeTemplate.FileName,
+                ComposeTemplateFileName = command.DockerComposeTemplate.FileName,
                 Name = command.Name,
                 VariableDictionary = command.PublicVariables
             };
@@ -30,15 +30,13 @@ namespace Dimmy.Engine.Commands.Project
             var dimmyProjectYaml = serializer.Serialize(dimmyProject);
 
             File.WriteAllText(
-                $"{command.SourceCodePath}\\.dimmy.yaml",
+                Path.Combine(command.SourceCodePath, ".dimmy.yaml"),
                 dimmyProjectYaml);
 
             var dimmyProjectInstance = new ProjectInstanceYaml
             {
-                ComposeTemplate = command.DockerComposeTemplate.Contents,
                 Id = dimmyProject.Id,
                 Name = dimmyProject.Name,
-                WorkingPath = command.WorkingPath,
                 SourceCodeLocation = command.SourceCodePath,
                 VariableDictionary = command.PrivateVariables
             };
@@ -46,7 +44,7 @@ namespace Dimmy.Engine.Commands.Project
             var dimmyProjectInstanceYaml = serializer.Serialize(dimmyProjectInstance);
 
             File.WriteAllText(
-                $"{command.WorkingPath}\\.dimmy",
+                Path.Combine(command.WorkingPath, ".dimmy"),
                 dimmyProjectInstanceYaml);
         }
     }

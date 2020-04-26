@@ -51,7 +51,7 @@ namespace Dimmy.Cli.Commands.Project
                         role = Console.ReadLine();
                     }
 
-                    var projectRole = project.Roles.Single(r => r.Name == role);
+                    var projectRole = project.Services.Single(r => r.Name == role);
 
                     _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
                     {

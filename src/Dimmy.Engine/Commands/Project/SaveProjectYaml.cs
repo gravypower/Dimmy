@@ -1,4 +1,5 @@
 ﻿using Dimmy.Engine.Models;
+using Dimmy.Engine.Models.Yaml;
 
 namespace Dimmy.Engine.Commands.Project
 {

@@ -109,13 +109,6 @@ namespace Dimmy.Sitecore.Plugin
 
             await InitialiseProjectCommandHandler.Handle(initialiseProject);
 
-            //await _installVisualStudio2019RemoteToolsCommandHandler.Handle(new InstallVisualStudioRemoteTools
-            //{
-            //    Architecture = "x64",
-            //    InstallPath = Path.Combine(workingPath, "remote_debugger", "x64"),
-            //    VisualStudioVersion = "2019"
-            //});
-
         }
 
         private void GetUserInput(

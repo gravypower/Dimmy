@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Invocation;
 
 namespace Dimmy.Cli.Commands.Project
 {
@@ -22,12 +21,6 @@ namespace Dimmy.Cli.Commands.Project
             {
                 command.AddCommand(initialiseSubCommand.GetCommand());
             }
-
-            command.Handler = CommandHandler
-                .Create<string, string>((name, plugin) =>
-                {
-
-                });
 
             return command;
         }

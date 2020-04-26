@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dimmy.Engine.Models;
+using Dimmy.Engine.Models.Yaml;
 using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Services
@@ -45,7 +46,7 @@ namespace Dimmy.Engine.Services
                     });
                 }
 
-                projects[projectId].Roles.Add(new Role
+                projects[projectId].Services.Add(new Service
                 {
                     Name = labels[DimmyDockerComposeLabels.ProjectRole],
                     ContainerId = container.Id

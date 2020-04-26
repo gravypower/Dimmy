@@ -9,7 +9,7 @@ namespace Dimmy.Cli.Extensions
         {
             Console.WriteLine($"\\-{p.Name}");
 
-            foreach (var role in p.Roles)
+            foreach (var role in p.Services)
             {
                 Console.WriteLine($"  |-{role.Name}");
             }

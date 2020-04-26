@@ -6,5 +6,6 @@
         public const string ProjectName = "dimmy.dev.project.name";
         public const string ProjectId = "dimmy.dev.project.id";
         public const string ProjectRole = "dimmy.dev.project.role";
+        public const string ProjectWorkingPath = "dimmy.dev.project.workingpath";
     }
 }

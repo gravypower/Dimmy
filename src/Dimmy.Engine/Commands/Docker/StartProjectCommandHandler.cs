@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Dimmy.Engine.Models.Docker;
+using Dimmy.Engine.Models.Yaml.DockerCompose;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Builders;
 using YamlDotNet.Serialization;
@@ -43,7 +43,7 @@ namespace Dimmy.Engine.Commands.Docker
                 .IgnoreUnmatchedProperties()
                 .Build();
 
-            var dockerCompose = deserializer.Deserialize<DockerCompose>(File.ReadAllText(command.DockerComposeFilePath));
+            var dockerCompose = deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(command.DockerComposeFilePath));
 
             foreach (var dockerComposeService in dockerCompose.Services)
             {
