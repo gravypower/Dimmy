@@ -7,6 +7,7 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Plugins;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Queries.Plugins;
+using NuGet.Protocol.Core.Types;
 
 namespace Dimmy.Cli.Commands.Plugins
 {
@@ -17,11 +18,11 @@ namespace Dimmy.Cli.Commands.Plugins
         private static readonly string[] DimmyProjects = { "Dimmy.Cli", "Dimmy.Engine" };
 
         private readonly ICommandHandler<InstallPlugin> _installPluginCommandHandler;
-        private readonly IQueryHandler<GetRemotePlugins, IAsyncEnumerable<string>> _getRemotePluginsQueryHandler;
+        private readonly IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>> _getRemotePluginsQueryHandler;
 
         public Plugins(
             ICommandHandler<InstallPlugin> installPluginCommandHandler,
-            IQueryHandler<GetRemotePlugins, IAsyncEnumerable<string>> getRemotePluginsQueryHandler)
+            IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
         {
             _installPluginCommandHandler = installPluginCommandHandler;
             _getRemotePluginsQueryHandler = getRemotePluginsQueryHandler;
@@ -53,7 +54,7 @@ namespace Dimmy.Cli.Commands.Plugins
 
                     await foreach (var plugin in plugins)
                     {
-                        Console.WriteLine(plugin);
+                        Console.WriteLine($"{plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
                     }
                 }
             });
@@ -76,6 +77,7 @@ namespace Dimmy.Cli.Commands.Plugins
                     {
                         PackageId = packageId,
                         PackageVersion = packageVersion,
+                        PackageFramework = "netstandard2.1",
                         InstallDirectory = PluginsDirectoryPath,
                         OmitDependencies = DimmyProjects
                     });

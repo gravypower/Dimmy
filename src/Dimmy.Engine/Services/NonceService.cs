@@ -7,12 +7,11 @@ namespace Dimmy.Engine.Services
     {
         public static string Generate(int length = 64)
         {
-            using (var cryptRNG = new RNGCryptoServiceProvider())
-            {
-                var tokenBuffer = new byte[length];
-                cryptRNG.GetBytes(tokenBuffer);
-                return Convert.ToBase64String(tokenBuffer);
-            }
+            using var cryptRng = new RNGCryptoServiceProvider();
+
+            var tokenBuffer = new byte[length];
+            cryptRng.GetBytes(tokenBuffer);
+            return Convert.ToBase64String(tokenBuffer);
         }
     }
 }

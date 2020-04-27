@@ -1,6 +1,4 @@
-﻿using ClassLibrary1;
-using Dimmy.Cli;
-using Dimmy.Cli.Commands.Project;
+﻿using Dimmy.Cli;
 using SimpleInjector;
 
 namespace Dimmy.Sitecore.Plugin
@@ -10,10 +8,6 @@ namespace Dimmy.Sitecore.Plugin
         public void Bootstrap(Container container)
         {
             container.Collection.Register<ITopology>(GetType().Assembly);
-
-            container.Collection.Append<InitialiseSubCommand, InitialiseSitecore>();
-
-            new Class1().DoSomething();
         }
     }
 }

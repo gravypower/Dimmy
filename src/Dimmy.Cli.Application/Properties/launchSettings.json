@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "project start --working-path C:\\clients\\Test"
+      "commandLineArgs": "plugins install --package-id Dimmy.Sitecore.Plugin --package-version 0.0.5"
     }
   }
 }
