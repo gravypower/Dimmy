@@ -13,6 +13,12 @@ namespace Dimmy.Cli.Application
         {
             // create plugin loaders
             var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
+
+            if(!Directory.Exists(pluginsDir))
+            {
+                Directory.CreateDirectory(pluginsDir);
+            }
+
             foreach (var dir in Directory.GetDirectories(pluginsDir))
             {
                 var dirName = Path.GetFileName(dir);

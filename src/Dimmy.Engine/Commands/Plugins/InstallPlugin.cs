@@ -8,6 +8,5 @@
         
         public string InstallDirectory { get; set; }
         public string[] OmitDependencies { get; set; }
-
     }
 }

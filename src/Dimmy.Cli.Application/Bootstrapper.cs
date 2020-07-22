@@ -30,7 +30,9 @@ namespace Dimmy.Cli.Application
             assemblies.AddRange(pluginAssemblies);
 
             var hosts = new Hosts().Discover();
-            var host = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
+            var host = hosts
+                .FirstOrDefault(x => x.IsNative) 
+                       ?? hosts.FirstOrDefault(x => x.Name == "default");
 
             if (host == null)
                 Console.WriteLine("Could not find docker!");
@@ -42,8 +44,6 @@ namespace Dimmy.Cli.Application
 
             Container.Register(() => Settings.LoadDefaultSettings(root: null), Lifestyle.Scoped);
             Container.Register<INugetService, NugetService>();
-
-            
 
             Container.Register<IProjectService, ProjectService>();
             Container.Register(typeof(ICommandHandler<>), assemblies);
