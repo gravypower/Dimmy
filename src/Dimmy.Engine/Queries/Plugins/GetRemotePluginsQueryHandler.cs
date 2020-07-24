@@ -16,13 +16,12 @@ namespace Dimmy.Engine.Queries.Plugins
 
         public Task<IAsyncEnumerable<IPackageSearchMetadata>> Handle(GetRemotePlugins query)
         {
-
             return Task.Run(() => Run(query));
         }
 
         private IAsyncEnumerable<IPackageSearchMetadata> Run(GetRemotePlugins query)
         {
-            return _nugetService.GetNugetPackagesFromTag("DimmyPlugin");
+            return _nugetService.GetNugetPackagesFromTag("dimmyplugin");
         }
     }
 }

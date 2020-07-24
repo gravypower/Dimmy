@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
 using Octostache;
@@ -27,7 +28,7 @@ namespace Dimmy.Engine.Commands.Docker
             var variableDictionary = new VariableDictionary();
             variableDictionary.Set("Project.Name", projectInstance.Name);
             variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
-            variableDictionary.Set("Project.WorkingPath", command.WorkingPath);
+            variableDictionary.Set("Project.WorkingPath", Regex.Escape(command.WorkingPath));
 
             foreach (var (key, value) in projectInstance.VariableDictionary)
             {
