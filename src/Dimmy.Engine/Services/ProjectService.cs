@@ -46,10 +46,13 @@ namespace Dimmy.Engine.Services
                     });
                 }
 
+                var containerConfiguration = container.GetConfiguration();
+
                 projects[projectId].Services.Add(new Service
                 {
                     Name = labels[DimmyDockerComposeLabels.ProjectRole],
-                    ContainerId = container.Id
+                    ContainerId = container.Id,
+                    ContainerDriver = containerConfiguration.Driver
                 });
             }
 
