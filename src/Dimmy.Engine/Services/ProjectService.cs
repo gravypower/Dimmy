@@ -46,13 +46,10 @@ namespace Dimmy.Engine.Services
                     });
                 }
 
-                var containerConfiguration = container.GetConfiguration();
-
                 projects[projectId].Services.Add(new Service
                 {
                     Name = labels[DimmyDockerComposeLabels.ProjectRole],
-                    ContainerId = container.Id,
-                    ContainerDriver = containerConfiguration.Driver
+                    ContainerId = container.Id
                 });
             }
 
@@ -83,7 +80,7 @@ namespace Dimmy.Engine.Services
                 throw new ProjectFileFileNotFound();
             }
 
-            var  projectYaml = File.ReadAllText(projectFile);
+            var projectYaml = File.ReadAllText(projectFile);
             var project = deserializer.Deserialize<ProjectYaml>(projectYaml);
 
             return (projectInstance, project);

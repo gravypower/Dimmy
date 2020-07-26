@@ -5,13 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BaGet.Protocol" Version="0.3.0-preview4" />
-    <PackageReference Include="Ductus.FluentDocker" Version="2.7.59-beta0123" />
-    <PackageReference Include="NuGet.Protocol" Version="5.6.0-preview.2.6489" />
-    <PackageReference Include="NuGet.Resolver" Version="5.6.0-preview.2.6489" />
+    <PackageReference Include="Ductus.FluentDocker" Version="2.7.62-beta.138" />
+    <PackageReference Include="NuGet.Protocol" Version="5.7.0-rtm.6702" />
+    <PackageReference Include="NuGet.Resolver" Version="5.7.0-rtm.6702" />
+    <PackageReference Include="Nuke.Common" Version="0.25.0-alpha0334" />
     <PackageReference Include="Octostache" Version="2.7.0" />
+    <PackageReference Include="SimpleInjector" Version="5.0.3" />
     <PackageReference Include="System.Linq.Async" Version="4.1.1" />
-    <PackageReference Include="YamlDotNet" Version="8.1.1" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
   </ItemGroup>
 
   <ItemGroup>

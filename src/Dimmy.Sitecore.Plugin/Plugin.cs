@@ -1,4 +1,5 @@
 ﻿using Dimmy.Cli;
+using Dimmy.Sitecore.Plugin.Topologies;
 using SimpleInjector;
 
 namespace Dimmy.Sitecore.Plugin

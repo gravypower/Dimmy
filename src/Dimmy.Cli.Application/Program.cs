@@ -11,7 +11,7 @@ namespace Dimmy.Cli.Application
         {
             var container = Bootstrapper.Bootstrap();
 
-            using (AsyncScopedLifestyle.BeginScope(container))
+            await using (AsyncScopedLifestyle.BeginScope(container))
             {
                 var rootCommand = new RootCommand();
 

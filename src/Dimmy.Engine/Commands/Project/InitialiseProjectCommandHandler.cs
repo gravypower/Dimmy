@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Dimmy.Engine.Models;
 using Dimmy.Engine.Models.Yaml;
 
 namespace Dimmy.Engine.Commands.Project
@@ -14,14 +15,21 @@ namespace Dimmy.Engine.Commands.Project
 
         private static void Run(InitialiseProject command)
         {
+            var composeTemplate = new DockerComposeTemplate
+            {
+                Contents = File.ReadAllText(command.DockerComposeTemplatePath),
+                FileName = Path.GetFileName(command.DockerComposeTemplatePath)
+            };
+            
+            
             File.WriteAllText(
-                Path.Combine(command.SourceCodePath, command.DockerComposeTemplate.FileName),
-                command.DockerComposeTemplate.Contents);
+                Path.Combine(command.SourceCodePath, composeTemplate.FileName),
+                composeTemplate.Contents);
 
             var dimmyProject = new ProjectYaml
             {
                 Id = Guid.NewGuid(),
-                ComposeTemplateFileName = command.DockerComposeTemplate.FileName,
+                ComposeTemplateFileName = composeTemplate.FileName,
                 Name = command.Name,
                 VariableDictionary = command.PublicVariables
             };
