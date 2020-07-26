@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.c
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dimmy.Sitecore.Plugin", "Dimmy.Sitecore.Plugin\Dimmy.Sitecore.Plugin.csproj", "{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.VisualStudio.Plugin", "Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj", "{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{D81E1626-D7AC-4E93-B8AB-D88222246108}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A017659D-D42B-45C7-B418-B9438AF891BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A017659D-D42B-45C7-B418-B9438AF891BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,7 +44,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FCEEAA11-BB8D-4E21-806A-E8AF1337A42F} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
