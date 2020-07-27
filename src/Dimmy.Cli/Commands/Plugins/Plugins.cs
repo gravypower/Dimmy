@@ -86,6 +86,5 @@ namespace Dimmy.Cli.Commands.Plugins
 
             return installPluginCommand;
         }
-
     }
 }

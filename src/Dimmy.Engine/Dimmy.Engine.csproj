@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyVersion>0.0.2</AssemblyVersion>
+    <FileVersion>0.0.2</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>0.0.2</PackageVersion>
+    <Title>Dimmy.Engine</Title>
+    <Authors>Aaron Job</Authors>
+    <PackageProjectUrl>https://github.com/gravypower/Dimmy</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/gravypower/Dimmy/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/gravypower/Dimmy/master/Dimmy.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/gravypower/Dimmy</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
