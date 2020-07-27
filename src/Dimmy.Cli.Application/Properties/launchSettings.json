@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "plugins install --package-id Dimmy.Sitecore.Plugin --package-version 0.0.1"
+      "commandLineArgs": "project init sitecore --name test --source-code-path C:\\projects\\SomeClient --working-path C:\\clients\\SomeClient --license-path C:\\license.xml --topology-name xp"
     }
   }
 }

@@ -20,8 +20,7 @@ namespace Dimmy.Engine.Commands.Project
                 Contents = File.ReadAllText(command.DockerComposeTemplatePath),
                 FileName = Path.GetFileName(command.DockerComposeTemplatePath)
             };
-            
-            
+
             File.WriteAllText(
                 Path.Combine(command.SourceCodePath, composeTemplate.FileName),
                 composeTemplate.Contents);

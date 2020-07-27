@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
@@ -46,12 +45,13 @@ namespace Dimmy.Engine.Commands.Plugins
                 var (package, installPath) = await _nugetService.DownloadPackage(packageToInstall);
 
                 var libItems = package.GetLibItems().ToList();
-                var nearest = frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
-                var assemblies = new List<string>();
-
-                assemblies.AddRange(libItems
-                    .Where(x => x.TargetFramework.Equals(nearest))
-                    .SelectMany(x => x.Items));
+                
+                var nearestLibsFramwrok = frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
+                var assemblies = libItems
+                    .Where(x => x.TargetFramework.Equals(nearestLibsFramwrok))
+                    .SelectMany(x => x.Items)
+                    .ToList();
+               
 
                 foreach (var assembly in assemblies)
                 {
@@ -60,6 +60,23 @@ namespace Dimmy.Engine.Commands.Plugins
                     if (File.Exists(destFileName)) continue;
 
                     var sourceFileName = Path.Combine(installPath, assembly);
+                    File.Copy(sourceFileName, destFileName);
+                }
+
+                var contentItems = package.GetContentItems().ToList();
+                var nearestContentFramework = frameworkReducer.GetNearest(nuGetFramework, contentItems.Select(x => x.TargetFramework));
+                var ci = contentItems
+                    .Where(x => x.TargetFramework.Equals(nearestContentFramework))
+                    .SelectMany(x => x.Items)
+                   .ToList();
+                
+                foreach (var contentItem in ci)
+                {
+                    var destFileName = Path.Combine(pluginInstallFolder, Path.GetFileName(contentItem));
+
+                    if (File.Exists(destFileName)) continue;
+
+                    var sourceFileName = Path.Combine(installPath, contentItem);
                     File.Copy(sourceFileName, destFileName);
                 }
             }
