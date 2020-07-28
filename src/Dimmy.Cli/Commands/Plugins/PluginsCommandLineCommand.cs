@@ -11,7 +11,7 @@ using NuGet.Protocol.Core.Types;
 
 namespace Dimmy.Cli.Commands.Plugins
 {
-    public class Plugins : ICommandLineCommand
+    public class PluginsCommandLineCommand : ICommandLineCommand
     {
         private static readonly string PluginsDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
 
@@ -20,7 +20,7 @@ namespace Dimmy.Cli.Commands.Plugins
         private readonly ICommandHandler<InstallPlugin> _installPluginCommandHandler;
         private readonly IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>> _getRemotePluginsQueryHandler;
 
-        public Plugins(
+        public PluginsCommandLineCommand(
             ICommandHandler<InstallPlugin> installPluginCommandHandler,
             IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
         {

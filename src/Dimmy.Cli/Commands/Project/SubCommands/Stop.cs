@@ -5,7 +5,7 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services;
 
-namespace Dimmy.Cli.Commands.Project
+namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Stop:IProjectSubCommand
     {
@@ -27,18 +27,17 @@ namespace Dimmy.Cli.Commands.Project
                 new Option<Guid>("--project-id", "Project Id")
             };
 
-            stopProjectCommand.Handler = CommandHandler
-                .Create<Guid>(async projectId =>
+            stopProjectCommand.Handler = CommandHandler.Create(async (StopArgument arg) =>
                 {
-                    if (projectId == Guid.Empty)
+                    if (arg.ProjectId == Guid.Empty)
                     {
                         var (projectInstance, project) = _projectService.GetProject();
-                        projectId = projectInstance.Id;
+                        arg.ProjectId = projectInstance.Id;
                     }
 
                     var stopProject = new StopProject
                     {
-                        ProjectId = projectId
+                        ProjectId = arg.ProjectId
                     };
 
                     await _stopProjectCommandHandler.Handle(stopProject);

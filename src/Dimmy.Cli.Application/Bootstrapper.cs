@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Dimmy.Cli.Commands;
 using Dimmy.Cli.Commands.Project;
+using Dimmy.Cli.Commands.Project.SubCommands;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Queries;
@@ -23,38 +26,49 @@ namespace Dimmy.Cli.Application
         {
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var assemblies = ResolveAssemblies();
+            RegisterDockerHost();
 
-            var pluginAssemblies = PluginLoader.Load(Container);
-
-            assemblies.AddRange(pluginAssemblies);
-
-            var hosts = new Hosts().Discover();
-            var host = hosts
-                .FirstOrDefault(x => x.IsNative) 
-                       ?? hosts.FirstOrDefault(x => x.Name == "default");
-
-            if (host == null)
-                Console.WriteLine("Could not find docker!");
-
-            Container.Register(() => host, Lifestyle.Singleton);
-
+            //Nuget
             Container.Register<ILogger>(() => new TextWriterLogger(Console.Out));
             Container.Register(() => new SourceCacheContext(), Lifestyle.Scoped);
-
             Container.Register(() => Settings.LoadDefaultSettings(root: null), Lifestyle.Scoped);
             Container.Register<INugetService, NugetService>();
 
             Container.Register<IProjectService, ProjectService>();
-            Container.Register(typeof(ICommandHandler<>), assemblies);
-            Container.Register(typeof(IQueryHandler<,>), assemblies);
             Container.Collection.Register<IProjectSubCommand>(assemblies);
+            
             Container.Collection.Register<ICommandLineCommand>(assemblies);
             Container.Collection.Register<InitialiseSubCommand>(assemblies);
+            
+            Container.Register(typeof(ICommandHandler<>), assemblies);
+            Container.Register(typeof(IQueryHandler<,>), assemblies);
 
             Container.Verify();
 
             return Container;
+        }
+
+        private static List<Assembly> ResolveAssemblies()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+
+            var pluginAssemblies = PluginLoader.Load(Container);
+            assemblies.AddRange(pluginAssemblies);
+            return assemblies;
+        }
+
+        private static void RegisterDockerHost()
+        {
+            var hosts = new Hosts().Discover();
+            var host = hosts
+                           .FirstOrDefault(x => x.IsNative)
+                       ?? hosts.FirstOrDefault(x => x.Name == "default");
+
+            if (host == null)
+                Console.WriteLine("Could not find docker!");
+            
+            Container.Register(() => host, Lifestyle.Singleton);
         }
     }
 }

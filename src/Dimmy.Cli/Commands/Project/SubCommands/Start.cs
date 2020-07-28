@@ -5,7 +5,7 @@ using System.IO;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 
-namespace Dimmy.Cli.Commands.Project
+namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Start : IProjectSubCommand
     {
@@ -28,16 +28,15 @@ namespace Dimmy.Cli.Commands.Project
                 new Option<bool>("--generate-only", "Don't start the project only generate the docker compose file")
             };
 
-            startProjectCommand.Handler = CommandHandler
-                .Create<string, bool>(async (workingPath, generateOnly) =>
+            startProjectCommand.Handler = CommandHandler.Create(async (StartArgument arg) =>
                 {
 
-                    if (string.IsNullOrEmpty(workingPath))
+                    if (string.IsNullOrEmpty(arg.WorkingPath))
                     {
-                        workingPath = Path.GetFullPath(Environment.CurrentDirectory);
+                        arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
                     }
 
-                    var workingDockerCompose = Path.Combine(workingPath, "docker-compose.yml");
+                    var workingDockerCompose = Path.Combine(arg.WorkingPath, "docker-compose.yml");
                     if (File.Exists(workingDockerCompose))
                     {
                         File.Delete(workingDockerCompose);
@@ -45,16 +44,16 @@ namespace Dimmy.Cli.Commands.Project
 
                     await _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
                     {
-                        WorkingPath = workingPath
+                        WorkingPath = arg.WorkingPath
                     });
 
 
-                    if(generateOnly)
+                    if(arg.GeneratOnly)
                         return;
 
                     var startProject = new StartProject
                     {
-                        DockerComposeFilePath= Path.Combine(workingPath, "docker-compose.yml")
+                        DockerComposeFilePath= Path.Combine(arg.WorkingPath, "docker-compose.yml")
                     };
 
                     await _startProjectCommandHandler.Handle(startProject);

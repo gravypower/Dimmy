@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
 
-namespace Dimmy.Cli.Commands.Project
+namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Initialise: IProjectSubCommand
     {

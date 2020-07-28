@@ -7,13 +7,12 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services;
 
-namespace Dimmy.Cli.Commands.Project
+namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Attach : IProjectSubCommand
     {
         private readonly IProjectService _projectService;
         private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
-
 
         public Attach(
             IProjectService projectService,
@@ -32,34 +31,32 @@ namespace Dimmy.Cli.Commands.Project
                 new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
             };
 
-            command.Handler = CommandHandler
-                .Create<Guid, string, bool>((projectId, role, noExit) =>
+            command.Handler = CommandHandler.Create((AttachArgument arg) =>
+            {
+                if (arg.ProjectId == Guid.Empty)
                 {
-                    
-                    if (projectId == Guid.Empty)
-                    {
-                        projectId = _projectService.GetProject().Project.Id;
-                    }
+                    arg.ProjectId = _projectService.GetProject().Project.Id;
+                }
 
-                    var project = _projectService.RunningProjects().Single(p => p.Id == projectId);
+                var project = _projectService.RunningProjects().Single(p => p.Id == arg.ProjectId);
 
-                    if (string.IsNullOrEmpty(role))
-                    {
-                        project.PrettyPrint();
-                        Console.Write("Enter name of role:");
+                if (string.IsNullOrEmpty(arg.Role))
+                {
+                    project.PrettyPrint();
+                    Console.Write("Enter name of role:");
 
-                        role = Console.ReadLine();
-                    }
+                    arg.Role = Console.ReadLine();
+                }
 
-                    var projectRole = project.Services.Single(r => r.Name == role);
+                var projectRole = project.Services.Single(r => r.Name == arg.Role);
 
-                    _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
-                    {
-                        ContainerId = projectRole.ContainerId,
-                        ShellTitle = $"{project.Name}({projectRole.Name})",
-                        NoExit = noExit
-                    });
+                _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
+                {
+                    ContainerId = projectRole.ContainerId,
+                    ShellTitle = $"{project.Name}({projectRole.Name})",
+                    NoExit = arg.NoExit
                 });
+            });
 
             return command;
         }

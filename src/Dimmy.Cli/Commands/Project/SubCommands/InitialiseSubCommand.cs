@@ -2,7 +2,7 @@
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Project;
 
-namespace Dimmy.Cli.Commands.Project
+namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public abstract class InitialiseSubCommand
     {
@@ -30,8 +30,7 @@ namespace Dimmy.Cli.Commands.Project
 
             return command;
         }
-
-
+        
         protected abstract void HydrateCommand(Command command);
 
     }

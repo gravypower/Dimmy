@@ -26,8 +26,7 @@ namespace Dimmy.Cli.Application
                 var pluginLoader = McMaster.NETCore.Plugins.PluginLoader.CreateFromAssemblyFile(
                     pluginDll,
                     new[] { typeof(IPlugin) });
-
-
+                
                 var defaultAssembly = pluginLoader.LoadDefaultAssembly();
 
                 var pluginType = defaultAssembly.GetTypes()
@@ -35,7 +34,7 @@ namespace Dimmy.Cli.Application
 
                 var plugin = (IPlugin)Activator.CreateInstance(pluginType);
 
-                plugin.Bootstrap(container);
+                plugin?.Bootstrap(container);
 
                 yield return defaultAssembly;
             }
