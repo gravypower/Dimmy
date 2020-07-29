@@ -8,9 +8,10 @@ Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Window
 
 Under the hood, Dimmy is not much more than plugin management logic, a templating engine for docker-compose files, and a way to manage public and non-public settings.  It uses the power of Octostache to generate docker-compose files that are then executed by docker-compose. The best thing is you do not need to commit to Dimmy, if you find you dislike dimsims take the generated docker-compose file and remove the tool.
 
-There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked to source control. Next is the runtime directory where non-public development settings, the generated docker-compose files, and any bind mounts are found; this directory would generally not be committed to source control.
+There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked into source control. Next is the runtime directory where non-public development settings, the generated docker-compose files, and any bind mounts are found; this directory would generally not be committed to source control.
 
-Getting started:
+## Getting started
+
 To get started there are a few prerequisites:
 .NET Core 3.1
 Docker
@@ -38,7 +39,7 @@ Installing is also one line
 
 This downloads and extracts the NuGet package into a plugin directory. On the next execution of dimmy plugins are discovered and bootstrapped, allowing that plugin to register root and sub commands. **Please note that this will allow 3rd party code to execute so use this at your own risk**.
 
-Running dimmy again you will see a new root command "hello"
+Running dimmy again you will see a new root command `hello`
 
 `dimmy hello --name Aaron`
 
