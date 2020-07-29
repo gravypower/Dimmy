@@ -1,4 +1,6 @@
-# Dimmy
+![DimSim](/Dimmy.png) 
+
+# Dimmy 
 
 Dimmy is a tool to help you with a docker based development workflow. 
 
