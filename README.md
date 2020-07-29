@@ -41,6 +41,8 @@ Running dimmy again you will see a new root command "hello"
 ### Current plugins:
 * https://github.com/DeloitteDigitalAPAC/Dimmy.Sitecore.Plugin
 
+## Whats Next
+
 No official road map yet but you can see what [enhancements](https://github.com/gravypower/Dimmy/labels/enhancement) may be on the way. 
 
 If you wish to contribute, please, by all means, open a PR. Also goes for any bugs you may find open a new git issue.
