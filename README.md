@@ -14,19 +14,24 @@ To get started there are a few prerequisites:
 Docker
 Docker Compose
 
-With that out of the way we can install the tool 
-dotnet tool install --global Dimmy --version 0.0.3
+With that out of the way we can install the tool
+
+`dotnet tool install --global Dimmy --version 0.0.3`
 
 See the [nuget page]( https://www.nuget.org/packages/Dimmy/) for the latest version. Also, note you may need to restart your shell to refresh the path environment variables.
 
-Running dimmy now you see a list of root commands, the one we are interests is the plugin.
+## Plugins
 
-runing
+Running dimmy now you see a list of root commands, the one we are interested in is `plugins`.
+
+You can see what plugins are available by running
+
 `dimmy plugins ls --remote`
 
 This makes a search request to NuGet for any packages tagged with "dimmyplugin" equivalent to https://www.nuget.org/packages?q=Tags%3A%22dimmyplugin%22
 
-Installing is also one line 
+Installing is also one line
+
 `dimmy plugins install --package-id Dimmy.HelloWorld.Plugin --package-version 0.0.1`
 
 This downloads and extracts the NuGet package into a plugin directory. On the next execution of dimmy plugins are discovered and bootstrapped, allowing that plugin to register root and sub commands. **Please note that this will allow 3rd party code to execute so use this at your own risk**.
