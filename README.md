@@ -10,9 +10,15 @@ Under the hood, Dimmy is not much more than plugin management logic, a templatin
 
 There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked into source control. Next is the runtime directory where non-public development settings, the generated docker-compose file, and any bind mounts are found; this directory would generally not be committed to source control.
 
+## Mission
+
+Dimmy aims to be a tool that decorates a developers experience, support both Windows and Linux containers, be transparent in what it is doing and above all not bring lock-in. I want to ensure that everything that Dimmy does a developer can continue doing even without Dimmy but maybe a bit slower.
+
 ## Inspiration
 
-There have been a few inspirations for this project, the main one being [Lando](https://docs.lando.dev/) and initially I wanted to use that tool, but there were two issues/roadblocks for me, and so Dimmy was conceived. The first was that it seemed to me that it was geared to Linux containers; it has a bunch of really cool features, but some of them were not available on Windows containers. This, coupled with the fact I could not get it working at all with a Windows container, made me drop this asperation but not the inspiration. The other was it is written in NodeJS, not that I think this is a bad language its just I prefer C# and the .NET Core stack. Dimmy aims to be a tool that decorates a developers experience, support both Windows and Linux containers, be transparent in what it is doing and above all not bring lock-in. I want to ensure that everything that Dimmy does a developer can continue doing even without Dimmy but maybe a bit slower.
+There have been a few inspirations for this project, the main one being [Lando](https://docs.lando.dev/) and initially I wanted to use that tool, but there were two issues/roadblocks for me, and so Dimmy was conceived. The first was that it seemed to me that it was geared to Linux containers; it has a bunch of really cool features, but some of them were not available on Windows containers. This, coupled with the fact I could not get it working at all with a Windows container, made me drop this asperation but not the inspiration. The other was it is written in NodeJS, not that I think this is a bad language its just I prefer C# and the .NET Core stack. 
+
+The other was [node-red](https://nodered.org/) I like how it uses tags on npm packages to distribute plugins, and I wanted to see if I could do something similar with NuGet.
 
 ## Getting started
 
