@@ -11,8 +11,8 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Attach : IProjectSubCommand
     {
-        private readonly IProjectService _projectService;
         private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
+        private readonly IProjectService _projectService;
 
         public Attach(
             IProjectService projectService,
@@ -26,17 +26,15 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
         {
             var command = new Command("attach", "Attach to a running container in a project.")
             {
-                new Option<Guid>("--project-id", "The Id of the Project you wish to attach to. Omit for context project"),
+                new Option<Guid>("--project-id",
+                    "The Id of the Project you wish to attach to. Omit for context project"),
                 new Option<string>("--role", "The role you want to connect to. Omit to pick"),
                 new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
             };
 
             command.Handler = CommandHandler.Create((AttachArgument arg) =>
             {
-                if (arg.ProjectId == Guid.Empty)
-                {
-                    arg.ProjectId = _projectService.GetProject().Project.Id;
-                }
+                if (arg.ProjectId == Guid.Empty) arg.ProjectId = _projectService.GetProject().Project.Id;
 
                 var project = _projectService.RunningProjects().Single(p => p.Id == arg.ProjectId);
 

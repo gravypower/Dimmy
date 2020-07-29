@@ -8,7 +8,7 @@ using NuGet.Versioning;
 
 namespace Dimmy.Engine.Commands.Plugins
 {
-    public class InstallPluginCommandHandler:ICommandHandler<InstallPlugin>
+    public class InstallPluginCommandHandler : ICommandHandler<InstallPlugin>
     {
         private readonly INugetService _nugetService;
 
@@ -45,13 +45,14 @@ namespace Dimmy.Engine.Commands.Plugins
                 var (package, installPath) = await _nugetService.DownloadPackage(packageToInstall);
 
                 var libItems = package.GetLibItems().ToList();
-                
-                var nearestLibsFramwrok = frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
+
+                var nearestLibsFramwrok =
+                    frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
                 var assemblies = libItems
                     .Where(x => x.TargetFramework.Equals(nearestLibsFramwrok))
                     .SelectMany(x => x.Items)
                     .ToList();
-               
+
 
                 foreach (var assembly in assemblies)
                 {
@@ -64,12 +65,13 @@ namespace Dimmy.Engine.Commands.Plugins
                 }
 
                 var contentItems = package.GetContentItems().ToList();
-                var nearestContentFramework = frameworkReducer.GetNearest(nuGetFramework, contentItems.Select(x => x.TargetFramework));
+                var nearestContentFramework =
+                    frameworkReducer.GetNearest(nuGetFramework, contentItems.Select(x => x.TargetFramework));
                 var ci = contentItems
                     .Where(x => x.TargetFramework.Equals(nearestContentFramework))
                     .SelectMany(x => x.Items)
-                   .ToList();
-                
+                    .ToList();
+
                 foreach (var contentItem in ci)
                 {
                     var destFileName = Path.Combine(pluginInstallFolder, Path.GetFileName(contentItem));

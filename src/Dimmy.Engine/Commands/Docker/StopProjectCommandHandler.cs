@@ -5,7 +5,7 @@ using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Commands.Docker
 {
-    public class StopProjectCommandHandler:ICommandHandler<StopProject>
+    public class StopProjectCommandHandler : ICommandHandler<StopProject>
     {
         private readonly IHostService _hostService;
         private readonly IProjectService _projectService;
@@ -20,7 +20,7 @@ namespace Dimmy.Engine.Commands.Docker
 
         public Task Handle(StopProject command)
         {
-            return Task.Run(()=>Run(command));
+            return Task.Run(() => Run(command));
         }
 
         private void Run(StopProject command)

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Commands.Docker
 {
-    public class EnterPowershellSessionCommandHandler :ICommandHandler<EnterPowershellSession>
+    public class EnterPowershellSessionCommandHandler : ICommandHandler<EnterPowershellSession>
     {
         public Task Handle(EnterPowershellSession command)
         {

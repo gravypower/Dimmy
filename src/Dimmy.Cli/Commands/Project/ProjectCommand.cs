@@ -16,10 +16,7 @@ namespace Dimmy.Cli.Commands.Project
         {
             var command = new Command("project");
 
-            foreach (var projectSubCommand in _projectSubCommands)
-            {
-                command.AddCommand(projectSubCommand.GetCommand());
-            }
+            foreach (var projectSubCommand in _projectSubCommands) command.AddCommand(projectSubCommand.GetCommand());
 
             return command;
         }

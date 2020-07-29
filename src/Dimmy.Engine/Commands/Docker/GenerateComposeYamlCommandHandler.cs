@@ -7,7 +7,7 @@ using Octostache;
 
 namespace Dimmy.Engine.Commands.Docker
 {
-    public class GenerateComposeYamlCommandHandler:ICommandHandler<GenerateComposeYaml>
+    public class GenerateComposeYamlCommandHandler : ICommandHandler<GenerateComposeYaml>
     {
         private readonly IProjectService _projectService;
 
@@ -18,7 +18,7 @@ namespace Dimmy.Engine.Commands.Docker
 
         public Task Handle(GenerateComposeYaml command)
         {
-           return Task.Run(() => Run(command));
+            return Task.Run(() => Run(command));
         }
 
         private void Run(GenerateComposeYaml command)
@@ -30,15 +30,9 @@ namespace Dimmy.Engine.Commands.Docker
             variableDictionary.Set("Project.Id", $"{projectInstance.Id:N}");
             variableDictionary.Set("Project.WorkingPath", Regex.Escape(command.WorkingPath));
 
-            foreach (var (key, value) in projectInstance.VariableDictionary)
-            {
-                variableDictionary.Set(key, value);
-            }
+            foreach (var (key, value) in projectInstance.VariableDictionary) variableDictionary.Set(key, value);
 
-            foreach (var (key, value) in project.VariableDictionary)
-            {
-                variableDictionary.Set(key, value);
-            }
+            foreach (var (key, value) in project.VariableDictionary) variableDictionary.Set(key, value);
 
 
             var templateFilePath = Path.Combine(projectInstance.SourceCodeLocation, project.ComposeTemplateFileName);
@@ -46,7 +40,7 @@ namespace Dimmy.Engine.Commands.Docker
 
             var dockerCompose = variableDictionary.Evaluate(template, out var error);
 
-            if(!string.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(error))
                 throw new DockerComposeGenerationFailed(error);
 
             var dockerComposeFile = Path.Combine(command.WorkingPath, "docker-compose.yml");
@@ -57,7 +51,7 @@ namespace Dimmy.Engine.Commands.Docker
 
     public class DockerComposeGenerationFailed : Exception
     {
-        public DockerComposeGenerationFailed(string error):base(error)
+        public DockerComposeGenerationFailed(string error) : base(error)
         {
         }
     }

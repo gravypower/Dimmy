@@ -10,7 +10,7 @@ using Dimmy.VisualStudio.Plugin.Services.VisualStudioRemoteTools;
 
 namespace Dimmy.VisualStudio.Plugin.Commands.Development
 {
-    public class InstallVisualStudio2019RemoteToolsCommandHandler:ICommandHandler<InstallVisualStudioRemoteTools>
+    public class InstallVisualStudio2019RemoteToolsCommandHandler : ICommandHandler<InstallVisualStudioRemoteTools>
     {
         private readonly IEnumerable<IVisualStudioRemoteTool> _visualStudioRemoteTools;
 
@@ -29,19 +29,17 @@ namespace Dimmy.VisualStudio.Plugin.Commands.Development
         private void Run(InstallVisualStudioRemoteTools command)
         {
             var remoteTool = _visualStudioRemoteTools
-                .Single(t => t.VisualStudioVersion == command.VisualStudioVersion && t.Architecture == command.Architecture);
+                .Single(t =>
+                    t.VisualStudioVersion == command.VisualStudioVersion && t.Architecture == command.Architecture);
 
             using (var sha256 = SHA256.Create())
             {
                 using (var remoteToolStream = new MemoryStream(new WebClient().DownloadData(remoteTool.Url)))
                 {
                     var checkSum = sha256.ComputeHash(remoteToolStream);
-                    var checkSumString  = BitConverter.ToString(checkSum).Replace("-", string.Empty);
+                    var checkSumString = BitConverter.ToString(checkSum).Replace("-", string.Empty);
 
-                    if (remoteTool.Checksum != checkSumString)
-                    {
-                        throw new CheckSumVerificationFailed();
-                    }
+                    if (remoteTool.Checksum != checkSumString) throw new CheckSumVerificationFailed();
 
                     var exists = Directory.Exists(command.InstallPath);
 
@@ -52,13 +50,12 @@ namespace Dimmy.VisualStudio.Plugin.Commands.Development
                     using (var file = new FileStream(remoteToolPath, FileMode.Create, FileAccess.Write))
                     {
                         var bytes = new byte[remoteToolStream.Length];
-                        remoteToolStream.Read(bytes, 0, (int)remoteToolStream.Length);
+                        remoteToolStream.Read(bytes, 0, (int) remoteToolStream.Length);
                         file.Write(bytes, 0, bytes.Length);
                         remoteToolStream.Close();
                     }
                 }
             }
-
         }
     }
 

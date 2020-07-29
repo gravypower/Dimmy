@@ -5,6 +5,7 @@ using System.Linq;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Models.Yaml;
 using Ductus.FluentDocker.Services;
+using YamlDotNet.Serialization;
 
 namespace Dimmy.Engine.Services
 {
@@ -38,13 +39,11 @@ namespace Dimmy.Engine.Services
                 var projectName = labels[DimmyDockerComposeLabels.ProjectName];
 
                 if (!projects.ContainsKey(projectId))
-                {
                     projects.Add(projectId, new Project
                     {
                         Name = projectName,
                         Id = projectId
                     });
-                }
 
                 projects[projectId].Services.Add(new Service
                 {
@@ -64,21 +63,15 @@ namespace Dimmy.Engine.Services
         public (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) GetProject(string projectInstancePath = "")
         {
             var projectInstanceFile = Path.Combine(projectInstancePath, ".dimmy");
-            if (!File.Exists(projectInstanceFile))
-            {
-                throw new ProjectInstanceFileFileNotFound();
-            }
+            if (!File.Exists(projectInstanceFile)) throw new ProjectInstanceFileFileNotFound();
 
-            var deserializer = new YamlDotNet.Serialization.Deserializer();
+            var deserializer = new Deserializer();
 
             var projectInstanceYaml = File.ReadAllText(projectInstanceFile);
             var projectInstance = deserializer.Deserialize<ProjectInstanceYaml>(projectInstanceYaml);
 
             var projectFile = Path.Combine(projectInstance.SourceCodeLocation, ".dimmy.yaml");
-            if (!File.Exists(projectFile))
-            {
-                throw new ProjectFileFileNotFound();
-            }
+            if (!File.Exists(projectFile)) throw new ProjectFileFileNotFound();
 
             var projectYaml = File.ReadAllText(projectFile);
             var project = deserializer.Deserialize<ProjectYaml>(projectYaml);

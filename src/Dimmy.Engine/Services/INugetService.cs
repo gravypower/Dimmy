@@ -10,6 +10,7 @@ namespace Dimmy.Engine.Services
     public interface INugetService
     {
         IAsyncEnumerable<IPackageSearchMetadata> GetNugetPackagesFromTag(string tag);
+
         Task<IEnumerable<SourcePackageDependencyInfo>> GetPackageAndDependencies(
             PackageIdentity packageId,
             NuGetFramework packageFramework,
@@ -20,6 +21,7 @@ namespace Dimmy.Engine.Services
             NuGetFramework packageFramework,
             string[] omitDependencies);
 
-        Task<(PackageReaderBase package, string installPath)> DownloadPackage(SourcePackageDependencyInfo packageToInstall);
+        Task<(PackageReaderBase package, string installPath)> DownloadPackage(
+            SourcePackageDependencyInfo packageToInstall);
     }
 }

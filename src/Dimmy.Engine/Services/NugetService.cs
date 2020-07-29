@@ -16,12 +16,12 @@ using NuGet.Resolver;
 
 namespace Dimmy.Engine.Services
 {
-    public class NugetService: INugetService
+    public class NugetService : INugetService
     {
-        private readonly SourceCacheContext _sourceCacheContext;
-        private readonly ISettings _settings;
         private readonly ILogger _logger;
         private readonly IEnumerable<SourceRepository> _repositories;
+        private readonly ISettings _settings;
+        private readonly SourceCacheContext _sourceCacheContext;
 
         public NugetService(
             SourceCacheContext sourceCacheContext,
@@ -53,10 +53,7 @@ namespace Dimmy.Engine.Services
                     new TextWriterLogger(Console.Out),
                     CancellationToken.None);
 
-                foreach (var packageSearchMetadata in searchMetadata)
-                {
-                    yield return packageSearchMetadata;
-                }
+                foreach (var packageSearchMetadata in searchMetadata) yield return packageSearchMetadata;
             }
         }
 
@@ -74,15 +71,13 @@ namespace Dimmy.Engine.Services
 
             async Task DoGetPackageDependencies(PackageIdentity p)
             {
-                if (availablePackages.Contains(p))
-                {
-                    return;
-                }
+                if (availablePackages.Contains(p)) return;
 
                 foreach (var sourceRepository in _repositories)
                 {
                     var dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>();
-                    var dependencyInfo = await dependencyInfoResource.ResolvePackage(p, packageFramework, _sourceCacheContext, _logger, CancellationToken.None);
+                    var dependencyInfo = await dependencyInfoResource.ResolvePackage(p, packageFramework,
+                        _sourceCacheContext, _logger, CancellationToken.None);
 
                     if (dependencyInfo == null) continue;
 
@@ -139,7 +134,8 @@ namespace Dimmy.Engine.Services
                 .Select(p => sourcePackageDependencyInfos.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
         }
 
-        public async Task<(PackageReaderBase package, string installPath)> DownloadPackage(SourcePackageDependencyInfo packageToInstall)
+        public async Task<(PackageReaderBase package, string installPath)> DownloadPackage(
+            SourcePackageDependencyInfo packageToInstall)
         {
             var packagePathResolver = new PackagePathResolver(Path.GetFullPath("packages"));
             var packageExtractionContext =
@@ -150,10 +146,11 @@ namespace Dimmy.Engine.Services
                     _logger);
 
             var installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
-            
+
             if (installedPath != null) return (new PackageFolderReader(installedPath), installedPath);
 
-            var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
+            var downloadResource =
+                await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
 
             var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                 packageToInstall,

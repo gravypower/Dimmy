@@ -5,7 +5,7 @@ using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Queries.Projects
 {
-    public class GetRunningProjectsQueryHandler:IQueryHandler<GetRunningProjects, IEnumerable<Project>>
+    public class GetRunningProjectsQueryHandler : IQueryHandler<GetRunningProjects, IEnumerable<Project>>
     {
         private readonly IProjectService _projectService;
 

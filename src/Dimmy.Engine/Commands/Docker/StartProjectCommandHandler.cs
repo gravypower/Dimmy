@@ -9,7 +9,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Dimmy.Engine.Commands.Docker
 {
-    public class StartProjectCommandHandler:ICommandHandler<StartProject>
+    public class StartProjectCommandHandler : ICommandHandler<StartProject>
     {
         private readonly IProjectService _projectService;
 
@@ -20,15 +20,12 @@ namespace Dimmy.Engine.Commands.Docker
 
         public Task Handle(StartProject command)
         {
-            return Task.Run(()=> Run(command));
+            return Task.Run(() => Run(command));
         }
 
         private void Run(StartProject command)
         {
-            if (!File.Exists(command.DockerComposeFilePath))
-            {
-                throw new DockerComposeFileNotFound();
-            }
+            if (!File.Exists(command.DockerComposeFilePath)) throw new DockerComposeFileNotFound();
 
             var builder = new Builder()
                 .UseContainer()
@@ -43,22 +40,20 @@ namespace Dimmy.Engine.Commands.Docker
                 .IgnoreUnmatchedProperties()
                 .Build();
 
-            var dockerCompose = deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(command.DockerComposeFilePath));
+            var dockerCompose =
+                deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(command.DockerComposeFilePath));
 
             foreach (var dockerComposeService in dockerCompose.Services)
+            foreach (var volume in dockerComposeService.Value.Volumes)
             {
-                foreach (var volume in dockerComposeService.Value.Volumes)
-                {
-                    var volumeParts = volume.Split(':');
+                var volumeParts = volume.Split(':');
 
-                    var hostPath = $"{volumeParts[0]}:{ volumeParts[1]}";
-                    var exists = Directory.Exists(hostPath);
+                var hostPath = $"{volumeParts[0]}:{volumeParts[1]}";
+                var exists = Directory.Exists(hostPath);
 
-                    if (!exists)
-                        Directory.CreateDirectory(hostPath);
-                }
+                if (!exists)
+                    Directory.CreateDirectory(hostPath);
             }
-
 
 
             compositeService.Start();

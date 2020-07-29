@@ -3,10 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Models.Yaml;
+using YamlDotNet.Serialization;
 
 namespace Dimmy.Engine.Commands.Project
 {
-    public class InitialiseProjectCommandHandler:ICommandHandler<InitialiseProject>
+    public class InitialiseProjectCommandHandler : ICommandHandler<InitialiseProject>
     {
         public Task Handle(InitialiseProject command)
         {
@@ -33,7 +34,7 @@ namespace Dimmy.Engine.Commands.Project
                 VariableDictionary = command.PublicVariables
             };
 
-            var serializer = new YamlDotNet.Serialization.Serializer();
+            var serializer = new Serializer();
             var dimmyProjectYaml = serializer.Serialize(dimmyProject);
 
             File.WriteAllText(

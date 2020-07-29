@@ -23,15 +23,14 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 new Option<string>("--name"),
                 new Option<string>("--source-code-path"),
                 new Option<string>("--working-path"),
-                new Option<string>("--docker-compose-template"),
+                new Option<string>("--docker-compose-template")
             };
 
             HydrateCommand(command);
 
             return command;
         }
-        
-        protected abstract void HydrateCommand(Command command);
 
+        protected abstract void HydrateCommand(Command command);
     }
 }

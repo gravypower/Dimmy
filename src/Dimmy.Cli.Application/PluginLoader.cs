@@ -25,14 +25,14 @@ namespace Dimmy.Cli.Application
 
                 var pluginLoader = McMaster.NETCore.Plugins.PluginLoader.CreateFromAssemblyFile(
                     pluginDll,
-                    new[] { typeof(IPlugin) });
-                
+                    new[] {typeof(IPlugin)});
+
                 var defaultAssembly = pluginLoader.LoadDefaultAssembly();
 
                 var pluginType = defaultAssembly.GetTypes()
                     .Single(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsAbstract);
 
-                var plugin = (IPlugin)Activator.CreateInstance(pluginType);
+                var plugin = (IPlugin) Activator.CreateInstance(pluginType);
 
                 plugin?.Bootstrap(container);
 

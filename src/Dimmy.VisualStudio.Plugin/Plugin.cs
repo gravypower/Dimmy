@@ -4,7 +4,7 @@ using SimpleInjector;
 
 namespace Dimmy.VisualStudio.Plugin
 {
-    public class Plugin:IPlugin
+    public class Plugin : IPlugin
     {
         public void Bootstrap(Container container)
         {

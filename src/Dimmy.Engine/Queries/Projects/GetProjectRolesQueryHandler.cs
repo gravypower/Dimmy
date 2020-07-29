@@ -6,7 +6,7 @@ using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Queries.Projects
 {
-    public class GetProjectRolesQueryHandler:IQueryHandler<GetProjectRoles, IEnumerable<Service>>
+    public class GetProjectRolesQueryHandler : IQueryHandler<GetProjectRoles, IEnumerable<Service>>
     {
         private readonly IProjectService _projectService;
 

@@ -32,15 +32,15 @@ namespace Dimmy.Cli.Application
             //Nuget
             Container.Register<ILogger>(() => new TextWriterLogger(Console.Out));
             Container.Register(() => new SourceCacheContext(), Lifestyle.Scoped);
-            Container.Register(() => Settings.LoadDefaultSettings(root: null), Lifestyle.Scoped);
+            Container.Register(() => Settings.LoadDefaultSettings(null), Lifestyle.Scoped);
             Container.Register<INugetService, NugetService>();
 
             Container.Register<IProjectService, ProjectService>();
             Container.Collection.Register<IProjectSubCommand>(assemblies);
-            
+
             Container.Collection.Register<ICommandLineCommand>(assemblies);
             Container.Collection.Register<InitialiseSubCommand>(assemblies);
-            
+
             Container.Register(typeof(ICommandHandler<>), assemblies);
             Container.Register(typeof(IQueryHandler<,>), assemblies);
 
@@ -67,7 +67,7 @@ namespace Dimmy.Cli.Application
 
             if (host == null)
                 Console.WriteLine("Could not find docker!");
-            
+
             Container.Register(() => host, Lifestyle.Singleton);
         }
     }

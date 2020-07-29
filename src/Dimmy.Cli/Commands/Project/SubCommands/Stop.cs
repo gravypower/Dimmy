@@ -7,7 +7,7 @@ using Dimmy.Engine.Services;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class Stop:IProjectSubCommand
+    public class Stop : IProjectSubCommand
     {
         private readonly IProjectService _projectService;
         private readonly ICommandHandler<StopProject> _stopProjectCommandHandler;
@@ -28,20 +28,20 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             };
 
             stopProjectCommand.Handler = CommandHandler.Create(async (StopArgument arg) =>
+            {
+                if (arg.ProjectId == Guid.Empty)
                 {
-                    if (arg.ProjectId == Guid.Empty)
-                    {
-                        var (projectInstance, project) = _projectService.GetProject();
-                        arg.ProjectId = projectInstance.Id;
-                    }
+                    var (projectInstance, project) = _projectService.GetProject();
+                    arg.ProjectId = projectInstance.Id;
+                }
 
-                    var stopProject = new StopProject
-                    {
-                        ProjectId = arg.ProjectId
-                    };
+                var stopProject = new StopProject
+                {
+                    ProjectId = arg.ProjectId
+                };
 
-                    await _stopProjectCommandHandler.Handle(stopProject);
-                });
+                await _stopProjectCommandHandler.Handle(stopProject);
+            });
             return stopProjectCommand;
         }
     }

@@ -29,38 +29,31 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             };
 
             startProjectCommand.Handler = CommandHandler.Create(async (StartArgument arg) =>
+            {
+                if (string.IsNullOrEmpty(arg.WorkingPath))
+                    arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
+
+                var workingDockerCompose = Path.Combine(arg.WorkingPath, "docker-compose.yml");
+                if (File.Exists(workingDockerCompose)) File.Delete(workingDockerCompose);
+
+                await _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
                 {
-
-                    if (string.IsNullOrEmpty(arg.WorkingPath))
-                    {
-                        arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
-                    }
-
-                    var workingDockerCompose = Path.Combine(arg.WorkingPath, "docker-compose.yml");
-                    if (File.Exists(workingDockerCompose))
-                    {
-                        File.Delete(workingDockerCompose);
-                    }
-
-                    await _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
-                    {
-                        WorkingPath = arg.WorkingPath
-                    });
-
-
-                    if(arg.GeneratOnly)
-                        return;
-
-                    var startProject = new StartProject
-                    {
-                        DockerComposeFilePath= Path.Combine(arg.WorkingPath, "docker-compose.yml")
-                    };
-
-                    await _startProjectCommandHandler.Handle(startProject);
+                    WorkingPath = arg.WorkingPath
                 });
 
-            return startProjectCommand;
 
+                if (arg.GeneratOnly)
+                    return;
+
+                var startProject = new StartProject
+                {
+                    DockerComposeFilePath = Path.Combine(arg.WorkingPath, "docker-compose.yml")
+                };
+
+                await _startProjectCommandHandler.Handle(startProject);
+            });
+
+            return startProjectCommand;
         }
     }
 }

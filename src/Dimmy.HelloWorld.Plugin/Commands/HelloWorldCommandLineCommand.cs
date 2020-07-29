@@ -5,7 +5,7 @@ using Dimmy.Cli.Commands;
 
 namespace Dimmy.HelloWorld.Plugin.Commands
 {
-    public class HelloWorldCommandLineCommand:ICommandLineCommand
+    public class HelloWorldCommandLineCommand : ICommandLineCommand
     {
         public Command GetCommand()
         {
@@ -14,9 +14,9 @@ namespace Dimmy.HelloWorld.Plugin.Commands
                 Handler = CommandHandler.Create((HelloWorldCommandLineArgument arg) =>
                 {
                     Console.WriteLine($"Hello {arg.Name}");
-                }),
+                })
             };
-            
+
             helloNameCommand.AddOption(new Option<string>("--name", "Greets you with you name"));
 
             return helloNameCommand;

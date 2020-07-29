@@ -3,7 +3,7 @@ using System.CommandLine;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class Initialise: IProjectSubCommand
+    public class Initialise : IProjectSubCommand
     {
         private readonly IEnumerable<InitialiseSubCommand> _initialiseSubCommands;
 
@@ -18,9 +18,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             command.AddAlias("init");
 
             foreach (var initialiseSubCommand in _initialiseSubCommands)
-            {
                 command.AddCommand(initialiseSubCommand.GetCommand());
-            }
 
             return command;
         }

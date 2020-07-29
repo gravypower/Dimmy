@@ -5,7 +5,7 @@ using SimpleInjector.Lifestyles;
 
 namespace Dimmy.Cli.Application
 {
-    class Program
+    internal class Program
     {
         public static async Task<int> Main(string[] args)
         {
@@ -16,9 +16,7 @@ namespace Dimmy.Cli.Application
                 var rootCommand = new RootCommand();
 
                 foreach (var commandLineCommand in container.GetAllInstances<ICommandLineCommand>())
-                {
                     rootCommand.AddCommand(commandLineCommand.GetCommand());
-                }
 
                 return await rootCommand.InvokeAsync(args);
             }

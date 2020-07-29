@@ -3,7 +3,7 @@ using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Commands.Docker
 {
-    public class DeploymentHookCommandHandler:ICommandHandler<DeploymentHook>
+    public class DeploymentHookCommandHandler : ICommandHandler<DeploymentHook>
     {
         private readonly IHostService _hostService;
 
@@ -15,7 +15,6 @@ namespace Dimmy.Engine.Commands.Docker
         public Task Handle(DeploymentHook command)
         {
             return Task.Run(() => Run(command));
-            
         }
 
         private static void Run(DeploymentHook command)

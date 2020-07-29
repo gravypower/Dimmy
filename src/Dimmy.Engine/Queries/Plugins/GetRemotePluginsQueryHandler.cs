@@ -5,7 +5,8 @@ using NuGet.Protocol.Core.Types;
 
 namespace Dimmy.Engine.Queries.Plugins
 {
-    public class GetRemotePluginsQueryHandler:IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>>
+    public class
+        GetRemotePluginsQueryHandler : IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>>
     {
         private readonly INugetService _nugetService;
 
