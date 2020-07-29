@@ -13,9 +13,9 @@ There are two essential parts of how Dimmy works. The first is your project dire
 ## Getting started
 
 To get started there are a few prerequisites:
-.NET Core 3.1
-Docker
-Docker Compose
+* .NET Core 3.1
+* Docker
+* Docker Compose
 
 With that out of the way we can install the tool
 
