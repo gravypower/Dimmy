@@ -40,6 +40,10 @@ This downloads and extracts the NuGet package into a plugin directory. On the ne
 
 Running dimmy again you will see a new root command "hello"
 
+`dimmy hello --name Aaron`
+
+This will respond to you `Hello Aaron`
+
 ### Current plugins:
 * https://github.com/DeloitteDigitalAPAC/Dimmy.Sitecore.Plugin
 
