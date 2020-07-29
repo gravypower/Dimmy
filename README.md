@@ -38,8 +38,8 @@ This downloads and extracts the NuGet package into a plugin directory. On the ne
 
 Running dimmy again you will see a new root command "hello"
 
-Current plugins:
-https://github.com/DeloitteDigitalAPAC/Dimmy.Sitecore.Plugin
+### Current plugins:
+* https://github.com/DeloitteDigitalAPAC/Dimmy.Sitecore.Plugin
 
 No official road map yet but you can see what [enhancements](https://github.com/gravypower/Dimmy/labels/enhancement) may be on the way. 
 
