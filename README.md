@@ -4,7 +4,7 @@
 
 Dimmy is a tool to help you with a docker based development workflow. 
 
-Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Windows 10. Even though initially conceived to help with .NET development, it has a pluggable architecture allowing you to bring support for your favourite platforms; Drupal, Umbraco, or Sitecore. Do you know how to write a docker-compose file and publish to NuGet? Grate you now know how to build and distribute a Dimmy plugin.
+Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Windows 10. Even though initially conceived to help with .NET development, it has a pluggable architecture allowing you to bring support for your favourite platforms; Drupal, Umbraco, or Sitecore. Do you know how to write a docker-compose file and publish to NuGet? Greate you now know how to build and distribute a Dimmy plugin.
 
 Under the hood, Dimmy is not much more than plugin management logic, a templating engine for docker-compose files, and a way to manage public and non-public settings.  It uses the power of Octostache to generate docker-compose files that are then executed by docker-compose. The best thing is you do not need to commit to Dimmy, if you find you dislike dimsims take the generated docker-compose file and remove the tool.
 
