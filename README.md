@@ -12,7 +12,7 @@ There are two essential parts of how Dimmy works. The first is your project dire
 
 ## Inspiration
 
-There have been a few inspirations for this project, the main one being [Lando](https://docs.lando.dev/) and initially I wanted to use that tool, but there were two issues/roadblocks for me, and so Dimmy was conceived. The first was that it seemed to me that it was geared to Linux containers; it has a bunch of really cool features, but some of them were not available on Windows containers. This, coupled with the fact I could not get it working at all with a Windows container, made me drop this asperation but not the inspiration. The other was it is written in NodeJS, not that I think node is a bad language its just the I much prefer C# and the .NET Core stack.
+There have been a few inspirations for this project, the main one being [Lando](https://docs.lando.dev/) and initially I wanted to use that tool, but there were two issues/roadblocks for me, and so Dimmy was conceived. The first was that it seemed to me that it was geared to Linux containers; it has a bunch of really cool features, but some of them were not available on Windows containers. This, coupled with the fact I could not get it working at all with a Windows container, made me drop this asperation but not the inspiration. The other was it is written in NodeJS, not that I think this is a bad language its just I prefer C# and the .NET Core stack.
 
 ## Getting started
 
