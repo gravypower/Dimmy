@@ -6,9 +6,12 @@ Dimmy is a tool to help you with a docker based development workflow.
 
 Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Windows 10. Even though initially conceived to help with .NET development, it has a pluggable architecture allowing you to bring support for your favourite platforms; Drupal, Umbraco, or Sitecore. Do you know how to write a docker-compose file and publish to NuGet? Great you now know how to build and distribute a Dimmy plugin.
 
-Under the hood, Dimmy is not much more than plugin management logic, a templating engine for docker-compose files, and a way to manage public and non-public settings.  It uses the power of Octostache to generate docker-compose files that are then executed by docker-compose. The best thing is you do not need to commit to Dimmy; if you find you dislike dimsims, send the fried meat and vegetable dumpling back to the fish and chips shop, take the generated docker-compose file and remove the tool.
 
-There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked into source control. Next is the runtime directory where non-public development settings, the generated docker-compose file, and any bind mounts are found; this directory would generally not be committed to source control.
+Under the hood, Dimmy is not much more than plugin management logic, a templating engine for docker-compose files, and a way to manage public and non-public settings.  It uses the power of Octostache to generate docker-compose files that are then executed by docker-compose. It also provides several shortcuts to everyday developer tasks like quickly connecting to a running container without all the stress of looking up container ids. The best thing is you do not need to commit to Dimmy; if you find you dislike dimsims, send the fried meat and vegetable dumpling back to the Fish & Chips shop, take the generated docker-compose file and remove the tool.
+
+Dimmy splits working files across two directories:
+1. The project directory, this contains the template for your docker-compose (*.template.yaml) file, and a .dimmy.yaml that contains public developer settings,  and some metadata about the project. This directory is intended to be your git repository so you can share Dimmy configuration with other members of your team.
+1. The working directory, this contains all the bits needed to run docker-compose up, bind mounts, the generated docker-compose.yaml, and non-public developer settings. This directory is not intended to be checked into source control but can be shared between team members.
 
 ## Mission
 
