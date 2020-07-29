@@ -1,7 +1,5 @@
 # Dimmy
 
-*this is not much more than a thought experemt 
-
 Dimmy is a tool to help you with a docker based development workflow. 
 
 Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Windows 10. Even though initially conceived to help with .NET development, it has a pluggable architecture allowing you to bring support for your favourite platforms; Drupal, Umbraco, or Sitecore. Do you know how to write a docker-compose file and publish to NuGet? Grate you now know how to build and distribute a Dimmy plugin.
