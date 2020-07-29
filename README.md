@@ -8,7 +8,11 @@ Built on the .NET Core stack, it is at home on Ubuntu as much as it is on Window
 
 Under the hood, Dimmy is not much more than plugin management logic, a templating engine for docker-compose files, and a way to manage public and non-public settings.  It uses the power of Octostache to generate docker-compose files that are then executed by docker-compose. The best thing is you do not need to commit to Dimmy; if you find you dislike dimsims, send the fried meat and vegetable dumpling back to the fish and chips shop, take the generated docker-compose file and remove the tool.
 
-There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked into source control. Next is the runtime directory where non-public development settings, the generated docker-compose files, and any bind mounts are found; this directory would generally not be committed to source control.
+There are two essential parts of how Dimmy works. The first is your project directory; this is where the public development settings and a docker-compose template are stored and ultimately checked into source control. Next is the runtime directory where non-public development settings, the generated docker-compose file, and any bind mounts are found; this directory would generally not be committed to source control.
+
+## Inspiration
+
+There have been a few inspirations for this project, the main one being [Lando](https://docs.lando.dev/) and initially I wanted to use that tool, but there were two issues/roadblocks for me, and so Dimmy was conceived. The first was that it seemed to me that it was geared to Linux containers; it has a bunch of really cool features, but some of them were not available on Windows containers. This, coupled with the fact I could not get it working at all with a Windows container, made me drop this asperation but not the inspiration. The other was it is written in NodeJS, not that I think node is a bad language its just the I much prefer C# and the .NET Core stack.
 
 ## Getting started
 
@@ -47,6 +51,15 @@ This will respond to you `Hello Aaron`
 
 ### Current plugins:
 * https://github.com/DeloitteDigitalAPAC/Dimmy.Sitecore.Plugin
+
+## Project
+After plugin management, this is where you want to look. With this root command, you can create a new project with initialise, start or stop a project (docker-compose up or docker-compose down) or attach to a running container.  
+
+### Attach
+This sub command will allow you to specify a roel/container you wish to connect to, or if not supplied all options for the project is output so you can esaly choose.
+
+### Context project
+Another one of the reasons Dimmy was created was to swap between applications easily and quickly. As such Dimmy checks the context directory where the dimmy command was issued from, and if it contains a .dimmy file it will use information stored in that file to understand what the context project is. the .dimmy file can be found in your `working-path` and also contains the non-public settings. So swapping projects is as easy as issuing `dimmy project stop`, changing directory and `dimmy project start`.
 
 ## Whats Next
 
