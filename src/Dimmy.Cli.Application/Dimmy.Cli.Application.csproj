@@ -5,8 +5,20 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Dimmy</AssemblyName>
     <RootNamespace>Dimmy.Cli.Application</RootNamespace>
-    <AssemblyVersion>0.0.1</AssemblyVersion>
-    <FileVersion>0.0.1</FileVersion>
+    <LangVersion>latest</LangVersion>
+    <AssemblyVersion>0.0.3</AssemblyVersion>
+    <FileVersion>0.0.3</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>0.0.3</PackageVersion>
+    <Title>Dimmy</Title>
+    <Authors>Aaron Job</Authors>
+    <PackageProjectUrl>https://github.com/gravypower/Dimmy</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/gravypower/Dimmy/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/gravypower/Dimmy/master/Dimmy.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/gravypower/Dimmy</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dimmy</ToolCommandName>
   </PropertyGroup>
 
   <ItemGroup>
