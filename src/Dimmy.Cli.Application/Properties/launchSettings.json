@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "project init sitecore --name test --source-code-path C:\\projects\\SomeClient --working-path C:\\clients\\SomeClient --license-path C:\\license.xml --topology-name xp"
+      "commandLineArgs": "project init sitecore 10.0.0 --license-path C:\\license.xml --working-path C:\\clients\\SomeClient\\ --source-code-path C:\\projects\\SomeClient\\"
     }
   }
 }

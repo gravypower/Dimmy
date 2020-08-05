@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.VisualStudio.Plugin",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.HelloWorld.Plugin", "Dimmy.HelloWorld.Plugin\Dimmy.HelloWorld.Plugin.csproj", "{870EF030-A94C-422F-B1E6-8CF5AA914826}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.Sitecore.Plugin", "..\..\Dimmy.Sitecore.Plugin\src\Dimmy.Sitecore.Plugin\Dimmy.Sitecore.Plugin.csproj", "{1B35016E-7F58-441E-BBCD-EE7A3495E989}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 		{870EF030-A94C-422F-B1E6-8CF5AA914826} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
+		{1B35016E-7F58-441E-BBCD-EE7A3495E989} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A6FCA25-D4CB-46D1-8F24-60E13724D2F0}

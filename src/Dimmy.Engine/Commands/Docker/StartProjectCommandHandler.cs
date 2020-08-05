@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Dimmy.Engine.Models.Yaml.DockerCompose;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Builders;
+using Ductus.FluentDocker.Model.Compose;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -40,23 +42,48 @@ namespace Dimmy.Engine.Commands.Docker
                 .IgnoreUnmatchedProperties()
                 .Build();
 
-            var dockerCompose =
+            
+            var dockerCompose = 
                 deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(command.DockerComposeFilePath));
 
+
             foreach (var dockerComposeService in dockerCompose.Services)
-            foreach (var volume in dockerComposeService.Value.Volumes)
             {
-                var volumeParts = volume.Split(':');
+                if(dockerComposeService.Value.Volumes == null)
+                    continue;
+                
+                foreach (var volume in dockerComposeService.Value.Volumes)
+                {
+                    var hostFolderName = string.Empty;
+                    if (volume is string)
+                    {
+                        var volumeParts = volume.Split(':');
+                        hostFolderName = volumeParts[0];
+                    }
+                    else if (volume is IDictionary<object, object>)
+                    {
+                        if (volume["type"] == "bind")
+                        {
+                            hostFolderName = volume["source"];
+                        }
+                    }
 
-                var hostPath = $"{volumeParts[0]}:{volumeParts[1]}";
-                var exists = Directory.Exists(hostPath);
+                    if(string.IsNullOrEmpty(hostFolderName))
+                        continue;
 
-                if (!exists)
-                    Directory.CreateDirectory(hostPath);
+                    var composeFilePath = Path.GetDirectoryName(command.DockerComposeFilePath);
+
+                    var hostFolderPath = Path.Combine(composeFilePath, hostFolderName);
+                    var exists = Directory.Exists(hostFolderPath);
+
+                    if (!exists)
+                        Directory.CreateDirectory(hostFolderPath);
+                }
             }
 
 
-            compositeService.Start();
+
+            //compositeService.Start();
         }
     }
 

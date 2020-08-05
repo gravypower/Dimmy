@@ -4,7 +4,7 @@ using Dimmy.Engine.Commands.Project;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public abstract class InitialiseSubCommand
+    public abstract class InitialiseSubCommand : IInitialiseSubCommand
     {
         protected readonly ICommandHandler<InitialiseProject> InitialiseProjectCommandHandler;
 
@@ -13,8 +13,8 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             InitialiseProjectCommandHandler = initialiseProjectCommandHandler;
         }
 
-        protected abstract string Name { get; }
-        protected abstract string Description { get; }
+        public abstract string Name { get; }
+        public abstract string Description { get; }
 
         public Command GetCommand()
         {
@@ -31,6 +31,6 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return command;
         }
 
-        protected abstract void HydrateCommand(Command command);
+        public abstract void HydrateCommand(Command command);
     }
 }

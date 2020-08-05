@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RIDER_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../../../Dimmy.Sitecore.Plugin/src/Dimmy.Sitecore.Plugin" />
     <content url="file://$MODULE_DIR$/../../../.nuke" />
     <content url="file://$MODULE_DIR$/../../../build" />
     <content url="file://$MODULE_DIR$/../../../build.cmd" />
