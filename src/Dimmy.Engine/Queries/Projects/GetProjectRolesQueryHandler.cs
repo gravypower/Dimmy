@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Engine.Queries.Projects
 {

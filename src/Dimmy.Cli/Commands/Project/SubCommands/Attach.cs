@@ -6,6 +6,7 @@ using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {

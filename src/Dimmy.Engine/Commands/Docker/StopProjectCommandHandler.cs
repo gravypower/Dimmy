@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Commands.Docker

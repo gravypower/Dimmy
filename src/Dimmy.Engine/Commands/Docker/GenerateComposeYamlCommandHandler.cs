@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 using Octostache;
 
 namespace Dimmy.Engine.Commands.Docker

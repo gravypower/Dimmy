@@ -9,6 +9,7 @@ using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Services;
 using NuGet.Common;
 using NuGet.Configuration;

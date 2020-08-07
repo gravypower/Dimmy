@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Models.Yaml.DockerCompose;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Builders;
 using Ductus.FluentDocker.Model.Compose;
 using YamlDotNet.Serialization;
@@ -29,20 +31,13 @@ namespace Dimmy.Engine.Commands.Docker
         {
             if (!File.Exists(command.DockerComposeFilePath)) throw new DockerComposeFileNotFound();
 
-            var builder = new Builder()
-                .UseContainer()
-                .UseCompose()
-                .FromFile(command.DockerComposeFilePath)
-                .RemoveOrphans();
 
-            var compositeService = builder.Build();
-
+            
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .IgnoreUnmatchedProperties()
                 .Build();
 
-            
             var dockerCompose = 
                 deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(command.DockerComposeFilePath));
 
@@ -81,9 +76,17 @@ namespace Dimmy.Engine.Commands.Docker
                 }
             }
 
+            var builder = new Builder()
+                .UseContainer()
+                .UseCompose()
+                .FromFile(command.DockerComposeFilePath)
+                .RemoveOrphans();
+
+            var compositeService = builder.Build();
 
 
-            //compositeService.Start();
+            compositeService.Start();
+            
         }
     }
 

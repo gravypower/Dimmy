@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.HelloWorld.Plugin", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.Sitecore.Plugin", "..\..\Dimmy.Sitecore.Plugin\src\Dimmy.Sitecore.Plugin\Dimmy.Sitecore.Plugin.csproj", "{1B35016E-7F58-441E-BBCD-EE7A3495E989}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.Engine.Tests", "Dimmy.Engine.Tests\Dimmy.Engine.Tests.csproj", "{F71AFEB9-C6F6-4DB3-9471-3EC0C443737C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B35016E-7F58-441E-BBCD-EE7A3495E989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F71AFEB9-C6F6-4DB3-9471-3EC0C443737C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F71AFEB9-C6F6-4DB3-9471-3EC0C443737C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F71AFEB9-C6F6-4DB3-9471-3EC0C443737C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F71AFEB9-C6F6-4DB3-9471-3EC0C443737C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using System.CommandLine.Invocation;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
@@ -24,16 +25,23 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
         {
             var stopProjectCommand = new Command("stop")
             {
+                new Option<string>("--working-path", "Working Path"),
                 new Option<Guid>("--project-id", "Project Id")
             };
 
             stopProjectCommand.Handler = CommandHandler.Create(async (StopArgument arg) =>
             {
-                if (arg.ProjectId == Guid.Empty)
+                if (arg.ProjectId == Guid.Empty && string.IsNullOrEmpty(arg.WorkingPath))
                 {
                     var (projectInstance, project) = _projectService.GetProject();
                     arg.ProjectId = projectInstance.Id;
                 }
+                else if (!string.IsNullOrEmpty(arg.WorkingPath))
+                {
+                    var (projectInstance, project) = _projectService.GetProject(arg.WorkingPath);
+                    arg.ProjectId = projectInstance.Id;
+                }
+                
 
                 var stopProject = new StopProject
                 {
