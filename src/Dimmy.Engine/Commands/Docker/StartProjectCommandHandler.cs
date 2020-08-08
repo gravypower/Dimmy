@@ -84,6 +84,17 @@ namespace Dimmy.Engine.Commands.Docker
 
             var compositeService = builder.Build();
 
+            compositeService.OutputDataReceived += (sender, args) =>
+            {
+                if (args.Data != null)
+                    Console.Out.WriteLineAsync(args.Data);
+            };
+            
+            compositeService.ErrorDataReceived += (sender, args) =>
+            {
+                if (args.Data != null)
+                    Console.Error.WriteLineAsync(args.Data);
+            };
 
             compositeService.Start();
             

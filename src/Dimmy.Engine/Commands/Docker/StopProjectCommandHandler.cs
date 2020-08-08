@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;
@@ -36,7 +37,9 @@ namespace Dimmy.Engine.Commands.Docker
                 if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&
                     c.State != ServiceRunningState.Paused)
                     continue;
-
+                
+                Console.WriteLine($"Stopping {c.Name}");
+                
                 c.Remove(true);
             }
         }

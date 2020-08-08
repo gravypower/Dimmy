@@ -5,7 +5,6 @@
         public string PackageId { get; set; }
         public string PackageVersion { get; set; }
         public string PackageFramework { get; set; }
-
         public string InstallDirectory { get; set; }
         public string[] OmitDependencies { get; set; }
     }
