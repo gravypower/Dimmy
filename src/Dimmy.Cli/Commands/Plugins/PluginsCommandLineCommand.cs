@@ -50,7 +50,7 @@ namespace Dimmy.Cli.Commands.Plugins
                 new Option<bool>("--remote", "remote plugins")
             };
 
-            pluginListCommand.Handler = CommandHandler.Create(async (bool remote) =>
+            pluginListCommand.Handler = CommandHandler.Create((bool remote) =>
             {
                 if (remote)
                 {
@@ -72,27 +72,27 @@ namespace Dimmy.Cli.Commands.Plugins
                 new Option<string>("--package-version", "remote plugins")
             };
 
-            installPluginCommand.Handler = CommandHandler.Create(async (string packageId, string packageVersion) =>
+            installPluginCommand.Handler = CommandHandler.Create((string packageId, string packageVersion) =>
             {
-                Console.WriteLine("Plugins may be built by a 3rd party, install at own risk. Hit any key to continue.");
-                Console.Read();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Plugins may be built by a 3rd party, install at own risk.");
+                Console.ResetColor();
 
                 if (string.IsNullOrEmpty(packageId))
                 {
                     var plugins = _getRemotePluginsQueryHandler
                         .Handle(new GetRemotePlugins());
-
-
+                    
                     for (var i = 0; i < plugins.Count; i++)
                     {
                         var plugin = plugins[i];
-                        Console.WriteLine($"{i} - {plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
+                        Console.WriteLine($"{i + 1} - {plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
                     }
-
-                    Console.WriteLine("Select Plugin to install");
-                    var selectPlugin = int.Parse(Console.ReadLine());
                     
-                    var selectedPlugin = plugins[selectPlugin];
+                    Console.Write("Select Plugin to install:");
+                    var selectPlugin = Console.ReadLine();
+                    
+                    var selectedPlugin = plugins[int.Parse(selectPlugin) - 1];
                     packageId = selectedPlugin.Identity.Id;
                     packageVersion = selectedPlugin.Identity.Version.OriginalVersion;
                 }

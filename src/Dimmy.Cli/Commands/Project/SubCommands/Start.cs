@@ -28,7 +28,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 new Option<bool>("--generate-only", "Don't start the project only generate the docker compose file")
             };
 
-            startProjectCommand.Handler = CommandHandler.Create(async (StartArgument arg) =>
+            startProjectCommand.Handler = CommandHandler.Create((StartArgument arg) =>
             {
                 if (string.IsNullOrEmpty(arg.WorkingPath))
                     arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);

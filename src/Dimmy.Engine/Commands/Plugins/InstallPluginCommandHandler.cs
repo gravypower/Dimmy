@@ -16,27 +16,28 @@ namespace Dimmy.Engine.Commands.Plugins
             _nugetService = nugetService;
         }
 
-        public async void Handle(InstallPlugin command)
+        public void Handle(InstallPlugin command)
         {
             var pluginInstallFolder = Path.Combine(command.InstallDirectory, command.PackageId);
 
             if (Directory.Exists(pluginInstallFolder))
                 return;
-
+            
             Directory.CreateDirectory(pluginInstallFolder);
 
             var nuGetVersion = NuGetVersion.Parse(command.PackageVersion);
             var packageIdentity = new PackageIdentity(command.PackageId, nuGetVersion);
             var nuGetFramework = NuGetFramework.ParseFolder(command.PackageFramework);
 
-            var packagesToInstall = await _nugetService
-                .GetPackagesToInstall(packageIdentity, nuGetFramework, command.OmitDependencies);
+            var packagesToInstall = _nugetService
+                .GetPackagesToInstall(packageIdentity, nuGetFramework, command.OmitDependencies)
+                .Result;
 
             var frameworkReducer = new FrameworkReducer();
 
             foreach (var packageToInstall in packagesToInstall)
             {
-                var (package, installPath) = await _nugetService.DownloadPackage(packageToInstall);
+                var (package, installPath) = _nugetService.DownloadPackage(packageToInstall).Result;
                 
                 var libItems = package.GetLibItems().ToList();
                 var possibleFrameworks = libItems.Select(group => group.TargetFramework);

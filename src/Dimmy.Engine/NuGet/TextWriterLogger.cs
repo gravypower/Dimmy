@@ -64,8 +64,7 @@ namespace Dimmy.Engine.NuGet
 
         public void Log(ILogMessage message)
         {
-            //swallowing the nuget logging for the moment 
-            //https://github.com/gravypower/Dimmy/issues/3
+            _writer.WriteLine($"{message}");
         }
 
         public Task LogAsync(ILogMessage message)
@@ -75,8 +74,7 @@ namespace Dimmy.Engine.NuGet
         
         private void Write(LogLevel level, string message)
         {
-            //swallowing the nuget logging for the moment 
-            //https://github.com/gravypower/Dimmy/issues/3
+            _writer.WriteLine($"[{level}] {message}");
         }
     }
 }

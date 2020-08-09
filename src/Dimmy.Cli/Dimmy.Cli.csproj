@@ -5,10 +5,10 @@
     <AssemblyName>Dimmy.Cli</AssemblyName>
 	  <RootNamespace>Dimmy.Cli</RootNamespace>
 	  <LangVersion>latest</LangVersion>
-	  <AssemblyVersion>0.0.2</AssemblyVersion>
-	  <FileVersion>0.0.2</FileVersion>
+	  <AssemblyVersion>1.0.0</AssemblyVersion>
+	  <FileVersion>1.0.0</FileVersion>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <PackageVersion>0.0.2</PackageVersion>
+	  <PackageVersion>1.0.0</PackageVersion>
 	  <Title>Dimmy.Cli</Title>
 	  <Authors>Aaron Job</Authors>
 	  <PackageProjectUrl>https://github.com/gravypower/Dimmy</PackageProjectUrl>

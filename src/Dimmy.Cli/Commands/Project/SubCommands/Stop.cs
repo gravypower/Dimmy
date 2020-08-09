@@ -29,7 +29,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 new Option<Guid>("--project-id", "Project Id")
             };
 
-            stopProjectCommand.Handler = CommandHandler.Create(async (StopArgument arg) =>
+            stopProjectCommand.Handler = CommandHandler.Create((StopArgument arg) =>
             {
                 if (arg.ProjectId == Guid.Empty && string.IsNullOrEmpty(arg.WorkingPath))
                 {
