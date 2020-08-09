@@ -22,16 +22,9 @@ namespace Dimmy.Engine.Commands.Docker
             _projectService = projectService;
         }
 
-        public Task Handle(StartProject command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private void Run(StartProject command)
+        public void Handle(StartProject command)
         {
             if (!File.Exists(command.DockerComposeFilePath)) throw new DockerComposeFileNotFound();
-
-
             
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -97,7 +90,6 @@ namespace Dimmy.Engine.Commands.Docker
             };
 
             compositeService.Start();
-            
         }
     }
 

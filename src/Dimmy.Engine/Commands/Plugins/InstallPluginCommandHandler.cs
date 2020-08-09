@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Dimmy.Engine.Services;
 using NuGet.Frameworks;
 using NuGet.Packaging.Core;
@@ -17,12 +16,7 @@ namespace Dimmy.Engine.Commands.Plugins
             _nugetService = nugetService;
         }
 
-        public Task Handle(InstallPlugin command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private async Task Run(InstallPlugin command)
+        public async void Handle(InstallPlugin command)
         {
             var pluginInstallFolder = Path.Combine(command.InstallDirectory, command.PackageId);
 
@@ -43,17 +37,16 @@ namespace Dimmy.Engine.Commands.Plugins
             foreach (var packageToInstall in packagesToInstall)
             {
                 var (package, installPath) = await _nugetService.DownloadPackage(packageToInstall);
-
+                
                 var libItems = package.GetLibItems().ToList();
-
-                var nearestLibsFramwrok =
-                    frameworkReducer.GetNearest(nuGetFramework, libItems.Select(x => x.TargetFramework));
+                var possibleFrameworks = libItems.Select(group => group.TargetFramework);
+                var nearestFramework = frameworkReducer.GetNearest(nuGetFramework, possibleFrameworks);
+                
                 var assemblies = libItems
-                    .Where(x => x.TargetFramework.Equals(nearestLibsFramwrok))
-                    .SelectMany(x => x.Items)
+                    .Where(group => group.TargetFramework == nearestFramework)
+                    .SelectMany(group => group.Items)
                     .ToList();
-
-
+                
                 foreach (var assembly in assemblies)
                 {
                     var destFileName = Path.Combine(pluginInstallFolder, Path.GetFileName(assembly));
@@ -65,17 +58,23 @@ namespace Dimmy.Engine.Commands.Plugins
                 }
 
                 var contentItems = package.GetContentItems().ToList();
-                var nearestContentFramework =
-                    frameworkReducer.GetNearest(nuGetFramework, contentItems.Select(x => x.TargetFramework));
+                var nearestContentFramework = frameworkReducer.GetNearest(nuGetFramework, contentItems.Select(x => x.TargetFramework));
+
                 var ci = contentItems
-                    .Where(x => x.TargetFramework.Equals(nearestContentFramework))
-                    .SelectMany(x => x.Items)
+                    .Where(group => group.TargetFramework == nearestContentFramework)
+                    .SelectMany(group => group.Items)
                     .ToList();
 
                 foreach (var contentItem in ci)
                 {
-                    var destFileName = Path.Combine(pluginInstallFolder, Path.GetFileName(contentItem));
-
+                    var destFileName = Path.Combine(pluginInstallFolder,contentItem);
+                    
+                    var folder = Path.GetDirectoryName(destFileName);
+                    if (folder!= null && !Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+                    
                     if (File.Exists(destFileName)) continue;
 
                     var sourceFileName = Path.Combine(installPath, contentItem);

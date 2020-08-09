@@ -12,12 +12,7 @@ namespace Dimmy.Engine.Commands.Docker
             _hostService = hostService;
         }
 
-        public Task Handle(DeploymentHook command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private static void Run(DeploymentHook command)
+        public void Handle(DeploymentHook command)
         {
             //container.CopyTo(
             //        @"C:\inetpub\wwwroot\bin",

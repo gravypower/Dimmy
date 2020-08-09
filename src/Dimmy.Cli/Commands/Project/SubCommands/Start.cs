@@ -36,7 +36,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 var workingDockerCompose = Path.Combine(arg.WorkingPath, "docker-compose.yml");
                 if (File.Exists(workingDockerCompose)) File.Delete(workingDockerCompose);
 
-                await _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
+                _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
                 {
                     WorkingPath = arg.WorkingPath
                 });
@@ -50,7 +50,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                     DockerComposeFilePath = Path.Combine(arg.WorkingPath, "docker-compose.yml")
                 };
 
-                await _startProjectCommandHandler.Handle(startProject);
+                _startProjectCommandHandler.Handle(startProject);
             });
 
             return startProjectCommand;

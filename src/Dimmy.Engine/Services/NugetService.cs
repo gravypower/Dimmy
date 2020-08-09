@@ -38,10 +38,10 @@ namespace Dimmy.Engine.Services
 
             _repositories = sourceRepositoryProvider.GetRepositories();
         }
-
-
-        public async IAsyncEnumerable<IPackageSearchMetadata> GetNugetPackagesFromTag(string tag)
+        
+        public async Task<IList<IPackageSearchMetadata>> GetNugetPackagesFromTag(string tag)
         {
+            var packages = new List<IPackageSearchMetadata>();
             foreach (var sourceRepository in _repositories)
             {
                 var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>();
@@ -53,8 +53,10 @@ namespace Dimmy.Engine.Services
                     new TextWriterLogger(Console.Out),
                     CancellationToken.None);
 
-                foreach (var packageSearchMetadata in searchMetadata) yield return packageSearchMetadata;
+                packages.AddRange(searchMetadata);
             }
+
+            return packages;
         }
 
         public async Task<IEnumerable<SourcePackageDependencyInfo>> GetPackageAndDependencies(
@@ -68,7 +70,6 @@ namespace Dimmy.Engine.Services
 
             return availablePackages;
 
-
             async Task DoGetPackageDependencies(PackageIdentity p)
             {
                 if (availablePackages.Contains(p)) return;
@@ -80,8 +81,7 @@ namespace Dimmy.Engine.Services
                         _sourceCacheContext, _logger, CancellationToken.None);
 
                     if (dependencyInfo == null) continue;
-
-
+                    
                     if (omitDependencies.Any() && dependencyInfo.Dependencies.Any(d => omitDependencies.Contains(d.Id)))
                     {
                         var packageDependencies =
@@ -96,8 +96,7 @@ namespace Dimmy.Engine.Services
                             dependencyInfo.Listed,
                             dependencyInfo.Source);
                     }
-
-
+                    
                     availablePackages.Add(dependencyInfo);
 
                     foreach (var dependency in dependencyInfo.Dependencies)

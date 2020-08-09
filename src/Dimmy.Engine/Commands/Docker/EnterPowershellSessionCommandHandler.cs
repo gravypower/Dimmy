@@ -1,16 +1,10 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Commands.Docker
 {
     public class EnterPowershellSessionCommandHandler : ICommandHandler<EnterPowershellSession>
     {
-        public Task Handle(EnterPowershellSession command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private static void Run(EnterPowershellSession command)
+        public void Handle(EnterPowershellSession command)
         {
             var setTitleCommand = $"{{$host.ui.RawUI.WindowTitle = '{command.ShellTitle}'}}";
 

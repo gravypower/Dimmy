@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
+using System.Linq;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Plugins;
 using Dimmy.Engine.Queries;
@@ -18,14 +19,14 @@ namespace Dimmy.Cli.Commands.Plugins
 
         private static readonly string[] DimmyProjects = {"Dimmy.Cli", "Dimmy.Engine"};
 
-        private readonly IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>>
+        private readonly IQueryHandler<GetRemotePlugins, IList<IPackageSearchMetadata>>
             _getRemotePluginsQueryHandler;
 
         private readonly ICommandHandler<InstallPlugin> _installPluginCommandHandler;
 
         public PluginsCommandLineCommand(
             ICommandHandler<InstallPlugin> installPluginCommandHandler,
-            IQueryHandler<GetRemotePlugins, IAsyncEnumerable<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
+            IQueryHandler<GetRemotePlugins, IList<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
         {
             _installPluginCommandHandler = installPluginCommandHandler;
             _getRemotePluginsQueryHandler = getRemotePluginsQueryHandler;
@@ -53,17 +54,16 @@ namespace Dimmy.Cli.Commands.Plugins
             {
                 if (remote)
                 {
-                    var plugins = await _getRemotePluginsQueryHandler.Handle(new GetRemotePlugins());
+                    var plugins =  _getRemotePluginsQueryHandler.Handle(new GetRemotePlugins());
 
-                    await foreach (var plugin in plugins)
+                    foreach (var plugin in plugins)
                         Console.WriteLine($"{plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
                 }
             });
 
             return pluginListCommand;
         }
-
-
+        
         private Command InstallPluginCommand()
         {
             var installPluginCommand = new Command("install", "Install a dimmy plugin")
@@ -74,7 +74,31 @@ namespace Dimmy.Cli.Commands.Plugins
 
             installPluginCommand.Handler = CommandHandler.Create(async (string packageId, string packageVersion) =>
             {
-                await _installPluginCommandHandler.Handle(new InstallPlugin
+                Console.WriteLine("Plugins may be built by a 3rd party, install at own risk. Hit any key to continue.");
+                Console.Read();
+
+                if (string.IsNullOrEmpty(packageId))
+                {
+                    var plugins = _getRemotePluginsQueryHandler
+                        .Handle(new GetRemotePlugins());
+
+
+                    for (var i = 0; i < plugins.Count; i++)
+                    {
+                        var plugin = plugins[i];
+                        Console.WriteLine($"{i} - {plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
+                    }
+
+                    Console.WriteLine("Select Plugin to install");
+                    var selectPlugin = int.Parse(Console.ReadLine());
+                    
+                    var selectedPlugin = plugins[selectPlugin];
+                    packageId = selectedPlugin.Identity.Id;
+                    packageVersion = selectedPlugin.Identity.Version.OriginalVersion;
+                }
+                
+            
+                _installPluginCommandHandler.Handle(new InstallPlugin
                 {
                     PackageId = packageId,
                     PackageVersion = packageVersion,

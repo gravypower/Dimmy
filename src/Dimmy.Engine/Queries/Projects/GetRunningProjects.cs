@@ -3,7 +3,7 @@ using Dimmy.Engine.Models;
 
 namespace Dimmy.Engine.Queries.Projects
 {
-    public class GetRunningProjects : IQuery<IEnumerable<Project>>
+    public class GetRunningProjects : IQuery<IList<Project>>
     {
     }
 }

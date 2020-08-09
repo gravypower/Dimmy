@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dimmy.Engine.Services;
@@ -17,12 +16,7 @@ namespace Dimmy.Engine.Commands.Docker
             _projectService = projectService;
         }
 
-        public Task Handle(GenerateComposeYaml command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private void Run(GenerateComposeYaml command)
+        public void Handle(GenerateComposeYaml command)
         {
             var (projectInstance, project) = _projectService.GetProject(command.WorkingPath);
 
@@ -47,13 +41,6 @@ namespace Dimmy.Engine.Commands.Docker
             var dockerComposeFile = Path.Combine(command.WorkingPath, "docker-compose.yml");
 
             File.WriteAllText(dockerComposeFile, dockerCompose);
-        }
-    }
-
-    public class DockerComposeGenerationFailed : Exception
-    {
-        public DockerComposeGenerationFailed(string error) : base(error)
-        {
         }
     }
 }

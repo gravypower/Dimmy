@@ -18,7 +18,7 @@ namespace Dimmy.Engine.Services.Projects
             _hostService = hostService;
         }
 
-        public IEnumerable<Project> RunningProjects()
+        public IList<Project> RunningProjects()
         {
             var containers = _hostService.GetRunningContainers();
 
@@ -39,11 +39,10 @@ namespace Dimmy.Engine.Services.Projects
                 if (!canParseProjectId)
                     throw new ContainerDoesNotHaveValidDimmyProjectId();
                 
-
                 var projectName = labels[DimmyDockerComposeLabels.ProjectName];
 
                 if (!projects.ContainsKey(projectId))
-                    projects.Add(projectId, new Models.Project
+                    projects.Add(projectId, new Project
                     {
                         Name = projectName,
                         Id = projectId
@@ -56,7 +55,7 @@ namespace Dimmy.Engine.Services.Projects
                 });
             }
 
-            return projects.Values;
+            return projects.Values.ToList();
         }
 
         public Project GetProjectById(Guid projectId)

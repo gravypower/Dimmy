@@ -48,7 +48,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                     ProjectId = arg.ProjectId
                 };
 
-                await _stopProjectCommandHandler.Handle(stopProject);
+                _stopProjectCommandHandler.Handle(stopProject);
             });
             return stopProjectCommand;
         }

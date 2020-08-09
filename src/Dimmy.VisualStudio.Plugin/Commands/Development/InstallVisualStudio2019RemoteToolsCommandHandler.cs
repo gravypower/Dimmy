@@ -21,12 +21,7 @@ namespace Dimmy.VisualStudio.Plugin.Commands.Development
         }
 
 
-        public Task Handle(InstallVisualStudioRemoteTools command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private void Run(InstallVisualStudioRemoteTools command)
+        public void Handle(InstallVisualStudioRemoteTools command)
         {
             var remoteTool = _visualStudioRemoteTools
                 .Single(t =>

@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dimmy.Engine.Models;
-using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;
+using NuGet.Protocol.Core.Types;
 
 namespace Dimmy.Engine.Queries.Projects
 {
-    public class GetProjectRolesQueryHandler : IQueryHandler<GetProjectRoles, IEnumerable<Service>>
+    public class GetProjectRolesQueryHandler : IQueryHandler<GetProjectRoles, IList<Service>>
     {
         private readonly IProjectService _projectService;
 
@@ -16,11 +16,11 @@ namespace Dimmy.Engine.Queries.Projects
             _projectService = projectService;
         }
 
-        public async Task<IEnumerable<Service>> Handle(GetProjectRoles query)
+        public IList<Service> Handle(GetProjectRoles query)
         {
             var project = _projectService.RunningProjects().Single(p => p.Id == query.ProjectId);
 
-            return await Task.FromResult(project.Services);
+            return project.Services.ToList();
         }
     }
 }

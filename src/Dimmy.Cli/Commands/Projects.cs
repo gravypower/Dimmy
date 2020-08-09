@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Threading.Tasks;
 using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Queries.Projects;
@@ -9,11 +10,10 @@ namespace Dimmy.Cli.Commands
 {
     internal class Projects : ICommandLineCommand
     {
-        private readonly IQueryHandler<GetRunningProjects, IEnumerable<Engine.Models.Project>>
+        private readonly IQueryHandler<GetRunningProjects, IList<Engine.Models.Project>>
             _getRunningProjectsQueryHandler;
 
-        public Projects(
-            IQueryHandler<GetRunningProjects, IEnumerable<Engine.Models.Project>> getRunningProjectsQueryHandler)
+        public Projects(IQueryHandler<GetRunningProjects, IList<Engine.Models.Project>> getRunningProjectsQueryHandler)
         {
             _getRunningProjectsQueryHandler = getRunningProjectsQueryHandler;
         }
@@ -32,15 +32,17 @@ namespace Dimmy.Cli.Commands
         {
             var projectListCommand = new Command("ls", "Lists running projects")
             {
-                Handler = CommandHandler.Create(async () =>
-                {
-                    var getRunningProjects = new GetRunningProjects();
-                    var runningProjects = _getRunningProjectsQueryHandler.Handle(getRunningProjects);
-                    foreach (var runningProject in await runningProjects) runningProject.PrettyPrint();
-                })
+                Handler = CommandHandler.Create(ListRunningProjcts)
             };
 
             return projectListCommand;
+        }
+
+        private void ListRunningProjcts()
+        {
+            var getRunningProjects = new GetRunningProjects();
+            var runningProjects = _getRunningProjectsQueryHandler.Handle(getRunningProjects);
+            foreach (var runningProject in runningProjects) runningProject.PrettyPrint();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Models.Yaml;
 using YamlDotNet.Serialization;
@@ -9,12 +8,7 @@ namespace Dimmy.Engine.Commands.Project
 {
     public class InitialiseProjectCommandHandler : ICommandHandler<InitialiseProject>
     {
-        public Task Handle(InitialiseProject command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private static void Run(InitialiseProject command)
+        public void Handle(InitialiseProject command)
         {
             var composeTemplate = new DockerComposeTemplate
             {
@@ -55,5 +49,6 @@ namespace Dimmy.Engine.Commands.Project
                 Path.Combine(command.WorkingPath, ".dimmy"),
                 dimmyProjectInstanceYaml);
         }
+        
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Services;
 
@@ -20,12 +18,7 @@ namespace Dimmy.Engine.Commands.Docker
             _projectService = projectService;
         }
 
-        public Task Handle(StopProject command)
-        {
-            return Task.Run(() => Run(command));
-        }
-
-        private void Run(StopProject command)
+        public void Handle(StopProject command)
         {
             var project = _projectService.GetProjectById(command.ProjectId);
 

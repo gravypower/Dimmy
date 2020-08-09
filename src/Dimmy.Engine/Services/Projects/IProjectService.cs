@@ -7,7 +7,7 @@ namespace Dimmy.Engine.Services.Projects
 {
     public interface IProjectService
     {
-        IEnumerable<Project> RunningProjects();
+        IList<Project> RunningProjects();
         Project GetProjectById(Guid projectId);
         (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) GetProject(string projectInstancePath = "");
     }

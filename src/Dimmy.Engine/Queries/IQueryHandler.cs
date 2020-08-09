@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Dimmy.Engine.Queries
+﻿namespace Dimmy.Engine.Queries
 {
-    public interface IQueryHandler<in TQuery, TResult> where TQuery : IQuery<TResult>
+    public interface IQueryHandler<in TQuery, out TResult> where TQuery : IQuery<TResult>
     {
-        Task<TResult> Handle(TQuery query);
+        TResult Handle(TQuery query); 
     }
 }
