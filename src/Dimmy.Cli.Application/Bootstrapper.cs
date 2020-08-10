@@ -39,6 +39,7 @@ namespace Dimmy.Cli.Application
             Container.Register<INugetService, NugetService>();
 
             Container.Register<IProjectService, ProjectService>();
+            Container.Register<ICertificateService, CertificateService>();
             
             Container.Collection.Register<IProjectSubCommand>(assemblies);
             
