@@ -25,7 +25,8 @@ namespace Dimmy.Engine.Commands.Project
                 Id = Guid.NewGuid(),
                 ComposeTemplateFileName = composeTemplate.FileName,
                 Name = command.Name,
-                VariableDictionary = command.PublicVariables
+                VariableDictionary = command.PublicVariables,
+                MetaData = command.MetaData
             };
 
             var serializer = new Serializer();
@@ -40,7 +41,7 @@ namespace Dimmy.Engine.Commands.Project
                 Id = dimmyProject.Id,
                 Name = dimmyProject.Name,
                 SourceCodeLocation = command.SourceCodePath,
-                VariableDictionary = command.PrivateVariables
+                VariableDictionary = command.PrivateVariables,
             };
 
             var dimmyProjectInstanceYaml = serializer.Serialize(dimmyProjectInstance);

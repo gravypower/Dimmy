@@ -10,5 +10,6 @@ namespace Dimmy.Engine.Commands.Project
         public string DockerComposeTemplatePath { get; set; }
         public IDictionary<string, string> PublicVariables { get; set; } = new Dictionary<string, string>();
         public IDictionary<string, string> PrivateVariables { get; set; } = new Dictionary<string, string>();
+        public IDictionary<string, string> MetaData { get; set; } = new Dictionary<string, string>();
     }
 }
