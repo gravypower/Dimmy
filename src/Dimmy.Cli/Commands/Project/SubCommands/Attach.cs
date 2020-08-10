@@ -5,12 +5,11 @@ using System.Linq;
 using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
-using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class Attach : IProjectSubCommand
+    public class Attach : Command<AttachArgument>
     {
         private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
         private readonly IProjectService _projectService;
@@ -23,7 +22,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _enterPowerShellSessionCommandHandler = enterPowerShellSessionCommandHandler;
         }
 
-        public Command GetCommand()
+        public override Command GetCommand()
         {
             var command = new Command("attach", "Attach to a running container in a project.")
             {
@@ -33,31 +32,31 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
             };
 
-            command.Handler = CommandHandler.Create((AttachArgument arg) =>
-            {
-                if (arg.ProjectId == Guid.Empty) arg.ProjectId = _projectService.GetProject().Project.Id;
-
-                var project = _projectService.RunningProjects().Single(p => p.Id == arg.ProjectId);
-
-                if (string.IsNullOrEmpty(arg.Role))
-                {
-                    project.PrettyPrint();
-                    Console.Write("Enter name of role:");
-
-                    arg.Role = Console.ReadLine();
-                }
-
-                var projectRole = project.Services.Single(r => r.Name == arg.Role);
-
-                _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
-                {
-                    ContainerId = projectRole.ContainerId,
-                    ShellTitle = $"{project.Name}({projectRole.Name})",
-                    NoExit = arg.NoExit
-                });
-            });
-
             return command;
+        }
+
+        protected override void CommandAction(AttachArgument arg)
+        {
+            if (arg.ProjectId == Guid.Empty) arg.ProjectId = _projectService.GetProject().Project.Id;
+
+            var project = _projectService.RunningProjects().Single(p => p.Id == arg.ProjectId);
+
+            if (string.IsNullOrEmpty(arg.Role))
+            {
+                project.PrettyPrint();
+                Console.Write("Enter name of role:");
+
+                arg.Role = Console.ReadLine();
+            }
+
+            var projectRole = project.Services.Single(r => r.Name == arg.Role);
+
+            _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
+            {
+                ContainerId = projectRole.ContainerId,
+                ShellTitle = $"{project.Name}({projectRole.Name})",
+                NoExit = arg.NoExit
+            });
         }
     }
 }

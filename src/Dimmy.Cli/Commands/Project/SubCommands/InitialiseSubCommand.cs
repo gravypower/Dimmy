@@ -21,6 +21,5 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return command;
         }
         public abstract void HydrateCommand(Command command);
-        
     }
 }

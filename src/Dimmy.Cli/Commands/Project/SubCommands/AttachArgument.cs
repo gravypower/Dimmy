@@ -2,7 +2,7 @@
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class AttachArgument
+    public class AttachArgument:ProjectSubCommandArgument
     {
         public Guid ProjectId { get; set; }
         public string Role { get; set; }

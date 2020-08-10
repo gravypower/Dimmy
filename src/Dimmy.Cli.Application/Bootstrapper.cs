@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Dimmy.Cli.Commands;
+using Dimmy.Cli.Commands.Plugins;
 using Dimmy.Cli.Commands.Project;
 using Dimmy.Cli.Commands.Project.SubCommands;
+using Dimmy.Cli.Commands.Projects;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Queries;
@@ -16,6 +17,7 @@ using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
+using ICommand = Dimmy.Cli.Commands.ICommand;
 
 namespace Dimmy.Cli.Application
 {
@@ -37,9 +39,17 @@ namespace Dimmy.Cli.Application
             Container.Register<INugetService, NugetService>();
 
             Container.Register<IProjectService, ProjectService>();
+            
             Container.Collection.Register<IProjectSubCommand>(assemblies);
+            
+            
+            Container.Collection.Register(typeof(ICommand), new []
+            {
+                typeof(Project),
+                typeof(Projects),
+                typeof(Plugins)
+            });
 
-            Container.Collection.Register<ICommandLineCommand>(assemblies);
             Container.Collection.Register<InitialiseSubCommand>(assemblies);
 
             Container.Register(typeof(ICommandHandler<>), assemblies);

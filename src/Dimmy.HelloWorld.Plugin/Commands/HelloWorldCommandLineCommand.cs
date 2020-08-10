@@ -5,7 +5,7 @@ using Dimmy.Cli.Commands;
 
 namespace Dimmy.HelloWorld.Plugin.Commands
 {
-    public class HelloWorldCommandLineCommand : ICommandLineCommand
+    public class HelloWorldCommandLineCommand : Command
     {
         public Command GetCommand()
         {
@@ -20,6 +20,10 @@ namespace Dimmy.HelloWorld.Plugin.Commands
             helloNameCommand.AddOption(new Option<string>("--name", "Greets you with you name"));
 
             return helloNameCommand;
+        }
+
+        public HelloWorldCommandLineCommand(string name, string? description = null) : base(name, description)
+        {
         }
     }
 }

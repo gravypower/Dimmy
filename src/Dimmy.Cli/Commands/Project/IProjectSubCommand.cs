@@ -1,9 +1,9 @@
-﻿using System.CommandLine;
+﻿using System;
 
 namespace Dimmy.Cli.Commands.Project
 {
-    public interface IProjectSubCommand
+    public interface IProjectSubCommand: ICommand
     {
-        Command GetCommand();
+        Type ArgumentType { get; }
     }
 }

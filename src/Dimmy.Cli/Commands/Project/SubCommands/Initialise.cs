@@ -3,7 +3,7 @@ using System.CommandLine;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class Initialise : IProjectSubCommand
+    public class Initialise : ProjectSubCommand<InitialiseArgument>
     {
         private readonly IEnumerable<InitialiseSubCommand> _initialiseSubCommands;
 
@@ -12,7 +12,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _initialiseSubCommands = initialiseSubCommands;
         }
 
-        public Command GetCommand()
+        public override Command GetCommand()
         {
             var command = new Command("initialise", "Initialise a project");
             command.AddAlias("init");
@@ -21,6 +21,11 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 command.AddCommand(initialiseSubCommand.GetCommand());
 
             return command;
+        }
+
+        protected override void CommandAction(InitialiseArgument arg)
+        {
+            
         }
     }
 }

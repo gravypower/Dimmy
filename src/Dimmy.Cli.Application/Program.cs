@@ -1,7 +1,8 @@
-﻿using System.CommandLine;
+﻿
+using System.CommandLine;
 using System.Threading.Tasks;
-using Dimmy.Cli.Commands;
 using SimpleInjector.Lifestyles;
+using ICommand = Dimmy.Cli.Commands.ICommand;
 
 namespace Dimmy.Cli.Application
 {
@@ -15,7 +16,7 @@ namespace Dimmy.Cli.Application
             {
                 var rootCommand = new RootCommand();
 
-                foreach (var commandLineCommand in container.GetAllInstances<ICommandLineCommand>())
+                foreach (var commandLineCommand in container.GetAllInstances<ICommand>())
                     rootCommand.AddCommand(commandLineCommand.GetCommand());
 
                 return await rootCommand.InvokeAsync(args);

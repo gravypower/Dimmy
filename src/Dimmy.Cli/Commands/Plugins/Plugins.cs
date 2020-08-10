@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
-using System.Linq;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Plugins;
 using Dimmy.Engine.Queries;
@@ -12,7 +11,7 @@ using NuGet.Protocol.Core.Types;
 
 namespace Dimmy.Cli.Commands.Plugins
 {
-    public class PluginsCommandLineCommand : ICommandLineCommand
+    public class Plugins : Command<PluginsArgument>
     {
         private static readonly string PluginsDirectoryPath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
@@ -24,7 +23,7 @@ namespace Dimmy.Cli.Commands.Plugins
 
         private readonly ICommandHandler<InstallPlugin> _installPluginCommandHandler;
 
-        public PluginsCommandLineCommand(
+        public Plugins(
             ICommandHandler<InstallPlugin> installPluginCommandHandler,
             IQueryHandler<GetRemotePlugins, IList<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
         {
@@ -32,7 +31,7 @@ namespace Dimmy.Cli.Commands.Plugins
             _getRemotePluginsQueryHandler = getRemotePluginsQueryHandler;
         }
 
-        public Command GetCommand()
+        public override Command GetCommand()
         {
             var projectsCommand = new Command("plugins");
 
@@ -41,6 +40,10 @@ namespace Dimmy.Cli.Commands.Plugins
             projectsCommand.AddAlias("plugins");
 
             return projectsCommand;
+        }
+
+        protected override void CommandAction(PluginsArgument arg)
+        {
         }
 
         private Command PluginListCommand()
@@ -97,7 +100,6 @@ namespace Dimmy.Cli.Commands.Plugins
                     packageVersion = selectedPlugin.Identity.Version.OriginalVersion;
                 }
                 
-            
                 _installPluginCommandHandler.Handle(new InstallPlugin
                 {
                     PackageId = packageId,
