@@ -8,6 +8,8 @@ using Dimmy.Cli.Commands.Project.SubCommands;
 using Dimmy.Cli.Commands.Projects;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
+using Dimmy.Engine.Pipelines;
+using Dimmy.Engine.Pipelines.StartProject.Nodes;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;
@@ -43,7 +45,7 @@ namespace Dimmy.Cli.Application
             
             Container.Collection.Register<IProjectSubCommand>(assemblies);
             
-            
+            Container.Register(typeof(Pipeline<,>), assemblies);
             Container.Collection.Register(typeof(ICommand), new []
             {
                 typeof(Project),
@@ -55,6 +57,12 @@ namespace Dimmy.Cli.Application
 
             Container.Register(typeof(ICommandHandler<>), assemblies);
             Container.Register(typeof(IQueryHandler<,>), assemblies);
+            
+            Container.Collection.Register(typeof(Node<>), new []
+            {
+                typeof(CreateBindMountFolders),
+                typeof(DockerComposeStart)
+            });
 
             Container.Verify();
 
