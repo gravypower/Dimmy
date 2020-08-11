@@ -11,7 +11,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             if(input.GeneratOnly)
                 return;
             
-            var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
+            var workingDockerCompose = Path.Combine(input.ProjectInstance.WorkingPath, "docker-compose.yml");
             var builder = new Builder()
                 .UseContainer()
                 .UseCompose()

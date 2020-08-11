@@ -1,8 +1,11 @@
-﻿namespace Dimmy.Engine.Pipelines.StartProject
+﻿using Dimmy.Engine.Models.Yaml;
+
+namespace Dimmy.Engine.Pipelines.StartProject
 {
     public class StartProjectContext:IStartProjectContext
     {
-        public string WorkingPath { get; set; }
+        public ProjectInstanceYaml ProjectInstance { get; set; } 
+        public ProjectYaml Project { get; set; }
         public bool GeneratOnly { get; set; }
     }
 }

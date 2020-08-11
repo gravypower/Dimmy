@@ -14,12 +14,12 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         }
         public override void DoExecute(StartProjectContext input)
         {
-            var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
+            var workingDockerCompose = Path.Combine(input.ProjectInstance.WorkingPath, "docker-compose.yml");
             if (File.Exists(workingDockerCompose)) File.Delete(workingDockerCompose);
 
             _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
             {
-                WorkingPath = input.WorkingPath
+                WorkingPath = input.ProjectInstance.WorkingPath
             });
         }
     }

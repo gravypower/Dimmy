@@ -3,15 +3,20 @@ using System.CommandLine;
 using System.IO;
 using Dimmy.Engine.Pipelines;
 using Dimmy.Engine.Pipelines.StartProject;
+using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Start : ProjectSubCommand<StartArgument>
     {
+        private readonly IProjectService _projectService;
         private readonly Pipeline<Node<IStartProjectContext>, IStartProjectContext> _startProjectPipeline;
 
-        public Start(Pipeline<Node<IStartProjectContext>, IStartProjectContext> startProjectPipeline)
+        public Start(
+            IProjectService projectService,
+            Pipeline<Node<IStartProjectContext>, IStartProjectContext> startProjectPipeline)
         {
+            _projectService = projectService;
             _startProjectPipeline = startProjectPipeline;
         }
 
@@ -34,10 +39,12 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             if (arg.GeneratOnly)
                 return;
             
+            var project = _projectService.GetProject(arg.WorkingPath);
             _startProjectPipeline.Execute(new StartProjectContext
             {
                 GeneratOnly = arg.GeneratOnly,
-                WorkingPath = arg.WorkingPath
+                ProjectInstance = project.ProjectInstance,
+                Project = project.Project
             });
         }
     }
