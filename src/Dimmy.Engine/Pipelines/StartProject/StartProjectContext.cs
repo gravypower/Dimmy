@@ -2,6 +2,7 @@
 {
     public class StartProjectContext:IStartProjectContext
     {
-        public Commands.Docker.StartProject Command { get; set; }
+        public string WorkingPath { get; set; }
+        public bool GeneratOnly { get; set; }
     }
 }

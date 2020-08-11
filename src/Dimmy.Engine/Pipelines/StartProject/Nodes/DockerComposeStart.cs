@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Ductus.FluentDocker.Builders;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
@@ -7,11 +8,14 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
-            var command = input.Command;
+            if(input.GeneratOnly)
+                return;
+            
+            var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
             var builder = new Builder()
                 .UseContainer()
                 .UseCompose()
-                .FromFile(command.DockerComposeFilePath)
+                .FromFile(workingDockerCompose)
                 .RemoveOrphans();
 
             var compositeService = builder.Build();
