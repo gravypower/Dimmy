@@ -35,16 +35,14 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
         {
             if (string.IsNullOrEmpty(arg.WorkingPath))
                 arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
+
+            var (projectInstance, project) = _projectService.GetProject(arg.WorkingPath);
             
-            if (arg.GeneratOnly)
-                return;
-            
-            var project = _projectService.GetProject(arg.WorkingPath);
             _startProjectPipeline.Execute(new StartProjectContext
             {
-                GeneratOnly = arg.GeneratOnly,
-                ProjectInstance = project.ProjectInstance,
-                Project = project.Project,
+                GeneratOnly = arg.GenerateOnly,
+                ProjectInstance = projectInstance,
+                Project = project,
                 WorkingPath = arg.WorkingPath
             });
         }

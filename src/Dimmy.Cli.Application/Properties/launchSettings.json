@@ -2,7 +2,7 @@
   "profiles": {
     "Dimmy.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "project start --generate-only  --working-path C:\\clients\\SomeClient\\"
+      "commandLineArgs": "project start --working-path C:\\clients\\SomeClient\\"
     }
   }
 }
