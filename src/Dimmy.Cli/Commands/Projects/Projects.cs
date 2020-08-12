@@ -27,7 +27,7 @@ namespace Dimmy.Cli.Commands.Projects
             return projectsCommand;
         }
 
-        protected override void CommandAction(ProjectsArgument arg)
+        public  override void CommandAction(ProjectsArgument arg)
         {
         }
 

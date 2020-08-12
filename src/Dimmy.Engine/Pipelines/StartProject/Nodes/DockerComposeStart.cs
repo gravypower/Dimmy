@@ -6,12 +6,14 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class DockerComposeStart : Node<IStartProjectContext>
     {
+        public override int Order => 999;
+
         public override void DoExecute(IStartProjectContext input)
         {
             if(input.GeneratOnly)
                 return;
             
-            var workingDockerCompose = Path.Combine(input.ProjectInstance.WorkingPath, "docker-compose.yml");
+            var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
             var builder = new Builder()
                 .UseContainer()
                 .UseCompose()

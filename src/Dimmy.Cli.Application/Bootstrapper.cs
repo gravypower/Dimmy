@@ -58,11 +58,7 @@ namespace Dimmy.Cli.Application
             Container.Register(typeof(ICommandHandler<>), assemblies);
             Container.Register(typeof(IQueryHandler<,>), assemblies);
             
-            Container.Collection.Register(typeof(Node<>), new []
-            {
-                typeof(CreateBindMountFolders),
-                typeof(DockerComposeStart)
-            });
+            Container.Collection.Register(typeof(Node<>), assemblies);
 
             Container.Verify();
 

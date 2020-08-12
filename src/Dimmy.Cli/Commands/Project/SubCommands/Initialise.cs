@@ -23,7 +23,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return command;
         }
 
-        protected override void CommandAction(InitialiseArgument arg)
+        public  override void CommandAction(InitialiseArgument arg)
         {
             
         }

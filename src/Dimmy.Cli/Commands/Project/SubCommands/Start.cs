@@ -31,7 +31,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return startProjectCommand;
         }
 
-        protected override void CommandAction(StartArgument arg)
+        public  override void CommandAction(StartArgument arg)
         {
             if (string.IsNullOrEmpty(arg.WorkingPath))
                 arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
@@ -44,7 +44,8 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             {
                 GeneratOnly = arg.GeneratOnly,
                 ProjectInstance = project.ProjectInstance,
-                Project = project.Project
+                Project = project.Project,
+                WorkingPath = arg.WorkingPath
             });
         }
     }

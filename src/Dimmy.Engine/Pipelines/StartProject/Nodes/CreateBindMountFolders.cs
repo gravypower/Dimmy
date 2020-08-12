@@ -10,7 +10,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
-            var dockerComposeFile = Path.Combine(input.ProjectInstance.WorkingPath, "docker-compose.yml");
+            var dockerComposeFile = Path.Combine(input.WorkingPath, "docker-compose.yml");
             if (!File.Exists(dockerComposeFile)) throw new DockerComposeFileNotFound();
             
             var deserializer = new DeserializerBuilder()
@@ -45,7 +45,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                     if(string.IsNullOrEmpty(hostFolderName))
                         continue;
 
-                    var composeFilePath = Path.GetDirectoryName(input.ProjectInstance.WorkingPath);
+                    var composeFilePath = Path.GetDirectoryName(input.WorkingPath);
 
                     var hostFolderPath = Path.Combine(composeFilePath, hostFolderName);
                     var exists = Directory.Exists(hostFolderPath);

@@ -30,7 +30,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return stopProjectCommand;
         }
 
-        protected override void CommandAction(StopArgument arg)
+        public  override void CommandAction(StopArgument arg)
         {
             if (arg.ProjectId == Guid.Empty && string.IsNullOrEmpty(arg.WorkingPath))
             {

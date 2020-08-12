@@ -8,11 +8,13 @@ namespace Dimmy.Engine.Pipelines
     {
         protected TContext Context { get; set; }
 
-        private readonly IEnumerable<TNode> _nodes;
+        private readonly List<TNode> _nodes;
 
         protected Pipeline(IEnumerable<TNode> nodes)
         {
-            _nodes = nodes.OrderBy(n=>n.Order);
+            _nodes = nodes
+                .OrderBy(n=>n.Order)
+                .ToList();
         }
 
         public void Execute(TContext context = default)

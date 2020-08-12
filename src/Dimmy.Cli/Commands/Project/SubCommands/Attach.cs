@@ -35,7 +35,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             return command;
         }
 
-        protected override void CommandAction(AttachArgument arg)
+        public override void CommandAction(AttachArgument arg)
         {
             if (arg.ProjectId == Guid.Empty) arg.ProjectId = _projectService.GetProject().Project.Id;
 

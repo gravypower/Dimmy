@@ -9,7 +9,7 @@
         ///     Initializes a new instance of the SharpHostsFile.HostsFileComment class.
         /// </summary>
         /// <param name="comment">The hosts file comment.</param>
-        public HostsFileComment(string comment) : this(string.Empty, comment)
+        public HostsFileComment(string comment) : this($"# {comment}", comment)
         {
         }
 

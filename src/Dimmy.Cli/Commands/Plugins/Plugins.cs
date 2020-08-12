@@ -42,7 +42,7 @@ namespace Dimmy.Cli.Commands.Plugins
             return projectsCommand;
         }
 
-        protected override void CommandAction(PluginsArgument arg)
+        public override void CommandAction(PluginsArgument arg)
         {
         }
 

@@ -5,7 +5,7 @@
         private Node<TContext> _nextNode;
         protected TContext Context { get; set; }
 
-        public virtual int Order { get; } = -1;
+        public virtual int Order { get; } = 0;
         public abstract void DoExecute(TContext input);
 
         public void Execute(TContext context)

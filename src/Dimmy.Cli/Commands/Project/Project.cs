@@ -39,7 +39,7 @@ namespace Dimmy.Cli.Commands.Project
             return command;
         }
 
-        protected override void CommandAction(ProjectArgument arg)
+        public  override void CommandAction(ProjectArgument arg)
         {
         }
     }

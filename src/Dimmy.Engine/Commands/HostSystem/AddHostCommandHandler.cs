@@ -1,15 +1,26 @@
-﻿using System.Net;
+﻿using System.Linq;
 using SharpHostsFile;
 
 namespace Dimmy.Engine.Commands.HostSystem
 {
-    public class AddHostCommandHandler : ICommandHandler<AddHost>
+    public class AddHostsFileMapEntriesCommandHandler : ICommandHandler<AddHostsFileMapEntries>
     {
-        public void Handle(AddHost command)
+        public void Handle(AddHostsFileMapEntries command)
         {
             var hostsFile = new HostsFile();
             hostsFile.Load(HostsFile.GetDefaultHostsFilePath());
-            hostsFile.Add(new HostsFileMapEntry(command.Address, command.Hostname, command.Comment));
+            
+            command.HostsFileMapEntries.Insert(0, new HostsFileComment("Added by DIMMY"));
+            command.HostsFileMapEntries.Add(new HostsFileComment("End of DIMMY section "));
+            
+            foreach (var commandHostsFileMapEntry in command.HostsFileMapEntries)
+            {
+                if (hostsFile.Entries.All(e => e.RawLine != commandHostsFileMapEntry.ToString()))
+                {
+                    hostsFile.Add(commandHostsFileMapEntry);
+                }
+            }
+            
             hostsFile.Save(HostsFile.GetDefaultHostsFilePath());
         }
     }
