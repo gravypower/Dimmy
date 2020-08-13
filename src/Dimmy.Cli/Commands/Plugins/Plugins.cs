@@ -31,7 +31,7 @@ namespace Dimmy.Cli.Commands.Plugins
             _getRemotePluginsQueryHandler = getRemotePluginsQueryHandler;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var projectsCommand = new Command("plugins");
 

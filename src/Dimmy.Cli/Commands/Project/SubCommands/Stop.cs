@@ -19,7 +19,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _stopProjectCommandHandler = stopProjectCommandHandler;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var stopProjectCommand = new Command("stop")
             {

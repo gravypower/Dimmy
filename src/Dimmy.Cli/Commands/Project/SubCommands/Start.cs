@@ -20,7 +20,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _startProjectPipeline = startProjectPipeline;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var startProjectCommand = new Command("start")
             {

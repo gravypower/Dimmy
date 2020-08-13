@@ -17,7 +17,7 @@ namespace Dimmy.Cli.Commands.Projects
             _getRunningProjectsQueryHandler = getRunningProjectsQueryHandler;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var projectsCommand = new Command("projects");
 

@@ -17,7 +17,7 @@ namespace Dimmy.Cli.Application
                 var rootCommand = new RootCommand();
 
                 foreach (var commandLineCommand in container.GetAllInstances<ICommand>())
-                    rootCommand.AddCommand(commandLineCommand.GetCommand());
+                    rootCommand.AddCommand(commandLineCommand.BuildCommand());
 
                 return await rootCommand.InvokeAsync(args);
             }

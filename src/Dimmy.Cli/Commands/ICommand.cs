@@ -4,6 +4,6 @@ namespace Dimmy.Cli.Commands
 {
     public interface ICommand
     {
-        Command GetCommand();
+        Command BuildCommand();
     }
 }

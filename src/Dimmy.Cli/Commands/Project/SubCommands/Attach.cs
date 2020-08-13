@@ -22,7 +22,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _enterPowerShellSessionCommandHandler = enterPowerShellSessionCommandHandler;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var command = new Command("attach", "Attach to a running container in a project.")
             {

@@ -8,7 +8,6 @@ namespace Dimmy.Cli.Commands
     {
         public abstract void CommandAction(TCommandArgument arg);
 
-        public abstract Command GetCommand();
-        public Type ArgumentType => typeof(TCommandArgument);
+        public abstract Command BuildCommand();
     }
 }

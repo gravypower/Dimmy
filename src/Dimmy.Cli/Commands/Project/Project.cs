@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Binding;
 using System.CommandLine.Invocation;
@@ -16,21 +15,19 @@ namespace Dimmy.Cli.Commands.Project
             _projectSubCommands = projectSubCommands;
         }
         
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var command = new Command("project");
 
             foreach (var projectSubCommand in _projectSubCommands)
             {
-                var c = projectSubCommand.GetCommand();
+                var c = projectSubCommand.BuildCommand();
                 
                 var methods = projectSubCommand.GetType()
                     .GetMethods()
-                    .Where(x => x.Name == "CommandAction");
+                    .Where(x => x.Name == nameof(CommandAction));
                 var methodInfo = methods.First();
-                var actionT = typeof(Action<>).MakeGenericType(projectSubCommand.ArgumentType);
-                var d =  Delegate.CreateDelegate(actionT, projectSubCommand, methodInfo);
-                c.Handler = HandlerDescriptor.FromDelegate(d).GetCommandHandler();
+                c.Handler = HandlerDescriptor.FromMethodInfo(methodInfo, projectSubCommand).GetCommandHandler();
                 command.AddCommand(c);
             }
 

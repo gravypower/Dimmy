@@ -12,7 +12,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _initialiseSubCommands = initialiseSubCommands;
         }
 
-        public override Command GetCommand()
+        public override Command BuildCommand()
         {
             var command = new Command("initialise", "Initialise a project");
             command.AddAlias("init");
