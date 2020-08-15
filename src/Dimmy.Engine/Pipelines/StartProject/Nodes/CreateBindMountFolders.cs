@@ -45,16 +45,13 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                     if(string.IsNullOrEmpty(hostFolderName))
                         continue;
 
-                    var composeFilePath = Path.GetDirectoryName(input.WorkingPath);
-
-                    var hostFolderPath = Path.Combine(composeFilePath, hostFolderName);
+                    var hostFolderPath = Path.Combine(input.WorkingPath, hostFolderName);
                     var exists = Directory.Exists(hostFolderPath);
 
                     if (!exists)
                         Directory.CreateDirectory(hostFolderPath);
                 }
             }
-
         }
     }
 }

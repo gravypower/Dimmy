@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using Ductus.FluentDocker.AmbientContext;
 using Ductus.FluentDocker.Builders;
+using Ductus.FluentDocker.Commands;
+using Ductus.FluentDocker.Executors;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
@@ -21,20 +24,30 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                 .RemoveOrphans();
 
             var compositeService = builder.Build();
-
-            compositeService.OutputDataReceived += (sender, args) =>
+            var p = new ProcessManager();
+            
+            p.ErrorTextReceived += (sender, s) =>    
             {
-                if (args.Data != null)
-                    Console.Out.WriteLineAsync(args.Data);
+                if(sender.ProcessIdentifier != nameof(Compose.ComposeUp))
+                    return;
+                
+                if (!string.IsNullOrEmpty(s))
+                    Console.Error.WriteAsync(s);
             };
             
-            compositeService.ErrorDataReceived += (sender, args) =>
+            p.StandartTextReceived += (sender, s) => 
             {
-                if (args.Data != null)
-                    Console.Error.WriteLineAsync(args.Data);
+                if(sender.ProcessIdentifier != nameof(Compose.ComposeUp))
+                    return;
+                
+                if (!string.IsNullOrEmpty(s))
+                    Console.Write(s);
             };
-
-            compositeService.Start();
+            
+            using (ProcessManagerContext.UseProcessManager(p))
+            {
+               compositeService.Start();
+            }
         }
     }
 }
