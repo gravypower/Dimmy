@@ -8,5 +8,6 @@ namespace Dimmy.Engine.Models
         public string Name { get; set; }
         public Guid Id { get; set; }
         public IList<Service> Services { get; set; } = new List<Service>();
+        public string WorkingPath { get; set; }
     }
 }

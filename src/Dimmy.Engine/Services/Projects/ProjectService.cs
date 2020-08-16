@@ -40,12 +40,14 @@ namespace Dimmy.Engine.Services.Projects
                     throw new ContainerDoesNotHaveValidDimmyProjectId();
                 
                 var projectName = labels[DimmyDockerComposeLabels.ProjectName];
+                var projectWorkingPath = labels[DimmyDockerComposeLabels.ProjectWorkingPath];
 
                 if (!projects.ContainsKey(projectId))
                     projects.Add(projectId, new Project
                     {
                         Name = projectName,
-                        Id = projectId
+                        Id = projectId,
+                        WorkingPath = projectWorkingPath
                     });
 
                 projects[projectId].Services.Add(new Service

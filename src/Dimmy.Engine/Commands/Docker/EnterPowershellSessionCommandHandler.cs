@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Commands.Docker
 {
@@ -7,14 +8,14 @@ namespace Dimmy.Engine.Commands.Docker
         public void Handle(EnterPowershellSession command)
         {
             var setTitleCommand = $"{{$host.ui.RawUI.WindowTitle = '{command.ShellTitle}'}}";
-
+            
             var noExit = command.NoExit ? "-NoExit" : "";
-
+            
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "C:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe",
+                    FileName = "powershell",
                     Arguments =
                         $"-NoLogo {noExit} -Command docker exec -it {command.ContainerId} powershell -NoExit -Command {setTitleCommand};",
                     RedirectStandardOutput = false,
@@ -22,7 +23,7 @@ namespace Dimmy.Engine.Commands.Docker
                     CreateNoWindow = false
                 }
             };
-
+            
             process.Start();
         }
     }

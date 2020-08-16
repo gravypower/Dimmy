@@ -1,7 +1,7 @@
 ﻿using System;
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
@@ -9,16 +9,19 @@ using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class Attach : Command<AttachArgument>
+    public class Attach : ProjectSubCommand<AttachArgument>
     {
         private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
         private readonly IProjectService _projectService;
+        private readonly ICommandHandler<EnterBashSession> _enterBashSessionCommandHandler;
 
         public Attach(
             IProjectService projectService,
+            ICommandHandler<EnterBashSession> enterBashSessionCommandHandler,
             ICommandHandler<EnterPowershellSession> enterPowerShellSessionCommandHandler)
         {
             _projectService = projectService;
+            _enterBashSessionCommandHandler = enterBashSessionCommandHandler;
             _enterPowerShellSessionCommandHandler = enterPowerShellSessionCommandHandler;
         }
 
@@ -26,8 +29,8 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
         {
             var command = new Command("attach", "Attach to a running container in a project.")
             {
-                new Option<Guid>("--project-id",
-                    "The Id of the Project you wish to attach to. Omit for context project"),
+                new Option<Guid>("--project-id", "The Id of the Project you wish to attach to. Omit for context project"),
+                new Option<string>("--working-path", "Working Path"),
                 new Option<string>("--role", "The role you want to connect to. Omit to pick"),
                 new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
             };
@@ -37,26 +40,34 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 
         public override void CommandAction(AttachArgument arg)
         {
-            if (arg.ProjectId == Guid.Empty) arg.ProjectId = _projectService.GetProject().Project.Id;
-
-            var project = _projectService.RunningProjects().Single(p => p.Id == arg.ProjectId);
+            var runningProject = _projectService.ResolveRunningProject(arg);
 
             if (string.IsNullOrEmpty(arg.Role))
             {
-                project.PrettyPrint();
+                runningProject.PrettyPrint();
                 Console.Write("Enter name of role:");
 
                 arg.Role = Console.ReadLine();
             }
 
-            var projectRole = project.Services.Single(r => r.Name == arg.Role);
-
-            _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
+            var projectRole = runningProject.Services.Single(r => r.Name == arg.Role);
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                ContainerId = projectRole.ContainerId,
-                ShellTitle = $"{project.Name}({projectRole.Name})",
-                NoExit = arg.NoExit
-            });
+                _enterBashSessionCommandHandler.Handle(new EnterBashSession
+                {
+                    ContainerId = projectRole.ContainerId
+                });
+            }
+            else
+            {
+                _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
+                {
+                    ContainerId = projectRole.ContainerId,
+                    ShellTitle = $"{runningProject.Name}({projectRole.Name})",
+                    NoExit = arg.NoExit
+                });
+            }
         }
     }
 }

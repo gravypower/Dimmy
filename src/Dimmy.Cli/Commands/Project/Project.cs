@@ -19,22 +19,14 @@ namespace Dimmy.Cli.Commands.Project
         {
             var command = new Command("project");
 
-            foreach (var projectSubCommand in _projectSubCommands)
-            {
-                var c = projectSubCommand.BuildCommand();
-                
-                var methods = projectSubCommand.GetType()
-                    .GetMethods()
-                    .Where(x => x.Name == nameof(CommandAction));
-                var methodInfo = methods.First();
-                c.Handler = HandlerDescriptor.FromMethodInfo(methodInfo, projectSubCommand).GetCommandHandler();
-                command.AddCommand(c);
-            }
+            AddSubCommands(command, _projectSubCommands);
 
             command.Handler = CommandHandler.Create((ProjectArgument arg) => CommandAction(arg));
             
             return command;
         }
+
+        
 
         public  override void CommandAction(ProjectArgument arg)
         {

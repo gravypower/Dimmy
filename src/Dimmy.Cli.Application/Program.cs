@@ -1,6 +1,9 @@
-﻿
+﻿using System;
 using System.CommandLine;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Dimmy.Engine.Services;
 using SimpleInjector.Lifestyles;
 using ICommand = Dimmy.Cli.Commands.ICommand;
 
@@ -12,6 +15,20 @@ namespace Dimmy.Cli.Application
         {
             var container = Bootstrapper.Bootstrap();
 
+            var baseDirectory = AppContext.BaseDirectory;
+            
+            var certPath = $"dimmy.pfx";
+            if(!File.Exists(Path.Combine(baseDirectory, certPath)))
+            {
+                var certificateService = container.GetInstance<ICertificateService>();
+                var dimmyCert = certificateService.CreateSelfSignedCertificate("dimmy", "dimmy.local");
+                using var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(dimmyCert);
+                
+                await File.WriteAllBytesAsync(certPath, dimmyCert.Export(X509ContentType.Pfx));
+            }
+            
             await using (AsyncScopedLifestyle.BeginScope(container))
             {
                 var rootCommand = new RootCommand();
