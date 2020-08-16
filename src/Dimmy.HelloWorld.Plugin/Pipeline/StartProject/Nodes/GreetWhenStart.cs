@@ -8,7 +8,7 @@ namespace Dimmy.HelloWorld.Plugin.Pipeline.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
-            Console.WriteLine("Hello from tHe Hello World plugin.");
+            Console.WriteLine("Hello from the Hello World plugin. This is a step in the Project Start Pipeline");
         }
     }
 }

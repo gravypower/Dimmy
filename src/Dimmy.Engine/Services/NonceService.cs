@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace Dimmy.Engine.Services
 {
@@ -7,11 +6,34 @@ namespace Dimmy.Engine.Services
     {
         public static string Generate(int length = 64)
         {
-            using var cryptRng = new RNGCryptoServiceProvider();
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
-            var tokenBuffer = new byte[length];
-            cryptRng.GetBytes(tokenBuffer);
-            return Convert.ToBase64String(tokenBuffer);
+            using var crypto = new RNGCryptoServiceProvider();
+            var data = new byte[length];
+            byte[] smallBuffer = null;
+
+            var maxRandom = byte.MaxValue - (byte.MaxValue + 1) % chars.Length;
+
+            crypto.GetBytes(data);
+
+            var result = new char[length];
+
+            for (var i = 0; i < length; i++)
+            {
+                var v = data[i];
+
+                while (v > maxRandom)
+                {
+                    smallBuffer ??= new byte[1];
+
+                    crypto.GetBytes(smallBuffer);
+                    v = smallBuffer[0];
+                }
+
+                result[i] = chars[v % chars.Length];
+            }
+
+            return new string(result);
         }
     }
 }
