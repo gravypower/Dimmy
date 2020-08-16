@@ -21,7 +21,7 @@ namespace Dimmy.Cli.Application
             if(!File.Exists(Path.Combine(baseDirectory, certPath)))
             {
                 var certificateService = container.GetInstance<ICertificateService>();
-                var dimmyCert = certificateService.CreateSelfSignedCertificate("dimmy", "dimmy.local");
+                var dimmyCert = certificateService.CreateCaCertificate("dimmy", "dimmy.local");
                 using var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(dimmyCert);
