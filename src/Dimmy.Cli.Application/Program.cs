@@ -17,8 +17,8 @@ namespace Dimmy.Cli.Application
 
             var baseDirectory = AppContext.BaseDirectory;
             
-            var certPath = $"dimmy.pfx";
-            if(!File.Exists(Path.Combine(baseDirectory, certPath)))
+            var certPath = Path.Combine(baseDirectory, $"dimmy.pfx");
+            if(!File.Exists(certPath))
             {
                 var certificateService = container.GetInstance<ICertificateService>();
                 var dimmyCert = certificateService.CreateCaCertificate("dimmy", "dimmy.local");
