@@ -12,6 +12,7 @@ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 ###########################################################################
 # CONFIGURATION
 ###########################################################################
+$TempDirectory = "$PSScriptRoot\.tmp"
 
 $DotNetGlobalFile = "$PSScriptRoot\\global.json"
 $DotNetInstallUrl = "https://dot.net/v1/dotnet-install.ps1"
@@ -61,4 +62,4 @@ else {
 }
 
 Write-Output "Microsoft (R) .NET Core SDK version $(& $env:DOTNET_EXE --version)"
-ExecSafe { & $env:DOTNET_EXE tool install  --global Dimmy}
+ExecSafe { & $env:DOTNET_EXE tool install --global Dimmy}
