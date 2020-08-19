@@ -10,15 +10,16 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         {
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
-
-
+            
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\\Microsoft\\Windows NT\\CurrentVersion");
             if (key == null) return;
             
             var releaseId = (string)key.GetValue("ReleaseId");
-            
-            
-            
+
+            foreach (var service in input.DockerComposeYaml.Services)
+            {
+                var image = service.Value.Image;
+            }
         }
     }
 }

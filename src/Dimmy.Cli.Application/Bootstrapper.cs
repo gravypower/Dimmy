@@ -10,7 +10,6 @@ using Dimmy.Cli.Commands.Projects;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Pipelines;
-using Dimmy.Engine.Pipelines.StartProject.Nodes;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
 using Dimmy.Engine.Services.Projects;

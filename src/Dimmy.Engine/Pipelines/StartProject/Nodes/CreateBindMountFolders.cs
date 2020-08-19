@@ -10,18 +10,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
-            var dockerComposeFile = Path.Combine(input.WorkingPath, "docker-compose.yml");
-            if (!File.Exists(dockerComposeFile)) throw new DockerComposeFileNotFound();
             
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .IgnoreUnmatchedProperties()
-                .Build();
-
-            var dockerCompose = 
-                deserializer.Deserialize<DockerComposeYaml>(File.ReadAllText(dockerComposeFile));
-            
-            foreach (var dockerComposeService in dockerCompose.Services)
+            foreach (var dockerComposeService in input.DockerComposeYaml.Services)
             {
                 if(dockerComposeService.Value.Volumes == null)
                     continue;

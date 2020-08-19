@@ -6,5 +6,7 @@ namespace Dimmy.Engine.Models.Yaml.DockerCompose
     public class Service
     {
         public IList<dynamic> Volumes { get; set; }
+        
+        public string Image { get; set; }
     }
 }
