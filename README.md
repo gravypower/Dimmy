@@ -32,10 +32,7 @@ To get started there are a few prerequisites:
 
 With that out of the way we can install the tool
 
-`dotnet tool install --global Dimmy --version 0.0.3`
-
-Or you can use this one-liner to install .NER Core 3.1 and Dimmy:
-`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex -Command ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/gravypower/Dimmy/master/dimmy-install.ps1'))`
+`dotnet tool install --global Dimmy`
 
 See the [nuget page]( https://www.nuget.org/packages/Dimmy/) for the latest version. Also, note you may need to restart your shell to refresh the path environment variables.
 
