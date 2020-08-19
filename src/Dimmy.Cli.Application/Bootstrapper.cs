@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dimmy.Cli.Commands.Logo;
 using Dimmy.Cli.Commands.Plugins;
 using Dimmy.Cli.Commands.Project;
 using Dimmy.Cli.Commands.Project.SubCommands;
@@ -50,7 +51,8 @@ namespace Dimmy.Cli.Application
             {
                 typeof(Project),
                 typeof(Projects),
-                typeof(Plugins)
+                typeof(Plugins),
+                typeof(Logo)
             });
 
             Container.Collection.Register<InitialiseSubCommand>(assemblies);
