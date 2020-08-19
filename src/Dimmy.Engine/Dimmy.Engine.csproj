@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ductus.FluentDocker" Version="2.7.65-beta.141" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="4.3.0" />
     <PackageReference Include="NuGet.Protocol" Version="5.7.0-rtm.6702" />
     <PackageReference Include="NuGet.Resolver" Version="5.7.0-rtm.6702" />
     <PackageReference Include="Nuke.Common" Version="0.25.0-alpha0334" />
