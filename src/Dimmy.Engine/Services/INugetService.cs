@@ -10,6 +10,7 @@ namespace Dimmy.Engine.Services
     public interface INugetService
     {
         Task<IList<IPackageSearchMetadata>> GetNugetPackagesFromTag(string tag);
+        Task<IList<IPackageSearchMetadata>> GetNugetPackagesFromId(string packageId);
 
         Task<IEnumerable<SourcePackageDependencyInfo>> GetPackageAndDependencies(
             PackageIdentity packageId,

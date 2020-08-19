@@ -38,7 +38,27 @@ namespace Dimmy.Engine.Services
 
             _repositories = sourceRepositoryProvider.GetRepositories();
         }
-        
+
+        public async Task<IList<IPackageSearchMetadata>> GetNugetPackagesFromId(string packageId)
+        {
+            var packages = new List<IPackageSearchMetadata>();
+            foreach (var sourceRepository in _repositories)
+            {
+                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>();
+                var searchMetadata = await searchResource.SearchAsync(
+                    @$"{packageId}",
+                    new SearchFilter(true),
+                    0,
+                    50,
+                    new TextWriterLogger(Console.Out),
+                    CancellationToken.None);
+
+                packages.AddRange(searchMetadata);
+            }
+
+            return packages;
+        }
+
         public async Task<IList<IPackageSearchMetadata>> GetNugetPackagesFromTag(string tag)
         {
             var packages = new List<IPackageSearchMetadata>();

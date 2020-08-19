@@ -32,7 +32,7 @@ To get started there are a few prerequisites:
 
 With that out of the way we can install the tool
 
-`dotnet tool install --global Dimmy --version 0.0.3`
+`dotnet tool install --global Dimmy`
 
 See the [nuget page]( https://www.nuget.org/packages/Dimmy/) for the latest version. Also, note you may need to restart your shell to refresh the path environment variables.
 

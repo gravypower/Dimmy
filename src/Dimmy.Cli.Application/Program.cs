@@ -22,7 +22,7 @@ namespace Dimmy.Cli.Application
             {
                 var certificateService = container.GetInstance<ICertificateService>();
                 var dimmyCert = certificateService.CreateCaCertificate("dimmy", "dimmy.local");
-                using var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+                using var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine, OpenFlags.ReadWrite);
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(dimmyCert);
                 
