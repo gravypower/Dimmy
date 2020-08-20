@@ -3,7 +3,7 @@ using Dimmy.Cli.Extensions;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
-    public class AttachArgument:ProjectSubCommandArgument, IGetProjectArg
+    public class AttachArgument:ProjectCommandArgument, IGetProjectArg
     {
         public Guid ProjectId { get; set; }
         

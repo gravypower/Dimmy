@@ -46,7 +46,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             
             using (ProcessManagerContext.UseProcessManager(p))
             {
-               compositeService.Start();
+               //compositeService.Start();
             }
         }
     }
