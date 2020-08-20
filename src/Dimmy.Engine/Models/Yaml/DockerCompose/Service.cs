@@ -8,5 +8,7 @@ namespace Dimmy.Engine.Models.Yaml.DockerCompose
         public IList<dynamic> Volumes { get; set; }
         
         public string Image { get; set; }
+        
+        public IList<dynamic> Labels { get; set; }
     }
 }
