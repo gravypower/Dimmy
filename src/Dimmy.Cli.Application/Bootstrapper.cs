@@ -41,6 +41,7 @@ namespace Dimmy.Cli.Application
             Container.Register<INugetService, NugetService>();
 
             Container.Register<IProjectService, ProjectService>();
+            Container.Register<IDockerComposeParser, DockerComposeParser>();
             Container.Register<ICertificateService, CertificateService>();
             
             Container.Collection.Register<IProjectSubCommand>(assemblies);

@@ -50,6 +50,5 @@ namespace Dimmy.Engine.Commands.Project
                 Path.Combine(command.WorkingPath, ".dimmy"),
                 dimmyProjectInstanceYaml);
         }
-        
     }
 }

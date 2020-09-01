@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Dimmy.Engine.Models.Yaml.DockerCompose;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+﻿using System.IO;
+using Ductus.FluentDocker.Model.Compose;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
@@ -10,25 +7,30 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
-            
-            foreach (var dockerComposeService in input.DockerComposeYaml.Services)
+            foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
             {
-                if(dockerComposeService.Value.Volumes == null)
+                if(service.Volumes == null)
                     continue;
                 
-                foreach (var volume in dockerComposeService.Value.Volumes)
+                foreach (var volume in service.Volumes)
                 {
                     var hostFolderName = string.Empty;
-                    if (volume is string)
+                    switch (volume)
                     {
-                        var volumeParts = volume.Split(':');
-                        hostFolderName = volumeParts[0];
-                    }
-                    else if (volume is IDictionary<object, object>)
-                    {
-                        if (volume["type"] == "bind")
+                        case ShortServiceVolumeDefinition v:
                         {
-                            hostFolderName = volume["source"];
+                            var volumeParts = v.Entry.Split(':');
+                            hostFolderName = volumeParts[0];
+                            break;
+                        }
+                        case LongServiceVolumeDefinition v:
+                        {
+                            if (v.Type == VolumeType.Bind)
+                            {
+                                hostFolderName = v.Source;
+                            }
+
+                            break;
                         }
                     }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
@@ -8,6 +7,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     {
         public override void DoExecute(IStartProjectContext input)
         {
+            
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
             
@@ -16,9 +16,9 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             
             var releaseId = (string)key.GetValue("ReleaseId");
 
-            foreach (var service in input.DockerComposeYaml.Services)
+            foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
             {
-                var image = service.Value.Image;
+                var image = service.Image;
             }
         }
     }
