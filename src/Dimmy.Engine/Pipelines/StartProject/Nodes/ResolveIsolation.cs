@@ -17,10 +17,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         
         public override void DoExecute(IStartProjectContext input)
         {
-            
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
-
 
             var hostVersion = System.Environment.OSVersion.Version.ToString();
 
@@ -31,7 +29,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                 //list of versions
                 //https://hub.docker.com/_/microsoft-windows-servercore
                 
-                if ("10.0.17763.1397" == imageConfig.Data.OsVersion)
+                if (hostVersion == imageConfig.Data.OsVersion)
                 {
                     input.ProjectInstance.VariableDictionary.Add($"{service.Name}.Isolation", "process");
                 }
