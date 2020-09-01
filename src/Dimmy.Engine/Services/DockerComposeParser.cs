@@ -95,7 +95,7 @@ namespace Dimmy.Engine.Services
                         var longServiceVolumeDefinition = new LongServiceVolumeDefinition();
 
                         var bindType = (string) vDictionary["type"];
-                        Enum.TryParse(bindType, out VolumeType b);
+                        Enum.TryParse(bindType, true, out VolumeType b);
 
                         longServiceVolumeDefinition.Type = b;
                         longServiceVolumeDefinition.Source = (string) vDictionary["source"];

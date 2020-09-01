@@ -21,6 +21,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 
             _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
             {
+                Project = input.Project,
+                ProjectInstance = input.ProjectInstance,
                 WorkingPath = input.WorkingPath
             });
         }

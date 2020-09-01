@@ -40,7 +40,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                     return;
                 
                 if (!string.IsNullOrEmpty(s.Data))
-                    Console.Error.WriteLine(s.Data);
+                    Console.Error.Write(s.Data);
             };
             
             p.OutputDataReceived += (sender, s) => 
@@ -54,7 +54,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             
             using (DataReceivedContext.UseProcessManager(p))
             {
-               compositeService.Start();
+               //compositeService.Start();
             }
         }
     }

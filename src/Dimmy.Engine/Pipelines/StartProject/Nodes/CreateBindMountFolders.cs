@@ -29,7 +29,6 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                             {
                                 hostFolderName = v.Source;
                             }
-
                             break;
                         }
                     }

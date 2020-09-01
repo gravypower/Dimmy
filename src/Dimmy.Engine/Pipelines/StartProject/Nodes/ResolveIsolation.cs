@@ -1,24 +1,44 @@
 ﻿using System.Runtime.InteropServices;
-using Microsoft.Win32;
+using Ductus.FluentDocker.Commands;
+using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class ResolveIsolation:Node<IStartProjectContext>
     {
+        public override int Order => -2;
+        
+        private readonly IHostService _host;
+
+        public ResolveIsolation(IHostService host)
+        {
+            _host = host;
+        }
+        
         public override void DoExecute(IStartProjectContext input)
         {
             
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
-            
-            using var key = Registry.CurrentUser.OpenSubKey(@"Software\\Microsoft\\Windows NT\\CurrentVersion");
-            if (key == null) return;
-            
-            var releaseId = (string)key.GetValue("ReleaseId");
+
+
+            var hostVersion = System.Environment.OSVersion.Version.ToString();
 
             foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
             {
-                var image = service.Image;
+                var imageConfig = _host.Host.InspectImage(service.Image);
+
+                //list of versions
+                //https://hub.docker.com/_/microsoft-windows-servercore
+                
+                if ("10.0.17763.1397" == imageConfig.Data.OsVersion)
+                {
+                    input.ProjectInstance.VariableDictionary.Add($"{service.Name}.Isolation", "process");
+                }
+                else
+                {
+                    input.ProjectInstance.VariableDictionary.Add($"{service.Name}.Isolation", "hyperv");
+                }
             }
         }
     }
