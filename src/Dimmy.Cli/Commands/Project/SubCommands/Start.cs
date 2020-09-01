@@ -52,7 +52,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             _startProjectPipeline.Execute(new StartProjectContext
             {
                 DockerComposeFileConfig = dockerComposeFileConfig, 
-                GeneratOnly = arg.GenerateOnly,
+                GenerateOnly = arg.GenerateOnly,
                 ProjectInstance = projectInstance,
                 Project = project,
                 WorkingPath = arg.WorkingPath

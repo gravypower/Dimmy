@@ -10,20 +10,15 @@ namespace Dimmy.Engine.Commands.Project
     {
         public void Handle(InitialiseProject command)
         {
-            var composeTemplate = new DockerComposeTemplate
-            {
-                Contents = File.ReadAllText(command.DockerComposeTemplatePath),
-                FileName = Path.GetFileName(command.DockerComposeTemplatePath)
-            };
+            var contents = File.ReadAllText(command.DockerComposeTemplatePath);
+            var fileName = Path.GetFileName(command.DockerComposeTemplatePath);
 
-            File.WriteAllText(
-                Path.Combine(command.SourceCodePath, composeTemplate.FileName),
-                composeTemplate.Contents);
+            File.WriteAllText(Path.Combine(command.SourceCodePath, fileName), contents);
 
             var dimmyProject = new ProjectYaml
             {
                 Id = Guid.NewGuid(),
-                ComposeTemplateFileName = composeTemplate.FileName,
+                ComposeTemplateFileName = fileName,
                 Name = command.Name,
                 VariableDictionary = command.PublicVariables,
                 MetaData = command.MetaData

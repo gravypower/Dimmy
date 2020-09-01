@@ -21,7 +21,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 
         public override void DoExecute(IStartProjectContext input)
         {
-            if(input.GeneratOnly)
+            if(input.GenerateOnly)
                 return;
 
             var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
