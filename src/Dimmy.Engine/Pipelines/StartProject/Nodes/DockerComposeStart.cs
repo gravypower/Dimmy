@@ -49,12 +49,12 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                     return;
                 
                 if (!string.IsNullOrEmpty(s.Data))
-                    Console.WriteLine(s.Data);
+                    Console.Write(s.Data);
             };
             
             using (DataReceivedContext.UseProcessManager(p))
             {
-               //compositeService.Start();
+               compositeService.Start();
             }
         }
     }

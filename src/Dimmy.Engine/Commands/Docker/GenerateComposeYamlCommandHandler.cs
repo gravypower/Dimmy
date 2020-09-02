@@ -8,7 +8,6 @@ namespace Dimmy.Engine.Commands.Docker
     {
         public void Handle(GenerateComposeYaml command)
         {
-            
             var variableDictionary = new VariableDictionary();
             variableDictionary.Set("Project.Name", command.ProjectInstance.Name);
             variableDictionary.Set("Project.Id", $"{command.ProjectInstance.Id:N}");

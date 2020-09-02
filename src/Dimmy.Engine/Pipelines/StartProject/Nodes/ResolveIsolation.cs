@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.IO;
+using System.Runtime.InteropServices;
+using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Commands;
 using Ductus.FluentDocker.Services;
 
@@ -10,7 +12,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         
         private readonly IHostService _host;
 
-        public ResolveIsolation(IHostService host)
+        public ResolveIsolation(
+            IHostService host)
         {
             _host = host;
         }
@@ -22,21 +25,19 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 
             var hostVersion = System.Environment.OSVersion.Version.ToString();
 
-            foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
+            foreach (var v in input.Project.VariableDictionary)
             {
-                var imageConfig = _host.Host.InspectImage(service.Image);
+                if (!v.Key.EndsWith("Image"))
+                    continue;
+
+                var vArray = v.Key.Split(".");
+                var imageConfig = _host.Host.InspectImage(v.Value);
 
                 //list of versions
                 //https://hub.docker.com/_/microsoft-windows-servercore
-                
-                if (hostVersion == imageConfig.Data.OsVersion)
-                {
-                    input.ProjectInstance.VariableDictionary.Add($"{service.Name}.Isolation", "process");
-                }
-                else
-                {
-                    input.ProjectInstance.VariableDictionary.Add($"{service.Name}.Isolation", "hyperv");
-                }
+
+                var isolation = hostVersion == imageConfig.Data.OsVersion ? "process" : "hyperv";
+                input.ProjectInstance.VariableDictionary.Add($"{vArray[^2]}.Isolation", isolation);
             }
         }
     }

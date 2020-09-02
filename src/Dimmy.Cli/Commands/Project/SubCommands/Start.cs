@@ -11,16 +11,13 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Start : ProjectSubCommand<StartArgument>
     {
-        private readonly IDockerComposeParser _dockerComposeParser;
         private readonly IProjectService _projectService;
         private readonly Pipeline<Node<IStartProjectContext>, IStartProjectContext> _startProjectPipeline;
 
         public Start(
-            IDockerComposeParser dockerComposeParser,
             IProjectService projectService,
             Pipeline<Node<IStartProjectContext>, IStartProjectContext> startProjectPipeline)
         {
-            _dockerComposeParser = dockerComposeParser;
             _projectService = projectService;
             _startProjectPipeline = startProjectPipeline;
         }
@@ -43,15 +40,9 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             
             var (projectInstance, project) = _projectService.GetProject(arg.WorkingPath);
             
-            var dockerComposeFile = Path.Combine(arg.WorkingPath, "docker-compose.yml");
-            if (!File.Exists(dockerComposeFile)) throw new DockerComposeFileNotFound();
-
-            var dockerComposeFileString = File.ReadAllText(dockerComposeFile);
-            var dockerComposeFileConfig = _dockerComposeParser.ParseDockerComposeString(dockerComposeFileString);
                 
             _startProjectPipeline.Execute(new StartProjectContext
             {
-                DockerComposeFileConfig = dockerComposeFileConfig, 
                 GenerateOnly = arg.GenerateOnly,
                 ProjectInstance = projectInstance,
                 Project = project,
