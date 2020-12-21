@@ -16,15 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ductus.FluentDocker" Version="2.7.65-beta.141" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.3.0" />
-    <PackageReference Include="NuGet.Protocol" Version="5.7.0-rtm.6702" />
-    <PackageReference Include="NuGet.Resolver" Version="5.7.0-rtm.6702" />
-    <PackageReference Include="Nuke.Common" Version="0.25.0-alpha0334" />
-    <PackageReference Include="Octostache" Version="2.7.0" />
-    <PackageReference Include="SimpleInjector" Version="5.0.3" />
-    <PackageReference Include="System.Linq.Async" Version="4.1.1" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="NuGet.Protocol" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.Resolver" Version="5.9.0-preview.2" />
+    <PackageReference Include="Nuke.Common" Version="5.0.2" />
+    <PackageReference Include="Octostache" Version="2.9.3" />
+    <PackageReference Include="SimpleInjector" Version="5.2.0" />
+    <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>

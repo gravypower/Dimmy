@@ -55,13 +55,12 @@ namespace Dimmy.Cli.Commands.Plugins
 
             pluginListCommand.Handler = CommandHandler.Create((bool remote) =>
             {
-                if (remote)
-                {
-                    var plugins =  _getRemotePluginsQueryHandler.Handle(new GetRemotePlugins());
+                if (!remote) return;
+                
+                var plugins =  _getRemotePluginsQueryHandler.Handle(new GetRemotePlugins());
 
-                    foreach (var plugin in plugins)
-                        Console.WriteLine($"{plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
-                }
+                foreach (var plugin in plugins)
+                    Console.WriteLine($"{plugin.Identity.Id} - {plugin.Identity.Version.OriginalVersion}");
             });
 
             return pluginListCommand;

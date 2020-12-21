@@ -17,7 +17,10 @@ namespace Dimmy.Cli.Application
             if (!Directory.Exists(pluginsDir))
                 Directory.CreateDirectory(pluginsDir);
 
-            foreach (var dir in Directory.GetDirectories(pluginsDir))
+            var directories = Directory.GetDirectories(pluginsDir).ToList();
+
+
+            foreach (var dir in directories)
             {
                 var dirName = Path.GetFileName(dir);
                 var pluginDll = Path.Combine(dir, dirName + ".dll");

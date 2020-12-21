@@ -39,7 +39,7 @@ namespace Dimmy.Cli.Commands.Logo
                 return;
             }           
 
-            Console.WriteLine((string) Logo.DimmyLogo);
+            Console.WriteLine(Logo.DimmyLogo);
         }
     }
 }

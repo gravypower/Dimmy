@@ -36,7 +36,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                 //list of versions
                 //https://hub.docker.com/_/microsoft-windows-servercore
 
-                var isolation = hostVersion == imageConfig.Data.OsVersion ? "process" : "hyperv";
+                var isolation = hostVersion == imageConfig.Data.Os ? "process" : "hyperv";
                 input.ProjectInstance.VariableDictionary.Add($"{vArray[^2]}.Isolation", isolation);
             }
         }

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Commands.Docker
 {
