@@ -10,15 +10,20 @@ namespace Dimmy.Engine.Commands.HostSystem
             var hostsFile = new HostsFile();
             hostsFile.Load(HostsFile.GetDefaultHostsFilePath());
             
-            command.HostsFileMapEntries.Insert(0, new HostsFileComment("Added by DIMMY"));
-            command.HostsFileMapEntries.Add(new HostsFileComment("End of DIMMY section "));
-            
+            var addedHosts = false;
             foreach (var commandHostsFileMapEntry in command.HostsFileMapEntries)
             {
-                if (hostsFile.Entries.All(e => e.RawLine != commandHostsFileMapEntry.ToString()))
-                {
-                    hostsFile.Add(commandHostsFileMapEntry);
-                }
+                if (hostsFile.Entries.Any(e => e.RawLine == commandHostsFileMapEntry.ToString())) 
+                    continue;
+                
+                addedHosts = true;
+                hostsFile.Add(commandHostsFileMapEntry);
+            }
+
+            if (addedHosts)
+            {
+                command.HostsFileMapEntries.Insert(0, new HostsFileComment("Added by DIMMY"));
+                command.HostsFileMapEntries.Add(new HostsFileComment("End of DIMMY section "));
             }
             
             hostsFile.Save(HostsFile.GetDefaultHostsFilePath());

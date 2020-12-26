@@ -6,6 +6,8 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
 {
     public class GenerateProjectInstanceYaml: Node<IInitialiseProjectContext>
     {
+        public override int Order => 1;
+
         public override void DoExecute(IInitialiseProjectContext input)
         {
             var dimmyProjectInstance = new ProjectInstanceYaml

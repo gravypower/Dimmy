@@ -7,10 +7,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
 {
     public class GenerateProjectYaml: Node<IInitialiseProjectContext>
     {
-        public override int Order => -1;
-
-
-        
+        public override int Order => 0;
         
         public override void DoExecute(IInitialiseProjectContext input)
         {
