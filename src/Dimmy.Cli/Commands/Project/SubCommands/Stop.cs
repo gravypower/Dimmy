@@ -2,6 +2,9 @@
 using System.CommandLine;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
+using Dimmy.Engine.Pipelines;
+using Dimmy.Engine.Pipelines.StopProject;
+using Dimmy.Engine.Pipelines.StopProject.Nodes;
 using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
@@ -9,14 +12,15 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
     public class Stop : ProjectSubCommand<StopArgument>
     {
         private readonly IProjectService _projectService;
-        private readonly ICommandHandler<StopProject> _stopProjectCommandHandler;
+        private readonly Pipeline<Node<IStopProjectContext>, IStopProjectContext> _stopProjectPipeline;
+
 
         public Stop(
             IProjectService projectService,
-            ICommandHandler<StopProject> stopProjectCommandHandler)
+            Pipeline<Node<IStopProjectContext>, IStopProjectContext> stopProjectPipeline)
         {
             _projectService = projectService;
-            _stopProjectCommandHandler = stopProjectCommandHandler;
+            _stopProjectPipeline = stopProjectPipeline;
         }
 
         public override Command BuildCommand()
@@ -43,12 +47,10 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 arg.ProjectId = projectInstance.Id;
             }
             
-            var stopProject = new StopProject
+            _stopProjectPipeline.Execute(new StopProjectContext
             {
                 ProjectId = arg.ProjectId
-            };
-
-            _stopProjectCommandHandler.Handle(stopProject);
+            });
         }
     }
 }

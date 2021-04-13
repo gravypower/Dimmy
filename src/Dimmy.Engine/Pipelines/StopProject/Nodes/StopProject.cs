@@ -3,24 +3,23 @@ using System.Linq;
 using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Services;
 
-namespace Dimmy.Engine.Commands.Docker
+namespace Dimmy.Engine.Pipelines.StopProject.Nodes
 {
-    public class PauseProjectCommandHandler : ICommandHandler<PauseProject>
+    public class StopProject : Node<IStopProjectContext>
     {
         private readonly IHostService _hostService;
         private readonly IProjectService _projectService;
 
-        public PauseProjectCommandHandler(
+        public StopProject(
             IHostService hostService,
             IProjectService projectService)
         {
             _hostService = hostService;
             _projectService = projectService;
         }
-
-        public void Handle(PauseProject command)
+        public override void DoExecute(IStopProjectContext input)
         {
-            var project = _projectService.GetProjectById(command.ProjectId);
+            var project = _projectService.GetProjectById(input.ProjectId);
 
             foreach (var c in _hostService.GetContainers())
             {
@@ -30,10 +29,10 @@ namespace Dimmy.Engine.Commands.Docker
                 if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&
                     c.State != ServiceRunningState.Paused)
                     continue;
-                
+
                 Console.WriteLine($"Stopping {c.Name}");
-                
-                c.Pause();
+
+                c.Remove(true);
             }
         }
     }

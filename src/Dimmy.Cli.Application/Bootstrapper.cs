@@ -7,6 +7,7 @@ using Dimmy.Cli.Commands.Plugins;
 using Dimmy.Cli.Commands.Project;
 using Dimmy.Cli.Commands.Project.SubCommands;
 using Dimmy.Cli.Commands.Projects;
+using Dimmy.Cli.Commands.Utility;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Pipelines;
@@ -52,7 +53,8 @@ namespace Dimmy.Cli.Application
                 typeof(Project),
                 typeof(Projects),
                 typeof(Plugins),
-                typeof(Logo)
+                typeof(Logo),
+                typeof(Utility),
             });
 
             Container.Collection.Register<InitialiseSubCommand>(assemblies);

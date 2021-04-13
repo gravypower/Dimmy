@@ -2,6 +2,9 @@
 using System.CommandLine;
 using Dimmy.Engine.Commands;
 using Dimmy.Engine.Commands.Docker;
+using Dimmy.Engine.Pipelines;
+using Dimmy.Engine.Pipelines.PauseProject;
+using Dimmy.Engine.Pipelines.PauseProject.Nodes;
 using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
@@ -9,14 +12,14 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
     public class Pause : ProjectSubCommand<PauseArgument>
     {
         private readonly IProjectService _projectService;
-        private readonly ICommandHandler<PauseProject> _stopProjectCommandHandler;
+        private readonly Pipeline<Node<IPauseProjectContext>, IPauseProjectContext> _pauseProjectPipeline;
 
         public Pause(
             IProjectService projectService,
-            ICommandHandler<PauseProject> stopProjectCommandHandler)
+            Pipeline<Node<IPauseProjectContext>, IPauseProjectContext> pauseProjectPipeline)
         {
             _projectService = projectService;
-            _stopProjectCommandHandler = stopProjectCommandHandler;
+            _pauseProjectPipeline = pauseProjectPipeline;
         }
 
         public override Command BuildCommand()
@@ -43,12 +46,11 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 arg.ProjectId = projectInstance.Id;
             }
             
-            var stopProject = new PauseProject
+            _pauseProjectPipeline.Execute(new PauseProjectContext
             {
                 ProjectId = arg.ProjectId
-            };
-
-            _stopProjectCommandHandler.Handle(stopProject);
+            });
+            
         }
     }
 }

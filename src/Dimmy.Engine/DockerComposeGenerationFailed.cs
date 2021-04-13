@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dimmy.Engine.Commands.Docker
+namespace Dimmy.Engine
 {
     public class DockerComposeGenerationFailed : Exception
     {

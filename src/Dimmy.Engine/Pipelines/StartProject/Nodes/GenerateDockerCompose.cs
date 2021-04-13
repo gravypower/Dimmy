@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using Dimmy.Engine.Commands;
-using Dimmy.Engine.Commands.Docker;
+using Dimmy.Engine.Pipelines.GenerateComposeYaml;
 using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
@@ -10,26 +9,29 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         public override int Order => -1;
 
         private readonly IDockerComposeParser _dockerComposeParser;
-        private readonly ICommandHandler<GenerateComposeYaml> _generateComposeYamlCommandHandler;
+        private readonly Pipeline<Node<IGenerateComposeYamlContext>, IGenerateComposeYamlContext> _generateComposeYamlPipeline;
+
 
         public GenerateDockerCompose(
             IDockerComposeParser dockerComposeParser,
-            ICommandHandler<GenerateComposeYaml> generateComposeYamlCommandHandler)
+            Pipeline<Node<IGenerateComposeYamlContext>, IGenerateComposeYamlContext> generateComposeYamlPipeline)
         {
             _dockerComposeParser = dockerComposeParser;
-            _generateComposeYamlCommandHandler = generateComposeYamlCommandHandler;
+            _generateComposeYamlPipeline = generateComposeYamlPipeline;
         }
         public override void DoExecute(IStartProjectContext input)
         {
             var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
             if (File.Exists(workingDockerCompose)) File.Delete(workingDockerCompose);
 
-            _generateComposeYamlCommandHandler.Handle(new GenerateComposeYaml
+            
+            _generateComposeYamlPipeline.Execute(new GenerateComposeYamlContext
             {
                 Project = input.Project,
                 ProjectInstance = input.ProjectInstance,
                 WorkingPath = input.WorkingPath
             });
+            
             
             if (!File.Exists(workingDockerCompose)) throw new DockerComposeFileNotFound();
 

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
-using Dimmy.Engine.Commands;
-using Dimmy.Engine.Commands.Plugins;
+using Dimmy.Engine.Pipelines;
+using Dimmy.Engine.Pipelines.InstallPlugin;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Queries.Plugins;
 using NuGet.Protocol.Core.Types;
@@ -18,16 +18,16 @@ namespace Dimmy.Cli.Commands.Plugins
 
         private static readonly string[] DimmyProjects = {"Dimmy.Cli", "Dimmy.Engine"};
 
+        private readonly Pipeline<Node<IInstallPluginContext>, IInstallPluginContext> _installPluginPipeline;
+
         private readonly IQueryHandler<GetRemotePlugins, IList<IPackageSearchMetadata>>
             _getRemotePluginsQueryHandler;
-
-        private readonly ICommandHandler<InstallPlugin> _installPluginCommandHandler;
-
+        
         public Plugins(
-            ICommandHandler<InstallPlugin> installPluginCommandHandler,
+            Pipeline<Node<IInstallPluginContext>, IInstallPluginContext> installPluginPipeline,
             IQueryHandler<GetRemotePlugins, IList<IPackageSearchMetadata>> getRemotePluginsQueryHandler)
         {
-            _installPluginCommandHandler = installPluginCommandHandler;
+            _installPluginPipeline = installPluginPipeline;
             _getRemotePluginsQueryHandler = getRemotePluginsQueryHandler;
         }
 
@@ -91,7 +91,7 @@ namespace Dimmy.Cli.Commands.Plugins
                     Console.WriteLine("Not Supported, please pass the package versions.");
                 }
                 
-                _installPluginCommandHandler.Handle(new InstallPlugin
+                _installPluginPipeline.Execute(new InstallPluginContext
                 {
                     PackageId = packageId,
                     PackageVersion = packageVersion,
@@ -99,6 +99,7 @@ namespace Dimmy.Cli.Commands.Plugins
                     InstallDirectory = PluginsDirectoryPath,
                     OmitDependencies = DimmyProjects
                 });
+                
             });
 
             return installPluginCommand;
