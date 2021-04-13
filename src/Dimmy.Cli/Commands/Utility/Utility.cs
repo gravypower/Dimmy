@@ -7,8 +7,6 @@ namespace Dimmy.Cli.Commands.Utility
         public Command BuildCommand()
         {
             var utilCommand = new Command("utility");
-            
-            
             return utilCommand;
         }
     }

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Binding;
 using System.CommandLine.Invocation;
-using System.Linq;
 
 namespace Dimmy.Cli.Commands.Project
 {
@@ -20,16 +18,8 @@ namespace Dimmy.Cli.Commands.Project
             var command = new Command("project");
 
             AddSubCommands(command, _projectSubCommands);
-
-            command.Handler = CommandHandler.Create((ProjectArgument arg) => CommandAction(arg));
             
             return command;
-        }
-
-        
-
-        public  override void CommandAction(ProjectArgument arg)
-        {
         }
     }
 }

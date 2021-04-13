@@ -27,10 +27,6 @@ namespace Dimmy.Cli.Commands.Projects
             return projectsCommand;
         }
 
-        public  override void CommandAction(ProjectsArgument arg)
-        {
-        }
-
         private Command AddListSubCommand()
         {
             var projectListCommand = new Command("ls", "Lists running projects")
