@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Nuget;
 
 namespace Dimmy.Engine.Pipelines.InstallPlugin
 {

@@ -3,7 +3,7 @@ using SharpHostsFile;
 
 namespace Dimmy.Engine.Services.Hosts
 {
-    public interface IHostsService
+    public interface IHostsFileService
     {
         void AddHostsFileEntry(IList<HostsFileEntryBase> hostsFileMapEntries);
     }

@@ -14,7 +14,7 @@ using NuGet.Packaging.Signing;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 
-namespace Dimmy.Engine.Services
+namespace Dimmy.Engine.Services.Nuget
 {
     public class NugetService : INugetService
     {

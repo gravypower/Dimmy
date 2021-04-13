@@ -1,10 +1,7 @@
 ﻿using System;
 using System.CommandLine;
-using Dimmy.Engine.Commands;
-using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Pipelines;
 using Dimmy.Engine.Pipelines.PauseProject;
-using Dimmy.Engine.Pipelines.PauseProject.Nodes;
 using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands

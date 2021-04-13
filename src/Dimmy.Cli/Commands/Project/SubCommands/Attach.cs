@@ -1,28 +1,19 @@
 ﻿using System;
 using System.CommandLine;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Dimmy.Cli.Extensions;
-using Dimmy.Engine.Commands;
-using Dimmy.Engine.Commands.Docker;
 using Dimmy.Engine.Services.Projects;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class Attach : ProjectSubCommand<AttachArgument>
     {
-        private readonly ICommandHandler<EnterPowershellSession> _enterPowerShellSessionCommandHandler;
         private readonly IProjectService _projectService;
-        private readonly ICommandHandler<EnterBashSession> _enterBashSessionCommandHandler;
 
-        public Attach(
-            IProjectService projectService,
-            ICommandHandler<EnterBashSession> enterBashSessionCommandHandler,
-            ICommandHandler<EnterPowershellSession> enterPowerShellSessionCommandHandler)
+        public Attach(IProjectService projectService)
         {
             _projectService = projectService;
-            _enterBashSessionCommandHandler = enterBashSessionCommandHandler;
-            _enterPowerShellSessionCommandHandler = enterPowerShellSessionCommandHandler;
         }
 
         public override Command BuildCommand()
@@ -52,22 +43,26 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 
             var projectRole = runningProject.Services.Single(r => r.Name == arg.Role);
             
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            var shellTitle = $"{runningProject.Name}({projectRole.Name})";
+            var setTitle = $"{{$host.ui.RawUI.WindowTitle = '{shellTitle}'}}";
+            
+            var noExit = arg.NoExit? "-NoExit" : "";
+            
+            var process = new Process
             {
-                _enterBashSessionCommandHandler.Handle(new EnterBashSession
+                StartInfo = new ProcessStartInfo
                 {
-                    ContainerId = projectRole.ContainerId
-                });
-            }
-            else
-            {
-                _enterPowerShellSessionCommandHandler.Handle(new EnterPowershellSession
-                {
-                    ContainerId = projectRole.ContainerId,
-                    ShellTitle = $"{runningProject.Name}({projectRole.Name})",
-                    NoExit = arg.NoExit
-                });
-            }
+                    FileName = "powershell",
+                    Arguments =
+                        $"-NoLogo {noExit} -Command docker exec -it {projectRole.ContainerId} powershell -NoExit -Command {setTitle};",
+                    RedirectStandardOutput = false,
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                }
+            };
+            
+            process.Start();
+            
         }
     }
 }

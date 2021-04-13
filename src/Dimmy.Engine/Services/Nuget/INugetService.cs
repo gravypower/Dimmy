@@ -5,7 +5,7 @@ using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 
-namespace Dimmy.Engine.Services
+namespace Dimmy.Engine.Services.Nuget
 {
     public interface INugetService
     {

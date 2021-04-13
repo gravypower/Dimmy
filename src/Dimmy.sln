@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dimmy.Cli", "Dimmy.Cli\Dimm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.VisualStudio.Plugin", "Dimmy.VisualStudio.Plugin\Dimmy.VisualStudio.Plugin.csproj", "{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.HelloWorld.Plugin", "Dimmy.HelloWorld.Plugin\Dimmy.HelloWorld.Plugin.csproj", "{870EF030-A94C-422F-B1E6-8CF5AA914826}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dimmy.Sitecore.Plugin", "..\..\Dimmy.Sitecore.Plugin\src\Dimmy.Sitecore.Plugin\Dimmy.Sitecore.Plugin.csproj", "{1B35016E-7F58-441E-BBCD-EE7A3495E989}"
@@ -39,10 +37,6 @@ Global
 		{D81E1626-D7AC-4E93-B8AB-D88222246108}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81E1626-D7AC-4E93-B8AB-D88222246108}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81E1626-D7AC-4E93-B8AB-D88222246108}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{870EF030-A94C-422F-B1E6-8CF5AA914826}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,7 +58,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6C4CEC26-D4F1-46CF-8D0E-79066952ECCA} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 		{870EF030-A94C-422F-B1E6-8CF5AA914826} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 		{1B35016E-7F58-441E-BBCD-EE7A3495E989} = {17A5FBC1-DA2A-4CDF-9A57-DBAF9EDBC372}
 	EndGlobalSection
