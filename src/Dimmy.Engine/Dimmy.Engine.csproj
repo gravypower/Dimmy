@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.3.2" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.3.21201.4" />
     <PackageReference Include="NuGet.Protocol" Version="5.9.0" />
     <PackageReference Include="NuGet.Resolver" Version="5.9.0" />

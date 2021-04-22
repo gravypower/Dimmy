@@ -9,5 +9,7 @@
         public string WorkingPath { get; set; }
         
         public string DockerComposeTemplate { get; set; }
+        
+        public string EnvironmentTemplate { get; set; }
     }
 }

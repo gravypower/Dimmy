@@ -1,4 +1,6 @@
-﻿namespace Dimmy.Engine.Pipelines
+﻿using System.Threading.Tasks;
+
+namespace Dimmy.Engine.Pipelines
 {
     public abstract class Node<TContext>
     {
@@ -6,12 +8,12 @@
         protected TContext Context { get; set; }
 
         public virtual int Order { get; } = 0;
-        public abstract void DoExecute(TContext input);
+        public abstract Task DoExecute(TContext input);
 
         public void Execute(TContext context)
         {
             Context = context;
-            DoExecute(context);
+            DoExecute(context).Wait();
 
             if (_nextNode != null)
             {

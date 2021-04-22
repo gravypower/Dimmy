@@ -1,11 +1,12 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using Ductus.FluentDocker.Model.Compose;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class CreateBindMountFolders : Node<IStartProjectContext>
     {
-        public override void DoExecute(IStartProjectContext input)
+        public override async Task DoExecute(IStartProjectContext input)
         {
             foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
             {

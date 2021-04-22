@@ -22,10 +22,5 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 
             return command;
         }
-
-        public override void CommandAction(InitialiseArgument arg)
-        {
-            
-        }
     }
 }

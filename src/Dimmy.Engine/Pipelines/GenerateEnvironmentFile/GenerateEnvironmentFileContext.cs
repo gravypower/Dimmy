@@ -1,8 +1,8 @@
 ﻿using Dimmy.Engine.Models.Yaml;
 
-namespace Dimmy.Engine.Pipelines.GenerateComposeYaml
+namespace Dimmy.Engine.Pipelines.GenerateEnvironmentFile
 {
-    public class GenerateComposeYamlContext : IGenerateComposeYamlContext
+    public class GenerateEnvironmentFileContext : IGenerateEnvironmentFileContext
     {
         public string WorkingPath { get; set; }
         public ProjectInstanceYaml ProjectInstance { get; set; }

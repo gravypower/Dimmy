@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Invocation;
 
 namespace Dimmy.Cli.Commands.Project
 {

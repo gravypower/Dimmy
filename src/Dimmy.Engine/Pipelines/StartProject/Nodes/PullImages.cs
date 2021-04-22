@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ductus.FluentDocker.AmbientContext;
 using Ductus.FluentDocker.Commands;
 using Ductus.FluentDocker.Executors.ProcessDataReceived;
@@ -15,7 +16,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         {
             _host = host;
         }
-        public override void DoExecute(IStartProjectContext input)
+        public override async Task DoExecute(IStartProjectContext input)
         {
             return;
             

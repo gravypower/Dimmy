@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Pipelines.InstallPlugin.Nodes
 {
@@ -6,7 +7,7 @@ namespace Dimmy.Engine.Pipelines.InstallPlugin.Nodes
     {
         public override int Order => -1;
 
-        public override void DoExecute(IInstallPluginContext input)
+        public override async Task DoExecute(IInstallPluginContext input)
         {
             if (Directory.Exists(input.PluginInstallFolder))
                 Directory.Delete(input.PluginInstallFolder);

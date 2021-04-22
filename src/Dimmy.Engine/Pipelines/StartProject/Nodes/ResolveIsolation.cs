@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Dimmy.Engine.Services;
 using Ductus.FluentDocker.Commands;
 using Ductus.FluentDocker.Services;
@@ -18,7 +19,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             _host = host;
         }
         
-        public override void DoExecute(IStartProjectContext input)
+        public override async Task DoExecute(IStartProjectContext input)
         {
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;

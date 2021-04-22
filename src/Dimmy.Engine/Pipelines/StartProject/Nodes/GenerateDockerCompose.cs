@@ -1,43 +1,23 @@
 ﻿using System.IO;
-using Dimmy.Engine.Pipelines.GenerateComposeYaml;
-using Dimmy.Engine.Services;
+using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class GenerateDockerCompose:Node<IStartProjectContext>
     {
         public override int Order => -1;
-
-        private readonly IDockerComposeParser _dockerComposeParser;
-        private readonly Pipeline<Node<IGenerateComposeYamlContext>, IGenerateComposeYamlContext> _generateComposeYamlPipeline;
-
-
-        public GenerateDockerCompose(
-            IDockerComposeParser dockerComposeParser,
-            Pipeline<Node<IGenerateComposeYamlContext>, IGenerateComposeYamlContext> generateComposeYamlPipeline)
+        public override async Task DoExecute(IStartProjectContext input)
         {
-            _dockerComposeParser = dockerComposeParser;
-            _generateComposeYamlPipeline = generateComposeYamlPipeline;
-        }
-        public override void DoExecute(IStartProjectContext input)
-        {
-            var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
-            if (File.Exists(workingDockerCompose)) File.Delete(workingDockerCompose);
+            var workingDockerComposeFile = Path.Combine(input.WorkingPath, "docker-compose.yml");
+            if (File.Exists(workingDockerComposeFile)) File.Delete(workingDockerComposeFile);
 
+            var dockerComposeFilePath = Path.Combine(
+                input.ProjectInstance.SourceCodeLocation,
+                input.Project.DockerComposeFileName);
             
-            _generateComposeYamlPipeline.Execute(new GenerateComposeYamlContext
-            {
-                Project = input.Project,
-                ProjectInstance = input.ProjectInstance,
-                WorkingPath = input.WorkingPath
-            });
-            
-            
-            if (!File.Exists(workingDockerCompose)) throw new DockerComposeFileNotFound();
+            var dockerCompose = await File.ReadAllTextAsync(dockerComposeFilePath);
+            await File.WriteAllTextAsync(workingDockerComposeFile, dockerCompose);
 
-
-            var dockerComposeFileString = File.ReadAllText(workingDockerCompose);
-            input.DockerComposeFileConfig = _dockerComposeParser.ParseDockerComposeString(dockerComposeFileString);
         }
     }
 }

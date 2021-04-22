@@ -2,7 +2,7 @@
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
-    public class DockerComposeFileNotFound : Exception
+    public class EnvironmentFileNotFound : Exception
     {
     }
 }

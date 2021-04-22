@@ -8,7 +8,8 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject
         string Name { get; set; }
         string SourceCodePath { get; set; }
         string WorkingPath { get; set; }
-        string DockerComposeTemplatePath { get; set; }
+        public string DockerComposeFilePath { get; set; }
+        public string EnvironmentTemplateFilePath { get; set; }
         IDictionary<string, string> PublicVariables { get; set; }
         IDictionary<string, string> PrivateVariables { get; set; }
         IDictionary<string, string> MetaData { get; set; }

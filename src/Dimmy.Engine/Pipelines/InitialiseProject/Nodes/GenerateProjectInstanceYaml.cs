@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using Dimmy.Engine.Models.Yaml;
 using YamlDotNet.Serialization;
 
@@ -8,7 +9,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
     {
         public override int Order => 1;
 
-        public override void DoExecute(IInitialiseProjectContext input)
+        public override async Task DoExecute(IInitialiseProjectContext input)
         {
             var dimmyProjectInstance = new ProjectInstanceYaml
             {
@@ -20,7 +21,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
 
             var dimmyProjectInstanceYaml =  new Serializer().Serialize(dimmyProjectInstance);
 
-            File.WriteAllText(
+            await File.WriteAllTextAsync(
                 Path.Combine(input.WorkingPath, ".dimmy"),
                 dimmyProjectInstanceYaml);
         }

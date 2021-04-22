@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Binding;
 using System.Linq;
@@ -21,11 +20,18 @@ namespace Dimmy.Cli.Commands
             {
                 var c = projectSubCommand.BuildCommand();
 
-                var methods = projectSubCommand.GetType()
+                var projectSubCommandType = projectSubCommand.GetType();
+                var methods = projectSubCommandType
                     .GetMethods()
                     .Where(x => x.Name == nameof(CommandAction));
+                
                 var methodInfo = methods.First();
-                c.Handler = HandlerDescriptor.FromMethodInfo(methodInfo, projectSubCommand).GetCommandHandler();
+
+                if (methodInfo.DeclaringType == projectSubCommandType)
+                {
+                    c.Handler = HandlerDescriptor.FromMethodInfo(methodInfo, projectSubCommand).GetCommandHandler();
+                }
+                
                 command.AddCommand(c);
             }
         }

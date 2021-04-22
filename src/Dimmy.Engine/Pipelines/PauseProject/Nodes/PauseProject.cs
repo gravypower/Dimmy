@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Dimmy.Engine.Pipelines.StopProject;
 using Dimmy.Engine.Services.Projects;
 using Ductus.FluentDocker.Services;
@@ -18,7 +19,7 @@ namespace Dimmy.Engine.Pipelines.PauseProject.Nodes
             _hostService = hostService;
             _projectService = projectService;
         }
-        public override void DoExecute(IPauseProjectContext input)
+        public override async Task DoExecute(IPauseProjectContext input)
         {
             var project = _projectService.GetProjectById(input.ProjectId);
 

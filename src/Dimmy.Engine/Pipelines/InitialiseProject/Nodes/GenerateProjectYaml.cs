@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Dimmy.Engine.Models.Yaml;
 using YamlDotNet.Serialization;
 
@@ -9,17 +10,21 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
     {
         public override int Order => 0;
         
-        public override void DoExecute(IInitialiseProjectContext input)
+        public override async Task DoExecute(IInitialiseProjectContext input)
         {
-            var contents = File.ReadAllText(input.DockerComposeTemplatePath);
-            var fileName = Path.GetFileName(input.DockerComposeTemplatePath);
+            var dockerComposeFileContents = await File.ReadAllTextAsync(input.DockerComposeFilePath);
+            var dockerComposeFileName = Path.GetFileName(input.DockerComposeFilePath);
+            await File.WriteAllTextAsync(Path.Combine(input.SourceCodePath, dockerComposeFileName), dockerComposeFileContents);
 
-            File.WriteAllText(Path.Combine(input.SourceCodePath, fileName), contents);
-
+            var environmentTemplateFileContents = await File.ReadAllTextAsync(input.EnvironmentTemplateFilePath);
+            var environmentTemplateFileName = Path.GetFileName(input.EnvironmentTemplateFilePath);
+            await File.WriteAllTextAsync(Path.Combine(input.SourceCodePath, environmentTemplateFileName), environmentTemplateFileContents);
+            
             var dimmyProject = new ProjectYaml
             {
                 Id = Guid.NewGuid(),
-                ComposeTemplateFileName = fileName,
+                DockerComposeFileName = dockerComposeFileName,
+                EnvironmentTemplateFileName = environmentTemplateFileName,
                 Name = input.Name,
                 VariableDictionary = input.PublicVariables,
                 MetaData = input.MetaData
@@ -29,7 +34,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
             
             var dimmyProjectYaml = new Serializer().Serialize(dimmyProject);
 
-            File.WriteAllText(
+            await File.WriteAllTextAsync(
                 Path.Combine(input.SourceCodePath, ".dimmy.yaml"),
                 dimmyProjectYaml);
         }
