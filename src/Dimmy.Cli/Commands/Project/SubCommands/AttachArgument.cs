@@ -1,11 +1,10 @@
-﻿using System;
-using Dimmy.Cli.Extensions;
+﻿using Dimmy.Cli.Extensions;
 
 namespace Dimmy.Cli.Commands.Project.SubCommands
 {
     public class AttachArgument:ProjectCommandArgument, IGetProjectArg
     {
-        public Guid ProjectId { get; set; }
+        public string ProjectId { get; set; }
         
         public string WorkingPath { get; set; }
         

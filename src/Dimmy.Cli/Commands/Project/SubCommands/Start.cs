@@ -39,8 +39,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
                 arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
             
             var (projectInstance, project) = _projectService.GetProject(arg.WorkingPath);
-            
-                
+
             _startProjectPipeline.Execute(new StartProjectContext
             {
                 GenerateOnly = arg.GenerateOnly,

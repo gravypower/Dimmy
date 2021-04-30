@@ -7,11 +7,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class DockerComposeStart : Node<IStartProjectContext>
     {
-        private readonly IHostService _docker;
-
-        public DockerComposeStart(IHostService docker )
+        public DockerComposeStart(IHostService docker)
         {
-            _docker = docker;
         }
         
         public override int Order => 999;
@@ -24,9 +21,8 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             await using var stdOut = Console.OpenStandardOutput();
             await using var stdErr = Console.OpenStandardError();
 
-            var cmd = Cli.Wrap("docker")
+            var cmd = Cli.Wrap("docker-compose")
                 .WithArguments(new[] {
-                    "compose", 
                     "up",
                     "--detach"
                 })
@@ -34,39 +30,6 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                       | (stdOut, stdErr);
             
             await cmd.ExecuteAsync();
-
-            // var workingDockerCompose = Path.Combine(input.WorkingPath, "docker-compose.yml");
-            // var builder = new Builder()
-            //     .UseContainer()
-            //     .UseCompose()
-            //     .FromFile(workingDockerCompose)
-            //     .RemoveOrphans();
-            //
-            // var compositeService = builder.Build();
-            // var p = new DataReceived();
-            //
-            // p.ErrorDataReceived += (sender, s) =>    
-            // {
-            //     if(s.ProcessIdentifier != nameof(Compose.ComposeUp))
-            //         return;
-            //     
-            //     if (!string.IsNullOrEmpty(s.Data))
-            //         Console.Error.Write(s.Data);
-            // };
-            //
-            // p.OutputDataReceived += (sender, s) => 
-            // {
-            //     if(s.ProcessIdentifier != nameof(Compose.ComposeUp))
-            //         return;
-            //     
-            //     if (!string.IsNullOrEmpty(s.Data))
-            //         Console.Write(s.Data);
-            // };
-            //
-            // using (DataReceivedContext.UseProcessManager(p))
-            // {
-            //    compositeService.Start();
-            // }
         }
     }
 }

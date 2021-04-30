@@ -13,6 +13,7 @@ using Dimmy.Engine.NuGet;
 using Dimmy.Engine.Pipelines;
 using Dimmy.Engine.Queries;
 using Dimmy.Engine.Services;
+using Dimmy.Engine.Services.Docker;
 using Dimmy.Engine.Services.Hosts;
 using Dimmy.Engine.Services.Nuget;
 using Dimmy.Engine.Services.Projects;
@@ -46,6 +47,8 @@ namespace Dimmy.Cli.Application
             Container.Register<IDockerComposeParser, DockerComposeParser>();
             Container.Register<ICertificateService, CertificateService>();
             Container.Register<IHostsFileService, HostsFileService>();
+            Container.Register<IDockerService, DockerService>();
+            
             
             Container.Collection.Register<IProjectSubCommand>(assemblies);
             

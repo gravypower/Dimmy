@@ -26,7 +26,7 @@ namespace Dimmy.Cli.Commands
                     .Where(x => x.Name == nameof(CommandAction));
                 
                 var methodInfo = methods.First();
-
+                
                 if (methodInfo.DeclaringType == projectSubCommandType)
                 {
                     c.Handler = HandlerDescriptor.FromMethodInfo(methodInfo, projectSubCommand).GetCommandHandler();

@@ -20,12 +20,12 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
         {
             var command = new Command("attach", "Attach to a running container in a project.")
             {
-                new Option<Guid>("--project-id", "The Id of the Project you wish to attach to. Omit for context project"),
-                new Option<string>("--working-path", "Working Path"),
-                new Option<string>("--role", "The role you want to connect to. Omit to pick"),
-                new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
+                 new Option<string>("--project-id", "The Id of the Project you wish to attach to. Omit for context project"),
+                 new Option<string>("--working-path", "Working Path"),
+                 new Option<string>("--role", "The role you want to connect to. Omit to pick"),
+                 new Option<bool>("--no-exit", "Don't exist host PowerShell session after exiting from container")
             };
-
+            
             return command;
         }
 

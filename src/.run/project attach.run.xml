@@ -1,7 +1,7 @@
 ﻿<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="project start" type="DotNetProject" factoryName=".NET Project">
+  <configuration default="false" name="project attach" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/Dimmy.Cli.Application/bin/Debug/net5.0/Dimmy.exe" />
-    <option name="PROGRAM_PARAMETERS" value="project start --working-path C:\clients\someclient" />
+    <option name="PROGRAM_PARAMETERS" value="project attach --working-path C:\clients\someclient\" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dimmy.Cli.Application/bin/Debug/net5.0" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />

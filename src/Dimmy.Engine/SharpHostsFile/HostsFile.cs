@@ -88,12 +88,11 @@ namespace SharpHostsFile
             if (fileName == null)
                 throw new ArgumentNullException(nameof(fileName));
 
-            using (TextWriter writer = new StreamWriter(fileName))
+            using TextWriter writer = new StreamWriter(fileName);
+            
+            foreach (var entry in _entries)
             {
-                foreach (var entry in _entries)
-                {
-                    writer.WriteLine(entry.ToString(preserveFormatting));
-                }
+                writer.WriteLine(entry.ToString(preserveFormatting));
             }
         }
 

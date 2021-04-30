@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CommandLine;
+using System.IO;
 using Dimmy.Engine.Pipelines;
 using Dimmy.Engine.Pipelines.PauseProject;
 using Dimmy.Engine.Services.Projects;
@@ -24,7 +25,7 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
             var stopProjectCommand = new Command("pause")
             {
                 new Option<string>("--working-path", "Working Path"),
-                new Option<Guid>("--project-id", "Project Id")
+                new Option<string>("--project-id", "Project Id")
             };
             
             return stopProjectCommand;
@@ -32,20 +33,12 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 
         public override void CommandAction(PauseArgument arg)
         {
-            if (arg.ProjectId == Guid.Empty && string.IsNullOrEmpty(arg.WorkingPath))
-            {
-                var (projectInstance, project) = _projectService.GetProject();
-                arg.ProjectId = projectInstance.Id;
-            }
-            else if (!string.IsNullOrEmpty(arg.WorkingPath))
-            {
-                var (projectInstance, project) = _projectService.GetProject(arg.WorkingPath);
-                arg.ProjectId = projectInstance.Id;
-            }
+            if (string.IsNullOrEmpty(arg.WorkingPath))
+                arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
             
             _pauseProjectPipeline.Execute(new PauseProjectContext
             {
-                ProjectId = arg.ProjectId
+                WorkingPath = arg.WorkingPath
             });
             
         }

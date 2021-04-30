@@ -11,7 +11,7 @@ namespace Dimmy.Cli.Extensions
         public static (ProjectInstanceYaml ProjectInstance, ProjectYaml Project) ResolveProject(
             this IProjectService projectService, IGetProjectArg arg)
         {
-            if (arg.ProjectId == Guid.Empty && string.IsNullOrEmpty(arg.WorkingPath))
+            if (arg.ProjectId == string.Empty && string.IsNullOrEmpty(arg.WorkingPath))
             {
                 return projectService.GetProject();
             }
@@ -21,9 +21,9 @@ namespace Dimmy.Cli.Extensions
                 return projectService.GetProject(arg.WorkingPath);
             }
 
-            if(arg.ProjectId != Guid.Empty)
+            if(arg.ProjectId != string.Empty)
             {
-                var project = projectService.RunningProjects().Single(p => p.Id == arg.ProjectId); 
+                var project = projectService.RunningProjects().Single(p => p.Id == Guid.Parse(arg.ProjectId)); 
                 return projectService.GetProject(project.WorkingPath);
             }
 
@@ -46,7 +46,7 @@ namespace Dimmy.Cli.Extensions
 
     public interface IGetProjectArg
     {
-        public Guid ProjectId { get; set; }
+        public string ProjectId { get; set; }
         
         public string WorkingPath { get; set; }
     }
