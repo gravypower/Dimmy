@@ -3,9 +3,7 @@
     public interface ICopyFileToContainerContext
     {
         string WorkingPath { get; set; }
-        public string TargetFilePath { get; set; }
-        public string DestinationFilePath { get; set; }
-        
+        CopyFile[] CopyFiles { get; set; }
         public string ContainerId { get; set; }
     }
 }

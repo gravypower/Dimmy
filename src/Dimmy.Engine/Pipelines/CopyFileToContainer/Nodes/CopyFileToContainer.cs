@@ -23,19 +23,23 @@ namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
             
             await using var stdOut = Console.OpenStandardOutput();
             await using var stdErr = Console.OpenStandardError();
-            var fileName = Path.GetFileName(input.TargetFilePath);
-            var cmd = Cli.Wrap("docker")
-                          .WithArguments(new[] {
-                              "cp",
-                              input.TargetFilePath,
-                              $"{input.ContainerId}:{input.DestinationFilePath}\\{fileName}"
-                          })
-                          .WithWorkingDirectory(input.WorkingPath)
-                      | (stdOut, stdErr);
-            
-            await cmd.ExecuteAsync();
-            
-            _dockerService.StartContainer(input.ContainerId);
+            foreach (var file in input.CopyFiles)
+            {
+                var fileName = Path.GetFileName(file.TargetFilePath);
+                var cmd = Cli.Wrap("docker")
+                              .WithArguments(new[]
+                              {
+                                  "cp",
+                                  file.TargetFilePath,
+                                  $"{input.ContainerId}:{file.DestinationFolder}\\{fileName}"
+                              })
+                              .WithWorkingDirectory(input.WorkingPath)
+                          | (stdOut, stdErr);
+
+                await cmd.ExecuteAsync();
+            }
+
+            await _dockerService.StartContainer(input.ContainerId);
         }
     }
 }
