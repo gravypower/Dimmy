@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CommandLine;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Dimmy.Cli.Extensions;
 using Dimmy.Engine.Services.Projects;
@@ -31,6 +32,9 @@ namespace Dimmy.Cli.Commands.Project.SubCommands
 
         public override void CommandAction(AttachArgument arg)
         {
+            if (string.IsNullOrEmpty(arg.WorkingPath))
+                arg.WorkingPath = Path.GetFullPath(Environment.CurrentDirectory);
+            
             var runningProject = _projectService.ResolveRunningProject(arg);
 
             if (string.IsNullOrEmpty(arg.Role))

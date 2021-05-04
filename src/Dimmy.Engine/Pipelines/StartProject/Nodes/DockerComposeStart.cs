@@ -7,7 +7,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class DockerComposeStart : Node<IStartProjectContext>
     {
-        public DockerComposeStart(IHostService docker)
+        public DockerComposeStart()
         {
         }
         

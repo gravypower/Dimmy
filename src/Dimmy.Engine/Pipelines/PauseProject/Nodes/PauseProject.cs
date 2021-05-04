@@ -10,15 +10,11 @@ namespace Dimmy.Engine.Pipelines.PauseProject.Nodes
 {
     public class PauseProject : Node<IPauseProjectContext>
     {
-        private readonly IHostService _hostService;
-        private readonly IProjectService _projectService;
 
-        public PauseProject(
-            IHostService hostService,
-            IProjectService projectService)
+
+        public PauseProject()
         {
-            _hostService = hostService;
-            _projectService = projectService;
+
         }
         public override async Task DoExecute(IPauseProjectContext input)
         {
@@ -35,21 +31,6 @@ namespace Dimmy.Engine.Pipelines.PauseProject.Nodes
             
             await cmd.ExecuteAsync();
             
-            // var project = _projectService.GetProjectById(input.ProjectId);
-            //
-            // foreach (var c in _hostService.GetContainers())
-            // {
-            //     if (project.Services.All(r => r.ContainerId != c.Id))
-            //         continue;
-            //
-            //     if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&
-            //         c.State != ServiceRunningState.Paused)
-            //         continue;
-            //     
-            //     Console.WriteLine($"Stopping {c.Name}");
-            //     
-            //     c.Pause();
-            // }
         }
     }
 }

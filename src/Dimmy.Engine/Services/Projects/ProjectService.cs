@@ -4,29 +4,31 @@ using System.IO;
 using System.Linq;
 using Dimmy.Engine.Models;
 using Dimmy.Engine.Models.Yaml;
-using Ductus.FluentDocker.Services;
+using Dimmy.Engine.Services.Docker;
 using YamlDotNet.Serialization;
 
 namespace Dimmy.Engine.Services.Projects
 {
     public class ProjectService : IProjectService
     {
-        private readonly IHostService _hostService;
+        private readonly IDockerService _dockerService;
 
-        public ProjectService(IHostService hostService)
+        public ProjectService(
+            IDockerService dockerService)
         {
-            _hostService = hostService;
+            _dockerService = dockerService;
         }
 
         public IList<Project> RunningProjects()
         {
-            var containers = _hostService.GetRunningContainers();
-
+            var containers = _dockerService.RunDockerContainerLsAll();
             var projects = new Dictionary<Guid, Project>();
-
-            foreach (var container in containers)
+            foreach (var container in containers.Result)
             {
-                var labels = container.GetConfiguration().Config.Labels;
+                var labels = container.Labels.Split(',')
+                    .Select (part  => part.Split('='))
+                    .Where (part => part.Length == 2)
+                    .ToDictionary (sp => sp[0], sp => sp[1]);
 
                 if (!labels.ContainsKey(DimmyDockerComposeLabels.Project))
                     continue;
@@ -53,7 +55,7 @@ namespace Dimmy.Engine.Services.Projects
                 projects[projectId].Services.Add(new Service
                 {
                     Name = labels[DimmyDockerComposeLabels.ProjectRole],
-                    ContainerId = container.Id
+                    ContainerId = container.ID
                 });
             }
 

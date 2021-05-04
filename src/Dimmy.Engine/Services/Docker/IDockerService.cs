@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dimmy.Engine.Services.Docker
 {
@@ -6,7 +7,8 @@ namespace Dimmy.Engine.Services.Docker
     {
         Task StartContainer(string containerId);
         Task StopContainer(string containerId);
-        
         Task RunPowershellInContainer(string containerId, string powershellScriptPath);
+
+        Task<IList<ContainerLs>> RunDockerContainerLsAll();
     }
 }

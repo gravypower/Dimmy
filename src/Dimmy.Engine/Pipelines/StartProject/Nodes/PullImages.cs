@@ -8,11 +8,9 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
     public class PullImages:Node<IStartProjectContext>
     {
         public override int Order => -3;
-        private readonly IHostService _host;
 
-        public PullImages(IHostService host)
+        public PullImages()
         {
-            _host = host;
         }
         public override async Task DoExecute(IStartProjectContext input)
         {

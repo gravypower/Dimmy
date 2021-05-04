@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using CliWrap;
+using Newtonsoft.Json;
 
 namespace Dimmy.Engine.Services.Docker
 {
@@ -52,6 +55,43 @@ namespace Dimmy.Engine.Services.Docker
                       | (stdOut, stdErr);
             
             await cmd.ExecuteAsync();
+        }
+
+        public async Task<IList<ContainerLs>> RunDockerContainerLsAll()
+        {
+            var stdOut = new StringBuilder();
+            var stdErr = new StringBuilder();
+
+
+            var cmd = Cli.Wrap("docker")
+                          .WithArguments(new[] {
+                              "container",
+                              "ls",
+                              "--format='{{json .}}.'",
+                              "--all"
+                          })
+                      | (stdOut, stdErr);
+            
+            await cmd.ExecuteAsync();
+
+            var output = stdOut.ToString();
+
+            var resultStrings = output.Split("}.");
+            var results = new List<ContainerLs>();
+            foreach (var result in resultStrings)
+            {
+                var t = result
+                    .Replace("\n", string.Empty)
+                    .Replace("'", string.Empty);
+                
+                if(string.IsNullOrEmpty(t))
+                    continue;
+                
+                var r = JsonConvert.DeserializeObject<ContainerLs>($"{t}}}");
+                results.Add(r);
+            }
+
+            return results;
         }
     }
 }
