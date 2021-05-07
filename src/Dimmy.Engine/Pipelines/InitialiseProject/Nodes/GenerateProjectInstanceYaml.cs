@@ -9,7 +9,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
     {
         public override int Order => 1;
 
-        public override async Task DoExecute(IInitialiseProjectContext input)
+        public override void DoExecute(IInitialiseProjectContext input)
         {
             var dimmyProjectInstance = new ProjectInstanceYaml
             {
@@ -21,7 +21,7 @@ namespace Dimmy.Engine.Pipelines.InitialiseProject.Nodes
 
             var dimmyProjectInstanceYaml =  new Serializer().Serialize(dimmyProjectInstance);
 
-            await File.WriteAllTextAsync(
+            File.WriteAllText(
                 Path.Combine(input.WorkingPath, ".dimmy"),
                 dimmyProjectInstanceYaml);
         }

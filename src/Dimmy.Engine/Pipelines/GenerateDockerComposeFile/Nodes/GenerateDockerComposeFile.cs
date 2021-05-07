@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Octostache;
 
-namespace Dimmy.Engine.Pipelines.GenerateEnvironmentFile.Nodes
+namespace Dimmy.Engine.Pipelines.GenerateDockerComposeFile.Nodes
 {
-    public class GenerateEnvironmentFile : Node<IGenerateEnvironmentFileContext>
+    public class GenerateDockerComposeFile : Node<IGenerateDockerComposeFileContext>
     {
-        public override void DoExecute(IGenerateEnvironmentFileContext input)
+        public override void DoExecute(IGenerateDockerComposeFileContext input)
         {
             var variableDictionary = new VariableDictionary();
             variableDictionary.Set("Project.Name", input.ProjectInstance.Name);
@@ -18,20 +18,20 @@ namespace Dimmy.Engine.Pipelines.GenerateEnvironmentFile.Nodes
 
             foreach (var (key, value) in input.Project.VariableDictionary) variableDictionary.Set(key, value);
 
-            var environmentTemplateFilePath = Path.Combine(
+            var templateFilePath = Path.Combine(
                 input.ProjectInstance.SourceCodeLocation,
-                input.Project.EnvironmentTemplateFileName);
+                input.Project.DockerComposeTemplateFileName);
             
-            var environmentTemplate = File.ReadAllText(environmentTemplateFilePath);
+            var template = File.ReadAllText(templateFilePath);
 
-            var environmentFile = variableDictionary.Evaluate(environmentTemplate, out var error);
+            var dockerCompose = variableDictionary.Evaluate(template, out var error);
 
             if (!string.IsNullOrEmpty(error))
                 throw new FileGenerationFailed(error);
 
-            var environmentFileNamePath = Path.Combine(input.WorkingPath, ".env");
+            var environmentFileNamePath = Path.Combine(input.WorkingPath, "docker-compose.yml");
 
-            File.WriteAllText(environmentFileNamePath, environmentFile);
+            File.WriteAllText(environmentFileNamePath, dockerCompose);
         }
     }
 }

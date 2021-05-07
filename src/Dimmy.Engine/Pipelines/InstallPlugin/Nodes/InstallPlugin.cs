@@ -19,7 +19,7 @@ namespace Dimmy.Engine.Pipelines.InstallPlugin.Nodes
             _nugetService = nugetService;
         }
 
-        public override async Task DoExecute(IInstallPluginContext input)
+        public override void DoExecute(IInstallPluginContext input)
         {
             var pluginInstallFolder = Path.Combine(input.InstallDirectory, input.PackageId);
 

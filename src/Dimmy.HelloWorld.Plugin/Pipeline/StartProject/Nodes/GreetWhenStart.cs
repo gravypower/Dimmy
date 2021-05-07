@@ -7,7 +7,7 @@ namespace Dimmy.HelloWorld.Plugin.Pipeline.StartProject.Nodes
 {
     public class GreetWhenStart: Node<IStartProjectContext>
     {
-        public override async Task DoExecute(IStartProjectContext input)
+        public override void DoExecute(IStartProjectContext input)
         {
             Console.WriteLine("Hello from the Hello World plugin. This is a step in the Project Start Pipeline");
         }

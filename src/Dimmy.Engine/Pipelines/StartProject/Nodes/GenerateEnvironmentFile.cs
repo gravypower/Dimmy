@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Dimmy.Engine.Pipelines.GenerateEnvironmentFile;
-using Dimmy.Engine.Services;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
@@ -16,7 +14,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         {
             _generateEnvironmentFilePipeline = generateEnvironmentFilePipeline;
         }
-        public override async Task DoExecute(IStartProjectContext input)
+        public override void DoExecute(IStartProjectContext input)
         {
             var workingEnvironmentFile = Path.Combine(input.WorkingPath, ".env");
             if (File.Exists(workingEnvironmentFile)) File.Delete(workingEnvironmentFile);
@@ -30,7 +28,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             
             if (!File.Exists(workingEnvironmentFile)) throw new EnvironmentFileNotFound();
             
-            var environmentalVariables = await File.ReadAllLinesAsync(workingEnvironmentFile);
+            var environmentalVariables = File.ReadAllLines(workingEnvironmentFile);
             input.EnvironmentalVariables = environmentalVariables
                 .Select(l => l.Split("="))
                 .ToDictionary(l => l[0], l => l[1]);

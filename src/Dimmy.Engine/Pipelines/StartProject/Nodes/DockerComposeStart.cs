@@ -13,13 +13,13 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
         
         public override int Order => 999;
 
-        public override async Task DoExecute(IStartProjectContext input)
+        public override void DoExecute(IStartProjectContext input)
         {
             if(input.GenerateOnly)
                 return;
 
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
 
             var cmd = Cli.Wrap("docker-compose")
                 .WithArguments(new[] {
@@ -29,7 +29,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                 .WithWorkingDirectory(input.WorkingPath)
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
+            Task.WaitAll(cmd.ExecuteAsync());
         }
     }
 }

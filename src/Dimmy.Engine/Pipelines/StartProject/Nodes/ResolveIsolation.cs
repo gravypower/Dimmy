@@ -17,7 +17,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
             _host = host;
         }
         
-        public override async Task DoExecute(IStartProjectContext input)
+        public override void DoExecute(IStartProjectContext input)
         {
             if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;

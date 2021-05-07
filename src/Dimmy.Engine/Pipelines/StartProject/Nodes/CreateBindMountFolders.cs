@@ -6,7 +6,7 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class CreateBindMountFolders : Node<IStartProjectContext>
     {
-        public override async Task DoExecute(IStartProjectContext input)
+        public override void DoExecute(IStartProjectContext input)
         {
             foreach (var service in input.DockerComposeFileConfig.ServiceDefinitions)
             {

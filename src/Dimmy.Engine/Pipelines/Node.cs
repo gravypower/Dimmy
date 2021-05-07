@@ -8,12 +8,12 @@ namespace Dimmy.Engine.Pipelines
         
 
         public virtual int Order { get; } = 0;
-        public abstract Task DoExecute(TContext input);
+        public abstract void DoExecute(TContext input);
 
         public void Execute(TContext context)
         {
             
-            DoExecute(context).Wait();
+            DoExecute(context);
 
             if (_nextNode != null)
             {

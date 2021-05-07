@@ -17,12 +17,13 @@ namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
         {
             _dockerService = dockerService;
         }
-        public override async Task DoExecute(ICopyFileToContainerContext input)
+        public override void DoExecute(ICopyFileToContainerContext input)
         {
-            await _dockerService.StopContainer(input.ContainerId);
+            _dockerService.StopContainer(input.ContainerId).Wait();
             
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
+
             foreach (var file in input.CopyFiles)
             {
                 var fileName = Path.GetFileName(file.TargetFilePath);
@@ -36,10 +37,10 @@ namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
                               .WithWorkingDirectory(input.WorkingPath)
                           | (stdOut, stdErr);
 
-                await cmd.ExecuteAsync();
+                Task.WaitAll(cmd.ExecuteAsync());
             }
 
-            await _dockerService.StartContainer(input.ContainerId);
+            _dockerService.StartContainer(input.ContainerId).Wait();
         }
     }
 }

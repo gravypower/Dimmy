@@ -19,10 +19,10 @@ namespace Dimmy.Engine.Pipelines.StopProject.Nodes
             _hostService = hostService;
             _projectService = projectService;
         }
-        public override async Task DoExecute(IStopProjectContext input)
+        public override void DoExecute(IStopProjectContext input)
         {
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
 
             var cmd = Cli.Wrap("docker-compose")
                           .WithArguments(new[] {
@@ -31,23 +31,7 @@ namespace Dimmy.Engine.Pipelines.StopProject.Nodes
                           .WithWorkingDirectory(input.WorkingPath)
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
-            
-            // var project = _projectService.GetProjectById(input.ProjectId);
-            //
-            // foreach (var c in _hostService.GetContainers())
-            // {
-            //     if (project.Services.All(r => r.ContainerId != c.Id))
-            //         continue;
-            //
-            //     if (c.State != ServiceRunningState.Running && c.State != ServiceRunningState.Starting &&
-            //         c.State != ServiceRunningState.Paused)
-            //         continue;
-            //
-            //     Console.WriteLine($"Stopping {c.Name}");
-            //
-            //     c.Remove(true);
-            // }
+            Task.WaitAll(cmd.ExecuteAsync());
         }
     }
 }

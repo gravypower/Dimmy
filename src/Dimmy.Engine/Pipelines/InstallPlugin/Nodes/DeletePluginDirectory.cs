@@ -7,7 +7,7 @@ namespace Dimmy.Engine.Pipelines.InstallPlugin.Nodes
     {
         public override int Order => -1;
 
-        public override async Task DoExecute(IInstallPluginContext input)
+        public override void DoExecute(IInstallPluginContext input)
         {
             if (Directory.Exists(input.PluginInstallFolder))
                 Directory.Delete(input.PluginInstallFolder);
