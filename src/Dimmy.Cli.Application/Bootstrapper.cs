@@ -17,7 +17,6 @@ using Dimmy.Engine.Services.Docker;
 using Dimmy.Engine.Services.Hosts;
 using Dimmy.Engine.Services.Nuget;
 using Dimmy.Engine.Services.Projects;
-using Ductus.FluentDocker.Services;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
@@ -35,7 +34,6 @@ namespace Dimmy.Cli.Application
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             var assemblies = ResolveAssemblies();
-            RegisterDockerHost();
 
             //Nuget
             Container.Register<ILogger>(() => new TextWriterLogger(Console.Out));
@@ -80,19 +78,6 @@ namespace Dimmy.Cli.Application
             var pluginAssemblies = PluginLoader.Load(Container);
             assemblies.AddRange(pluginAssemblies);
             return assemblies;
-        }
-
-        private static void RegisterDockerHost()
-        {
-            var hosts = new Hosts().Discover();
-            var host = hosts
-                           .FirstOrDefault(x => x.IsNative)
-                       ?? hosts.FirstOrDefault(x => x.Name == "default");
-
-            if (host == null)
-                Console.WriteLine("Could not find docker!");
-
-            Container.Register(() => host, Lifestyle.Singleton);
         }
     }
 }

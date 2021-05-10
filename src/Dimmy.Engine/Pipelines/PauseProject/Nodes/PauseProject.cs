@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using CliWrap;
-using Dimmy.Engine.Pipelines.StopProject;
-using Dimmy.Engine.Services.Projects;
-using Ductus.FluentDocker.Services;
-
 namespace Dimmy.Engine.Pipelines.PauseProject.Nodes
 {
     public class PauseProject : Node<IPauseProjectContext>

@@ -1,4 +1,4 @@
-﻿﻿namespace Dimmy.Engine.Models
+﻿namespace Dimmy.Engine.Models
 {
     public class DockerComposeTemplate
     {

@@ -6,9 +6,6 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class PullImages:Node<IStartProjectContext>
     {
-        public PullImages()
-        {
-        }
         public override void DoExecute(IStartProjectContext input)
         {
             using var stdOut = Console.OpenStandardOutput();

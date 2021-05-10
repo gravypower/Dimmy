@@ -3,8 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using CliWrap;
 using Dimmy.Engine.Services.Docker;
-using Dimmy.Engine.Services.Projects;
-using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
 {
@@ -19,7 +17,7 @@ namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
         }
         public override void DoExecute(ICopyFileToContainerContext input)
         {
-            _dockerService.StopContainer(input.ContainerId).Wait();
+            _dockerService.StopContainer(input.ContainerId);
             
             using var stdOut = Console.OpenStandardOutput();
             using var stdErr = Console.OpenStandardError();
@@ -40,7 +38,7 @@ namespace Dimmy.Engine.Pipelines.CopyFileToContainer.Nodes
                 Task.WaitAll(cmd.ExecuteAsync());
             }
 
-            _dockerService.StartContainer(input.ContainerId).Wait();
+            _dockerService.StartContainer(input.ContainerId);
         }
     }
 }

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CliWrap;
+using Dimmy.Engine.Models.Docker;
 using Newtonsoft.Json;
 
 namespace Dimmy.Engine.Services.Docker
 {
     public class DockerService:IDockerService
     {
-        public async Task StartContainer(string containerId)
+        public void StartContainer(string containerId)
         {
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
 
             var cmd = Cli.Wrap("docker")
                           .WithArguments(new[] {
@@ -21,13 +22,13 @@ namespace Dimmy.Engine.Services.Docker
                           })
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
+            Task.WaitAll(cmd.ExecuteAsync());
         }
 
-        public async Task StopContainer(string containerId)
+        public void StopContainer(string containerId)
         {
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
 
             var cmd = Cli.Wrap("docker")
                           .WithArguments(new[] {
@@ -36,13 +37,13 @@ namespace Dimmy.Engine.Services.Docker
                           })
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
+            Task.WaitAll(cmd.ExecuteAsync());
         }
 
-        public async Task RunPowershellInContainer(string containerId, string powershellScriptPath)
+        public void RunPowershellInContainer(string containerId, string powershellScriptPath)
         {
-            await using var stdOut = Console.OpenStandardOutput();
-            await using var stdErr = Console.OpenStandardError();
+            using var stdOut = Console.OpenStandardOutput();
+            using var stdErr = Console.OpenStandardError();
 
             var cmd = Cli.Wrap("docker")
                           .WithArguments(new[] {
@@ -54,15 +55,14 @@ namespace Dimmy.Engine.Services.Docker
                           })
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
+            Task.WaitAll(cmd.ExecuteAsync());
         }
 
-        public async Task<IList<ContainerLs>> RunDockerContainerLsAll()
+        public IEnumerable<ContainerLs> RunDockerContainerLsAll()
         {
             var stdOut = new StringBuilder();
             var stdErr = new StringBuilder();
-
-
+            
             var cmd = Cli.Wrap("docker")
                           .WithArguments(new[] {
                               "container",
@@ -72,7 +72,7 @@ namespace Dimmy.Engine.Services.Docker
                           })
                       | (stdOut, stdErr);
             
-            await cmd.ExecuteAsync();
+            Task.WaitAll(cmd.ExecuteAsync());
 
             var output = stdOut.ToString();
 
@@ -92,6 +92,27 @@ namespace Dimmy.Engine.Services.Docker
             }
 
             return results;
+        }
+
+        public ImageInspect RunImageInspect(string imageId)
+        {
+            var stdOut = new StringBuilder();
+            var stdErr = new StringBuilder();
+            
+            var cmd = Cli.Wrap("docker")
+                          .WithArguments(new[] {
+                              "container",
+                              "ls",
+                              "--format='{{json .}}'",
+                              "--all"
+                          })
+                      | (stdOut, stdErr);
+            
+            Task.WaitAll(cmd.ExecuteAsync());
+
+            var output = stdOut.ToString();
+
+            return JsonConvert.DeserializeObject<ImageInspect>(output);;
         }
     }
 }

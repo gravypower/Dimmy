@@ -1,21 +1,19 @@
 ﻿using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Ductus.FluentDocker.Commands;
-using Ductus.FluentDocker.Services;
+using Dimmy.Engine.Services.Docker;
+
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {
     public class ResolveIsolation:Node<IStartProjectContext>
     {
+        private readonly IDockerService _dockerService;
         public override int Order => -2;
-        
-        private readonly IHostService _host;
 
-        public ResolveIsolation(
-            IHostService host)
+        public ResolveIsolation(IDockerService dockerService)
         {
-            _host = host;
+            _dockerService = dockerService;
         }
+        
         
         public override void DoExecute(IStartProjectContext input)
         {
@@ -30,13 +28,13 @@ namespace Dimmy.Engine.Pipelines.StartProject.Nodes
                     continue;
 
                 var vArray = v.Key.Split(".");
-                var imageConfig = _host.Host.InspectImage(v.Value);
+                var imageConfig = _dockerService.RunImageInspect(v.Value);
 
                 //list of versions
                 //https://hub.docker.com/_/microsoft-windows-servercore
 
-                var isolation = hostVersion == imageConfig.Data.Os ? "process" : "hyperv";
-                input.ProjectInstance.VariableDictionary.Add($"{vArray[^2]}.Isolation", isolation);
+                var isolation = hostVersion == imageConfig.Os ? "process" : "hyperv";
+                input.ProjectInstance.VariableDictionary.Add($"{vArray[2]}.Isolation", isolation);
             }
         }
     }

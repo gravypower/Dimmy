@@ -23,7 +23,7 @@ namespace Dimmy.Engine.Services.Projects
         {
             var containers = _dockerService.RunDockerContainerLsAll();
             var projects = new Dictionary<Guid, Project>();
-            foreach (var container in containers.Result)
+            foreach (var container in containers)
             {
                 var labels = container.Labels.Split(',')
                     .Select (part  => part.Split('='))
@@ -36,7 +36,7 @@ namespace Dimmy.Engine.Services.Projects
                 if (!labels.ContainsKey(DimmyDockerComposeLabels.ProjectId))
                     throw new ServiceDoesNotHaveDimmyProjectIdLabel();
 
-                var canParseProjectId = Guid.TryParse(labels[DimmyDockerComposeLabels.ProjectId], out var projectId);
+                var canParseProjectId = Guid.TryParse((ReadOnlySpan<char>)labels[DimmyDockerComposeLabels.ProjectId], out var projectId);
 
                 if (!canParseProjectId)
                     throw new ContainerDoesNotHaveValidDimmyProjectId();

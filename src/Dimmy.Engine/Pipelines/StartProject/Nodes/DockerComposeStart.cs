@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CliWrap;
-using Ductus.FluentDocker.Services;
 
 namespace Dimmy.Engine.Pipelines.StartProject.Nodes
 {

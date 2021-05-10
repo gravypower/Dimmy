@@ -13,11 +13,11 @@ namespace Dimmy.Engine.Services
             var dict = deserializer.Deserialize<Dictionary<object, object>>(dockerComposeString);
             var dockerCompose = new DockerComposeFileConfig {Version = (string) dict["version"]};
 
-            foreach (var service in (Dictionary<object,object>) dict["services"])
+            foreach (var (key, value) in (Dictionary<object,object>) dict["services"])
             {
-                var composeServiceDefinition = new ComposeServiceDefinition {Name = (string) service.Key};
+                var composeServiceDefinition = new ComposeServiceDefinition {Name = (string) key};
 
-                var s = (Dictionary<object, object>) service.Value;
+                var s = (Dictionary<object, object>) value;
 
                 ResolveIsolation(s, composeServiceDefinition);
                 ResolveImage(s, composeServiceDefinition);
@@ -42,9 +42,9 @@ namespace Dimmy.Engine.Services
             {
                 case Dictionary<object, object> labelsDictionary:
                 {
-                    foreach (var label in labelsDictionary)
+                    foreach (var (key, value) in labelsDictionary)
                     {
-                        composeServiceDefinition.Labels.Add((string) label.Key, (string) label.Value);
+                        composeServiceDefinition.Labels.Add((string) key, (string) value);
                     }
 
                     break;
@@ -62,7 +62,7 @@ namespace Dimmy.Engine.Services
             }
         }
 
-        private static void ResolveDependsOn(Dictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
+        private static void ResolveDependsOn(IReadOnlyDictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
         {
             if(!s.ContainsKey("depends_on"))
                 return;
@@ -85,8 +85,10 @@ namespace Dimmy.Engine.Services
                 {
                     case string vSting:
                     {
-                        var shortServiceVolumeDefinition = new ShortServiceVolumeDefinition();
-                        shortServiceVolumeDefinition.Entry = vSting;
+                        var shortServiceVolumeDefinition = new ShortServiceVolumeDefinition
+                        {
+                            Entry = vSting
+                        };
                         composeServiceDefinition.Volumes.Add(shortServiceVolumeDefinition);
                         break;
                     }
@@ -108,7 +110,7 @@ namespace Dimmy.Engine.Services
             }
         }
 
-        private static void ResolveHealthCheck(Dictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
+        private static void ResolveHealthCheck(IReadOnlyDictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
         {
             if(!s.ContainsKey("healthcheck"))
                 return;
@@ -122,7 +124,7 @@ namespace Dimmy.Engine.Services
             };
         }
 
-        private static void ResolvePorts(Dictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
+        private static void ResolvePorts(IReadOnlyDictionary<object, object> s, ComposeServiceDefinition composeServiceDefinition)
         {
             if(!s.ContainsKey("ports"))
                 return;
@@ -131,7 +133,6 @@ namespace Dimmy.Engine.Services
             {
                 case Dictionary<object, object> portsDictionary:
                 {
-                    throw new NotImplementedException();
                     foreach (var port in portsDictionary)
                     {
                         var portsShortDefinition = new PortsShortDefinition();
